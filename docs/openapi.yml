@@ -1,0 +1,350 @@
+openapi: 3.0.3
+
+info:
+  title: Emoine_R
+  version: 1.0.0
+  description:  Emoine_R API
+
+paths:
+  '/oauth2/callback':
+    parameters:
+      - name: code
+        in: query
+        required: true
+        description: OAuth2.0のcode
+        schema:
+          type: string
+      - $ref: '#/components/parameters/sessions'
+
+    get:
+      tags:
+        - oauth2
+      summary: OAuthのコールバック先
+      operationId: callback
+      responses:
+        '200':
+          description: OK
+        '302':
+          description: Found
+
+  '/oauth2/generate/code':
+    get:
+      tags:
+        - oauth2
+      summary: Code Challenge用Codeの生成
+      responses:
+        '200':
+          description: OK
+
+  '/comment/{meeting_id}':
+    get:
+      operationId: getComment
+      summary: 集会のコメント一覧を取得
+      description:  集会のコメント一覧を取得する
+      tags:
+        - comment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          description: Not Found
+
+  '/reaction/{meeting_id}':
+    get:
+      operationId: getReaction
+      summary: 集会のリアクション一覧を取得
+      description:  集会のリアクション一覧を取得する
+      tags:
+        - reaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reaction'
+        '404':
+          description: Not Found
+  
+  '/meeting':
+    post:
+      operationId: createMeeting
+      summary: 新しい集会の設定
+      description: 新しい集会を設定します。権限者のみ
+      tags:
+        - meeting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeeting'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+    
+    get:
+      operationId: getAllMeeting
+      summary: 全集会の取得
+      description: すべての集会を取得する
+      tags:
+        - meeting
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meeting'
+
+  '/meeting/{meeting_id}':
+    get:
+      operationId: getMeeting
+      summary: meeting_idの集会情報の取得
+      description: meeting_idの集会情報を取得する
+      tags:
+        - meeting
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meeting'      
+        '404':
+          description: Not Found
+    
+    patch:
+      operationId: updateMeeting
+      summary: 集会のdescriptionを変更
+      description: 集会のdescriptionを変更します。権限者のみ
+      tags:
+        - meeting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMeeting'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+    delete:
+      operationId: deleteMeeting
+      summary: 集会を削除
+      tags:
+        - meeting
+      responses:
+        '204':
+          description: |-
+            No Content
+            正常に削除できました。
+        '404':
+          description: Not Found      
+      
+  '/token':
+    post:
+      operationId: createToken
+      summary: アクセストークンの生成
+      description: アクセストークンの生成をします。
+      tags:
+        - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateToken'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+    
+    get:
+      operationId: getAllTokens
+      summary: 全トークン情報を取得
+      description: 全トークン情報を取得する。
+      tags:
+        - token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tokens'
+  
+
+  '/token/{token}':
+    get:
+      operationId: getToken
+      summary: トークン情報を取得
+      description: トークン情報を取得する。権限者のみ
+      tags:
+        - token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '404':
+          description: Not Found   
+          
+    patch:
+      operationId: patchToken
+      summary: トークン情報を更新
+      description: トークン情報を更新する。権限者のみ
+      tags:
+        - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Token'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found   
+
+components:
+  parameters:
+    sessions:
+      name: sessions
+      in: cookie
+      required: false
+      schema:
+        type: string
+  schemas:
+    CreateToken:
+      type: object
+      properties:
+        user_id:
+          type: string
+        expire_at:
+          type: string
+          format: date
+        meeting_id:
+          type: number
+        description:
+          type: string
+    Tokens:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/Token'
+        meeting:
+          $ref: '#/components/schemas/Meeting'
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+        created_by:
+          type: string
+        user_id:
+          type: string
+        created_at:
+          type: string
+          format: date
+        expire_at:
+          type: string
+          format: date
+        meeting_id:
+          type: string
+        description:
+          type: string
+    
+    Meeting:
+      type: object
+      properties:
+        id:
+          type: string
+        video_id:
+          type: string
+        title:
+          type: string
+        started_at:
+          type: string
+          format: date
+        ended_at: 
+          type: string
+          format: date
+        description:
+          type: string
+
+    CreateMeeting:
+      type: object
+      properties:
+        video_id:
+          type: string
+        description:
+          type: string
+    
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        meeting_id:
+          type: string
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date
+        is_anonymous:
+          type: boolean
+        color:
+          type: string
+
+    Reaction:
+      type: object
+      properties:
+        id:
+          type: string
+        user_id:
+          type: string
+        meeting_id:
+          type: string
+        stamp_id:
+          type: string
+        created_at:
+          type: string
+          format: date
