@@ -4,6 +4,8 @@ info:
   title: Emoine_R
   version: 1.0.0
   description:  Emoine_R API
+  license:
+    name: MIT
 
 paths:
   '/oauth2/callback':
@@ -37,6 +39,8 @@ paths:
           description: OK
 
   '/comment/{meeting_id}':
+    parameters:
+      - $ref: '#/components/parameters/meetingId'
     get:
       operationId: getComment
       summary: 集会のコメント一覧を取得
@@ -56,6 +60,7 @@ paths:
           description: Not Found
 
   '/reaction/{meeting_id}':
+  
     get:
       operationId: getReaction
       summary: 集会のリアクション一覧を取得
@@ -111,6 +116,8 @@ paths:
                   $ref: '#/components/schemas/Meeting'
 
   '/meeting/{meeting_id}':
+    parameters:
+      - $ref: '#/components/parameters/meetingId'
     get:
       operationId: getMeeting
       summary: meeting_idの集会情報の取得
@@ -125,7 +132,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Meeting'      
+                  $ref: '#/components/schemas/GetMeeting'      
+        '403':
+          description: Forbidden
         '404':
           description: Not Found
     
@@ -149,6 +158,8 @@ paths:
                 $ref: '#/components/schemas/Meeting'
         '400':
           description: Bad Request
+        '403':
+          description: Forbidden
         '404':
           description: Not Found
     delete:
@@ -161,6 +172,8 @@ paths:
           description: |-
             No Content
             正常に削除できました。
+        '403':
+          description: Forbidden
         '404':
           description: Not Found      
       
@@ -183,6 +196,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Token'
+        '403':
+          description: Forbidden
     
     get:
       operationId: getAllTokens
@@ -199,9 +214,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tokens'
+        '403':
+          description: Forbidden
   
 
   '/token/{token}':
+    parameters:
+      - $ref: '#/components/parameters/token'
     get:
       operationId: getToken
       summary: トークン情報を取得
@@ -215,6 +234,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Token'
+        '403':
+          description: Forbidden
         '404':
           description: Not Found   
           
@@ -238,6 +259,8 @@ paths:
                 $ref: '#/components/schemas/Token'
         '400':
           description: Bad Request
+        '403':
+          description: Forbidden
         '404':
           description: Not Found   
 
@@ -247,6 +270,21 @@ components:
       name: sessions
       in: cookie
       required: false
+      schema:
+        type: string
+    meeting_id:
+      name: meetingId
+      in: path
+      required: true
+      description: Presentation ID
+      schema:
+        type: string
+        format: uuid
+    token:
+      name: token
+      in: path
+      required: true
+      description: Token
       schema:
         type: string
   schemas:
@@ -314,6 +352,14 @@ components:
           type: string
         description:
           type: string
+
+    GetMeeting:
+      type: object
+      properties:
+        meeting:
+          $ref: '#/components/schemas/Meeting'
+        tokens:
+          $ref: '#/components/schemas/Tokens'
     
     Comment:
       type: object
