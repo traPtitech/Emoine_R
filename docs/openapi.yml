@@ -18,6 +18,7 @@ paths:
           type: string
       - $ref: '#/components/parameters/sessions'
 
+
     get:
       tags:
         - oauth2
@@ -287,6 +288,7 @@ components:
       description: Token
       schema:
         type: string
+      
   schemas:
     CreateToken:
       type: object
@@ -300,6 +302,12 @@ components:
           type: number
         description:
           type: string
+      required:
+        - user_id
+        - expire_at
+        - meeting_id
+        - description
+
     Tokens:
       type: object
       properties:
@@ -307,6 +315,10 @@ components:
           $ref: '#/components/schemas/Token'
         meeting:
           $ref: '#/components/schemas/Meeting'
+      required:
+        - token 
+        - meeting
+
     Token:
       type: object
       properties:
@@ -326,7 +338,15 @@ components:
           type: string
         description:
           type: string
-    
+      required:
+        - token
+        - created_by
+        - user_id
+        - created_at
+        - expire_at
+        - meeting_id
+        - description
+
     Meeting:
       type: object
       properties:
@@ -344,6 +364,13 @@ components:
           format: date
         description:
           type: string
+      required:
+        - id
+        - video_id
+        - title
+        - started_at
+        - ended_at
+        - description
 
     CreateMeeting:
       type: object
@@ -352,6 +379,9 @@ components:
           type: string
         description:
           type: string
+      required:
+        - video_id
+        - description
 
     GetMeeting:
       type: object
@@ -360,6 +390,9 @@ components:
           $ref: '#/components/schemas/Meeting'
         tokens:
           $ref: '#/components/schemas/Tokens'
+      required:
+        - meeting
+        - tokens
     
     Comment:
       type: object
@@ -379,6 +412,14 @@ components:
           type: boolean
         color:
           type: string
+      required:
+        - id
+        - user_id
+        - meeting_id
+        - text
+        - created_at
+        - is_anonymous
+        - color
 
     Reaction:
       type: object
@@ -394,3 +435,9 @@ components:
         created_at:
           type: string
           format: date
+      required:
+        - id
+        - user_id
+        - meeting_id
+        - stamp_id
+        - created_at
