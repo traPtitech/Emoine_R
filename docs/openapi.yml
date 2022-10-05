@@ -7,6 +7,14 @@ info:
   license:
     name: MIT
 
+servers:
+  - url: 'https://emoine.trap.jp/'
+    description: production
+  - url: 'https://emoine-r-dev.trapti.tech'
+    description: staging
+  - url: 'http://localhost:8090/'
+    description: local
+
 paths:
   '/oauth2/callback':
     parameters:
