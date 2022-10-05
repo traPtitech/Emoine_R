@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,6 +18,17 @@ import (
 var (
 	Db *sqlx.DB
 )
+
+type Meeting struct {
+	ID          int    `json:"id" db:"id"`
+	Name        sql.NullString `json:"name" db:"name"`
+	Speakers    sql.NullString `json:"speakers" db:"speakers"`
+	Description sql.NullString `json:"description" db:"description"`
+	Prev        sql.NullInt16    `json:"prev" db:"prev"`
+	Next        sql.NullInt16    `json:"next" db:"next"`
+	CreatedAt   []uint8    `json:"createdAt" db:"createdAt"`
+	UpdatedAt   []uint8    `json:"updatedAt" db:"updatedAt"`
+}
 
 func main() {
 	err := godotenv.Load()
@@ -58,6 +71,7 @@ func GetReactionFromId(c echo.Context) error {
 }
 
 func PostMeeting(c echo.Context) error {
+
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
 
@@ -70,7 +84,16 @@ func PatchMeeting(c echo.Context) error {
 }
 
 func GetMeetingFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+	meetingId := c.Param("meetingId")
+	meeting := Meeting{}
+	if err := Db.Get(&meeting, "SELECT * FROM presentation WHERE id = ?", meetingId); err != nil && !errors.Is(err, sql.ErrNoRows) {
+		log.Printf("Cannot collect data of meetings: %s", err)
+		return c.NoContent(http.StatusInternalServerError)
+	}
+	if meeting.ID == 0 {
+		return c.NoContent(http.StatusBadRequest)
+	}
+	return c.JSON(http.StatusOK, meeting)
 }
 
 func PatchMeetingFromId(c echo.Context) error {
