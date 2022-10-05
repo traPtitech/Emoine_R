@@ -32,9 +32,6 @@ func main() {
 
 	// TODO: 認証
 	e := echo.New()
-	e.GET("/test", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello World.\n")
-	})
 	e.GET("/comment/:meetingId", GetCommentFromId)
 	e.GET("/reaction/:meetingId", GetReactionFromId)
 
