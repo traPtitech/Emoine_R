@@ -42,6 +42,7 @@ paths:
   '/comment/{meeting_id}':
     parameters:
       - $ref: '#/components/parameters/meetingId'
+      - $ref: '#/components/parameters/limitInQuery'
     get:
       operationId: getComment
       summary: 集会のコメント一覧を取得
@@ -61,7 +62,9 @@ paths:
           description: Not Found
 
   '/reaction/{meeting_id}':
-  
+    parameters:
+    - $ref: '#/components/parameters/meetingId'
+    - $ref: '#/components/parameters/limitInQuery'
     get:
       operationId: getReaction
       summary: 集会のリアクション一覧を取得
@@ -288,6 +291,17 @@ components:
       description: Token
       schema:
         type: string
+    
+    limitInQuery:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+      description: 取得する件数
+      example: 50
+
       
   schemas:
     CreateToken:
