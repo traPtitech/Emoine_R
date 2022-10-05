@@ -19,7 +19,7 @@ var (
 	Db *sqlx.DB
 )
 
-type meeting struct {
+type Meeting struct {
 	ID          int    `json:"id" db:"id"`
 	Name        sql.NullString `json:"name" db:"name"`
 	Speakers    sql.NullString `json:"speakers" db:"speakers"`
@@ -75,7 +75,7 @@ func PostMeeting(c echo.Context) error {
 }
 
 func GetMeeting(c echo.Context) error {
-	meetings := []meeting{}
+	meetings := []Meeting{}
 	if err := Db.Select(&meetings, "SELECT * FROM presentation"); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		log.Printf("Cannot collect data of meetings: %s", err)
 		return c.NoContent(http.StatusInternalServerError)
