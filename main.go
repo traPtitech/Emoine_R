@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 
@@ -16,6 +17,11 @@ import (
 var (
 	Db *sqlx.DB
 )
+
+type RequestPostMeeting struct {
+	VideoId     string `json:"video_id"`
+	Description string `json:"description"`
+}
 
 func main() {
 	err := godotenv.Load()
@@ -58,7 +64,24 @@ func GetReactionFromId(c echo.Context) error {
 }
 
 func PostMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+	req := RequestPostMeeting{}
+	err := c.Bind(&req)
+	// fmt.Printf("%T %v %+v %#v\n", c.QueryParams(), c.QueryParams(), c.QueryParams(), c.QueryParams())
+	if err != nil {
+		fmt.Printf("invalid request in PostMeeting %s\n", err)
+		return c.NoContent(http.StatusBadRequest)
+	}
+	res, err := Db.Exec("INSERT INTO presentation (name, speakers, description) VALUES (?, ?, ?)", req.VideoId, "someone", req.Description)
+	if err != nil {
+		fmt.Printf("error executing DB in PostMeeting %s\n", err)
+		return c.NoContent(http.StatusInternalServerError)
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		fmt.Printf("error in PostMeeting %s\n", err)
+		return c.NoContent(http.StatusInternalServerError)
+	}
+	return c.String(http.StatusOK, strconv.FormatInt(id,10))
 }
 
 func GetMeeting(c echo.Context) error {

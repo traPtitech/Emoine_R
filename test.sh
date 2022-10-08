@@ -1,0 +1,1 @@
+curl -X POST -H 'Content-Type: application/json' -d '{"video_id":"a", "description":"b"}' http://localhost:8000/meeting
