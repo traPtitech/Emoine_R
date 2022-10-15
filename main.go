@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 
@@ -64,8 +65,9 @@ func GetCommentFromId(c echo.Context) error {
 	limit := c.QueryParam("limit")
 	offset := c.QueryParam("offset")
 
-	if (limit == "") {
-		limit = "65535"
+	limitNum, err := strconv.Atoi(limit)
+	if err != nil || limitNum > 200{
+		limit = "200";
 	}
 	if (offset == "") {
 		offset = "0"
@@ -73,7 +75,7 @@ func GetCommentFromId(c echo.Context) error {
 
 	// ordered by
 	comments := []Comment{}
-	err := Db.Select(&comments, "SELECT * FROM comment WHERE presentationId = ? ORDER BY createdAt LIMIT ? OFFSET ?", meetingId, limit, offset);
+	err = Db.Select(&comments, "SELECT * FROM comment WHERE presentationId = ? ORDER BY createdAt LIMIT ? OFFSET ?", meetingId, limit, offset);
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		log.Printf("Cannot collect data of comments: %s", err)
 		return c.NoContent(http.StatusInternalServerError)
