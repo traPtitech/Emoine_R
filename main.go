@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,6 +18,14 @@ import (
 var (
 	Db *sqlx.DB
 )
+
+type Comment struct {
+	ID             int            `json:"id" db:"id"`
+	UserID         sql.NullString `json:"user_id" db:"userId"`
+	PresentationID int            `json:"presentation_id" db:"presentationId"`
+	Text           sql.NullString `json:"text" db:"text"`
+	CreatedAt      []uint8        `json:"created_at" db:"createdAt"`
+}
 
 func main() {
 	err := godotenv.Load()
@@ -50,7 +60,25 @@ func main() {
 }
 
 func GetCommentFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+	meetingId := c.Param("meetingId")
+	limit := c.QueryParam("limit")
+	offset := c.QueryParam("offset")
+
+	if (limit == "") {
+		limit = "65535"
+	}
+	if (offset == "") {
+		offset = "0"
+	}
+
+	// ordered by
+	comments := []Comment{}
+	err := Db.Select(&comments, "SELECT * FROM comment WHERE presentationId = ? ORDER BY createdAt LIMIT ? OFFSET ?", meetingId, limit, offset);
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		log.Printf("Cannot collect data of comments: %s", err)
+		return c.NoContent(http.StatusInternalServerError)
+	}
+	return c.JSON(http.StatusOK, comments)
 }
 
 func GetReactionFromId(c echo.Context) error {
