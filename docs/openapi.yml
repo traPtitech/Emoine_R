@@ -110,6 +110,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Meeting'
+        '403':
+          description: Forbidden
     
     get:
       operationId: getAllMeeting
@@ -145,8 +147,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GetMeeting'      
-        '403':
-          description: Forbidden
         '404':
           description: Not Found
     
