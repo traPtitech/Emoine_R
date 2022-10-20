@@ -47,7 +47,7 @@ paths:
         '200':
           description: OK
 
-  '/comment/{meeting_id}':
+  '/comment/{meetingId}':
     parameters:
       - $ref: '#/components/parameters/meetingId'
       - $ref: '#/components/parameters/limitInQuery'
@@ -69,7 +69,7 @@ paths:
         '404':
           description: Not Found
 
-  '/reaction/{meeting_id}':
+  '/reaction/{meetingId}':
     parameters:
     - $ref: '#/components/parameters/meetingId'
     - $ref: '#/components/parameters/limitInQuery'
@@ -127,7 +127,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Meeting'
 
-  '/meeting/{meeting_id}':
+  '/meeting/{meetingId}':
     parameters:
       - $ref: '#/components/parameters/meetingId'
     get:
@@ -284,7 +284,7 @@ components:
       required: false
       schema:
         type: string
-    meeting_id:
+    meetingId:
       name: meetingId
       in: path
       required: true
