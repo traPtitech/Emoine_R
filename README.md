@@ -10,6 +10,7 @@ DB_NAME = "emoine"
 ## 起動
 
 ```bash
-docker-compose up -d
+docker compose up -d
 go run main.go
 ```
+
