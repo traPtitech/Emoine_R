@@ -378,6 +378,8 @@ components:
           type: string
         title:
           type: string
+        thumbnail:
+          type: string
         started_at:
           type: string
           format: date
@@ -390,6 +392,7 @@ components:
         - id
         - video_id
         - title
+        - thumbnail
         - started_at
         - ended_at
         - description
