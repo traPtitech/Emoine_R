@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
@@ -11,6 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
+	"github.com/traPtitech/Emoine_R/handler"
 )
 
 var (
@@ -32,67 +32,26 @@ func main() {
 
 	// TODO: 認証
 	e := echo.New()
-	e.GET("/comment/:meetingId", GetCommentFromId)
-	e.GET("/reaction/:meetingId", GetReactionFromId)
+	e.GET("/comment/:meetingId", handler.GetCommentFromId)
+	e.GET("/reaction/:meetingId", handler.GetReactionFromId)
 
-	e.POST("/meeting", PostMeeting)
-	e.GET("/meeting", GetMeeting)
-	e.PATCH("/meeting/:meetingId", PatchMeetingFromId)
-	e.GET("/meeting/:meetingId", GetMeetingFromId)
-	e.DELETE("/meeting/:meetingId", DeleteMeetingFromId)
+	e.POST("/meeting", handler.PostMeeting)
+	e.GET("/meeting", handler.GetMeeting)
+	e.PATCH("/meeting/:meetingId", handler.PatchMeetingFromId)
+	e.GET("/meeting/:meetingId", handler.GetMeetingFromId)
+	e.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromId)
 
-	e.POST("/token", PostToken)
-	e.GET("/token", GetToken)
-	e.GET("/token/:token", GetTokenFromToken)
-	e.PATCH("/token/:token", PatchTokenFromToken)
+	e.POST("/token", handler.PostToken)
+	e.GET("/token", handler.GetToken)
+	e.GET("/token/:token", handler.GetTokenFromToken)
+	e.PATCH("/token/:token", handler.PatchTokenFromToken)
 
 	e.Logger.Fatal(e.Start(":8090"))
 }
 
-func GetCommentFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
 
-func GetReactionFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
 
-func PostMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
 
-func GetMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
 
-func PatchMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
 
-func GetMeetingFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
 
-func PatchMeetingFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
-func DeleteMeetingFromId(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
-func PostToken(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
-func GetToken(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
-func GetTokenFromToken(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
-func PatchTokenFromToken(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
