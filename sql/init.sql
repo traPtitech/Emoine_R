@@ -11,56 +11,47 @@ CREATE TABLE IF NOT EXISTS state
 # 初期値
 INSERT INTO state (status, info) VALUES ('pause', '準備中...');
 
-CREATE TABLE IF NOT EXISTS presentation
+CREATE TABLE IF NOT EXISTS comment
 (
-    id          SMALLINT UNSIGNED AUTO_INCREMENT,
-    name        TEXT,
-    speakers    TEXT,
-    description TEXT,
-    prev        SMALLINT,
-    next        SMALLINT,
-    createdAt   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    id           UUID        NOT NULL DEFAULT UUID(),
+    user_id      varchar(32) NOT NULL,
+    meeting_id   UUID        NOT NULL,
+    text         TEXT        NOT NULL,
+    created_at   DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_anonymous BOOLEAN     NOT NULL,
+    color        VARCHAR(7),
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE IF NOT EXISTS reaction
 (
-    id             SMALLINT UNSIGNED AUTO_INCREMENT,
-    userId         VARCHAR(36)       NOT NULL,
-    presentationId SMALLINT UNSIGNED NOT NULL,
-    stamp          TINYINT,
-    createdAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id         UUID        NOT NULL DEFAULT UUID(),
+    user_id    varchar(32) NOT NULL,
+    meeting_id UUID        NOT NULL,
+    stamp_id   UUID        NOT NULL,
+    created_at DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS comment
+CREATE TABLE IF NOT EXISTS meeting
 (
-    id             SMALLINT UNSIGNED AUTO_INCREMENT,
-    userId         VARCHAR(36)       NOT NULL,
-    presentationId SMALLINT UNSIGNED NOT NULL,
-    text           TEXT,
-    createdAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id          UUID         NOT NULL DEFAULT UUID(),
+    video_id    varchar(11)  NOT NULL,
+    title       varchar(64)  NOT NULL,
+    thumbnail   varchar(140) NOT NULL,
+    started_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ended_at    DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    description TEXT,
     PRIMARY KEY (`id`)
-);
-
-CREATE TABLE IF NOT EXISTS review
-(
-    userId         VARCHAR(36),
-    presentationId SMALLINT UNSIGNED NOT NULL,
-    skill          TINYINT UNSIGNED  NOT NULL,
-    artistry       TINYINT UNSIGNED  NOT NULL,
-    idea           TINYINT UNSIGNED  NOT NULL,
-    presentation   TINYINT UNSIGNED  NOT NULL,
-    createdAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt      DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`userId`, `presentationId`)
 );
 
 CREATE TABLE IF NOT EXISTS token
 (
-    token          CHAR(44),
-    userId         VARCHAR(36),
-    createdAt      DATETIME DEFAULT CURRENT_TIMESTAMP,
+    token       CHAR(44)    NOT NULL,
+    created_by  VARCHAR(32) NOT NULL,
+    user_id     VARCHAR(32) NOT NULL,
+    created_at  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    exprie_at   DATETIME    DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
     PRIMARY KEY (`token`)
 );
