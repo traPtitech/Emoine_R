@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS presentation
     id          SMALLINT UNSIGNED AUTO_INCREMENT,
     name        TEXT,
     speakers    TEXT,
-    thumbnail   TEXT, 
     description TEXT,
     prev        SMALLINT,
     next        SMALLINT,
