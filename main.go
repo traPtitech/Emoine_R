@@ -74,5 +74,8 @@ func main() {
 	withAdmin.PATCH("/token/:token", handler.PatchTokenFromToken)
 
 
+	// Notice: WebSocketはポート443で運用するのがいいかも？
+	e.GET("/ws", handler.WebSocketHandler)
+	
 	e.Logger.Fatal(e.Start(":8090"))
 }
