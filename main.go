@@ -32,6 +32,7 @@ func main() {
 
 	// TODO: 認証
 	e := echo.New()
+
 	e.GET("/comment/:meetingId", handler.GetCommentFromId)
 	e.GET("/reaction/:meetingId", handler.GetReactionFromId)
 
@@ -46,6 +47,9 @@ func main() {
 	e.GET("/token/:token", handler.GetTokenFromToken)
 	e.PATCH("/token/:token", handler.PatchTokenFromToken)
 
+	// Notice: WebSocketはポート443で運用するのがいいかも？
+	e.GET("/ws", handler.WebSocketHandler)
+	
 	e.Logger.Fatal(e.Start(":8090"))
 }
 
