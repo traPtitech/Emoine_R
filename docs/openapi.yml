@@ -3,20 +3,20 @@ openapi: 3.0.3
 info:
   title: Emoine_R
   version: 1.0.0
-  description:  Emoine_R API
+  description: Emoine_R API
   license:
     name: MIT
 
 servers:
-  - url: 'https://emoine.trap.jp/'
+  - url: "https://emoine.trap.jp/"
     description: production
-  - url: 'https://emoine-r-dev.trapti.tech'
+  - url: "https://emoine-r-dev.trapti.tech"
     description: staging
-  - url: 'http://localhost:8090/'
+  - url: "http://localhost:8090/"
     description: local
 
 paths:
-  '/oauth2/callback':
+  "/oauth2/callback":
     parameters:
       - name: code
         in: query
@@ -24,8 +24,7 @@ paths:
         description: OAuth2.0のcode
         schema:
           type: string
-      - $ref: '#/components/parameters/sessions'
-
+      - $ref: "#/components/parameters/sessions"
 
     get:
       tags:
@@ -33,65 +32,63 @@ paths:
       summary: OAuthのコールバック先
       operationId: callback
       responses:
-        '200':
+        "200":
           description: OK
-        '302':
+        "302":
           description: Found
 
-  '/oauth2/generate/code':
+  "/oauth2/generate/code":
     get:
       tags:
         - oauth2
       summary: Code Challenge用Codeの生成
       responses:
-        '200':
+        "200":
           description: OK
 
-  '/comment/{meetingId}':
+  "/comment/{meetingId}":
     parameters:
-      - $ref: '#/components/parameters/meetingId'
-      - $ref: '#/components/parameters/limitInQuery'
+      - $ref: "#/components/parameters/meetingId"
     get:
       operationId: getComment
       summary: 集会のコメント一覧を取得
-      description:  集会のコメント一覧を取得する
+      description: 集会のコメント一覧を取得する
       tags:
         - comment
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Comment'
-        '404':
+                  $ref: "#/components/schemas/Comment"
+        "404":
           description: Not Found
 
-  '/reaction/{meetingId}':
+  "/reaction/{meetingId}":
     parameters:
-    - $ref: '#/components/parameters/meetingId'
-    - $ref: '#/components/parameters/limitInQuery'
+      - $ref: "#/components/parameters/meetingId"
     get:
       operationId: getReaction
       summary: 集会のリアクション一覧を取得
-      description:  集会のリアクション一覧を取得する
+      description: 集会のリアクション一覧を取得する
       tags:
         - reaction
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Reaction'
-        '404':
+                  $ref: "#/components/schemas/Reaction"
+        "404":
           description: Not Found
-  
-  '/meeting':
+
+  "/meeting":
     post:
       operationId: createMeeting
       summary: 新しい集会の設定
@@ -102,36 +99,46 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateMeeting'
+              $ref: "#/components/schemas/CreateMeeting"
       responses:
-        '201':
+        "201":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
-        '403':
+                $ref: "#/components/schemas/Meeting"
+        "403":
           description: Forbidden
-    
+
     get:
+      parameters:
+        - $ref: "#/components/parameters/limitInQuery"
+        - $ref: "#/components/parameters/offsetInQuery"
       operationId: getAllMeeting
       summary: 全集会の取得
       description: すべての集会を取得する
       tags:
         - meeting
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Meeting'
+                properties:
+                  total_meetings:
+                    type: integer
+                  meetings:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Meeting"
+                required:
+                  - total_meetings
+                  - meetings
 
-  '/meeting/{meetingId}':
+  "/meeting/{meetingId}":
     parameters:
-      - $ref: '#/components/parameters/meetingId'
+      - $ref: "#/components/parameters/meetingId"
     get:
       operationId: getMeeting
       summary: meeting_idの集会情報の取得
@@ -139,17 +146,17 @@ paths:
       tags:
         - meeting
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GetMeeting'      
-        '404':
+                  $ref: "#/components/schemas/GetMeeting"
+        "404":
           description: Not Found
-    
+
     patch:
       operationId: updateMeeting
       summary: 集会のdescriptionを変更
@@ -160,19 +167,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateMeeting'
+              $ref: "#/components/schemas/CreateMeeting"
       responses:
-        '201':
+        "201":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
-        '400':
+                $ref: "#/components/schemas/Meeting"
+        "400":
           description: Bad Request
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     delete:
       operationId: deleteMeeting
@@ -180,16 +187,16 @@ paths:
       tags:
         - meeting
       responses:
-        '204':
+        "204":
           description: |-
             No Content
             正常に削除できました。
-        '403':
+        "403":
           description: Forbidden
-        '404':
-          description: Not Found      
-      
-  '/token':
+        "404":
+          description: Not Found
+
+  "/token":
     post:
       operationId: createToken
       summary: アクセストークンの生成
@@ -200,17 +207,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateToken'
+              $ref: "#/components/schemas/CreateToken"
       responses:
-        '201':
+        "201":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
-        '403':
+                $ref: "#/components/schemas/Token"
+        "403":
           description: Forbidden
-    
+
     get:
       operationId: getAllTokens
       summary: 全トークン情報を取得
@@ -218,21 +225,20 @@ paths:
       tags:
         - token
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Tokens'
-        '403':
+                  $ref: "#/components/schemas/Tokens"
+        "403":
           description: Forbidden
-  
 
-  '/token/{token}':
+  "/token/{token}":
     parameters:
-      - $ref: '#/components/parameters/token'
+      - $ref: "#/components/parameters/token"
     get:
       operationId: getToken
       summary: トークン情報を取得
@@ -240,17 +246,17 @@ paths:
       tags:
         - token
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
-        '403':
+                $ref: "#/components/schemas/Token"
+        "403":
           description: Forbidden
-        '404':
-          description: Not Found   
-          
+        "404":
+          description: Not Found
+
     patch:
       operationId: patchToken
       summary: トークン情報を更新
@@ -261,20 +267,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Token'
+              $ref: "#/components/schemas/Token"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Token'
-        '400':
+                $ref: "#/components/schemas/Token"
+        "400":
           description: Bad Request
-        '403':
+        "403":
           description: Forbidden
-        '404':
-          description: Not Found   
+        "404":
+          description: Not Found
 
 components:
   parameters:
@@ -299,7 +305,7 @@ components:
       description: Token
       schema:
         type: string
-    
+
     limitInQuery:
       in: query
       name: limit
@@ -309,8 +315,16 @@ components:
         maximum: 200
       description: 取得する件数
       example: 50
-
       
+    offsetInQuery:
+      in: query
+      name: offset
+      schema:
+        type: integer
+        minimum: 0
+      description: 取得を開始する件数（0-index）
+      example: 50
+
   schemas:
     CreateToken:
       type: object
@@ -334,11 +348,11 @@ components:
       type: object
       properties:
         token:
-          $ref: '#/components/schemas/Token'
+          $ref: "#/components/schemas/Token"
         meeting:
-          $ref: '#/components/schemas/Meeting'
+          $ref: "#/components/schemas/Meeting"
       required:
-        - token 
+        - token
         - meeting
 
     Token:
@@ -378,10 +392,12 @@ components:
           type: string
         title:
           type: string
+        thumbnail:
+          type: string
         started_at:
           type: string
           format: date
-        ended_at: 
+        ended_at:
           type: string
           format: date
         description:
@@ -390,6 +406,7 @@ components:
         - id
         - video_id
         - title
+        - thumbnail
         - started_at
         - ended_at
         - description
@@ -409,13 +426,13 @@ components:
       type: object
       properties:
         meeting:
-          $ref: '#/components/schemas/Meeting'
+          $ref: "#/components/schemas/Meeting"
         tokens:
-          $ref: '#/components/schemas/Tokens'
+          $ref: "#/components/schemas/Tokens"
       required:
         - meeting
         - tokens
-    
+
     Comment:
       type: object
       properties:
