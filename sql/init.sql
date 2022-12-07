@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS token
     created_by  VARCHAR(32) NOT NULL,
     user_id     VARCHAR(32) NOT NULL,
     created_at  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    meeting_id	UUID        NOT NULL,
     exprie_at   DATETIME    DEFAULT CURRENT_TIMESTAMP,
     description TEXT,
     PRIMARY KEY (`token`)
