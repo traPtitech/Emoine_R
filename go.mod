@@ -5,11 +5,8 @@ go 1.18
 require (
 	github.com/go-session/session/v3 v3.1.7
 	github.com/go-sql-driver/mysql v1.6.0
-<<<<<<< HEAD
 	github.com/gorilla/sessions v1.2.1
 	github.com/gorilla/websocket v1.5.0
-=======
->>>>>>> websocketハンドラのファイル作成
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo-contrib v0.13.0
@@ -18,12 +15,9 @@ require (
 )
 
 require (
-<<<<<<< HEAD
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
-=======
->>>>>>> websocketハンドラのファイル作成
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
