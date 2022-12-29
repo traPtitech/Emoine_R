@@ -47,7 +47,7 @@ func main() {
 		}
 		sess.Values["userid"] = "SlimySlime"
 		err := sess.Save(c.Request(), c.Response())
-		if err {
+		if err != nil {
 			return c.String(http.StatusInternalServerError, "セッションの保存に失敗しました")
 		}
 
