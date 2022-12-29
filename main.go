@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	session "github.com/go-session/session/v3"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -34,19 +35,19 @@ func main() {
 
 	// TODO: 認証
 	e := echo.New()
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	// デバッグ用 /debugを叩くと認証したものとみなす
 	e.GET("/debug", func(c echo.Context) error{
-		store, err := session.Start(c.Request().Context(), c.Response(), c.Request());
-		if err != nil {
-			return c.String(http.StatusInternalServerError, "セッション情報が読み込めません")
+		sess, _ := session.Get("session", c)
+		sess.Options = &sessions.Options{
+			Path:     "/",
+			MaxAge:   86400 * 7,
+			HttpOnly: true,
 		}
-		store.Set("userid", "testid")
-		err = store.Save()
-		if err != nil {
-			return c.String(http.StatusInternalServerError, fmt.Sprint(err))
-		}
-		return c.String(http.StatusOK, "あなたの名前をtestとして認証しました")
+		sess.Values["userid"] = "SlimySlime"
+		sess.Save(c.Request(), c.Response())
+		return c.String(http.StatusOK, "あなたの名前をSlimySlimeとして認証しました")
 	})
 
 	// なろう講習会
@@ -56,7 +57,7 @@ func main() {
 	// session/ + OAuth認証（+ token認証）
 
 	withLogin := e.Group("")
-	withLogin.Use(handler.SessionMiddleware)
+	withLogin.Use(checkLogin)
 	
 	withLogin.GET("/comment/:meetingId", handler.GetCommentFromId)
 	withLogin.GET("/reaction/:meetingId", handler.GetReactionFromId)
@@ -73,4 +74,22 @@ func main() {
 	withLogin.PATCH("/token/:token", handler.PatchTokenFromToken)
 
 	e.Logger.Fatal(e.Start(":8090"))
+}
+
+func checkLogin(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		sess, _ := session.Get("session", c)
+		sess.Options = &sessions.Options{
+			Path:     "/",
+			MaxAge:   86400 * 7,
+			HttpOnly: true,
+		}
+
+		if sess.Values["userid"] == nil {
+			return c.String(http.StatusForbidden, "ログインしてください")
+		}
+		log.Println(""+fmt.Sprint(sess.Values["userid"])+"が入りました")
+
+		return next(c)
+	}
 }
