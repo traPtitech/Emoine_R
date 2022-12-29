@@ -3,6 +3,8 @@ module github.com/traPtitech/Emoine_R
 go 1.18
 
 require (
+	github.com/go-session/cookie v3.0.1+incompatible
+	github.com/go-session/session/v3 v3.1.7
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/joho/godotenv v1.4.0
@@ -10,6 +12,8 @@ require (
 )
 
 require (
+	github.com/go-session/session v3.1.2+incompatible // indirect
+	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
