@@ -45,13 +45,13 @@ func main() {
 			MaxAge:   86400 * 7,
 			HttpOnly: true,
 		}
-		sess.Values["userid"] = "SlimySlime"
+		sess.Values["userid"] = "s9"
 		err := sess.Save(c.Request(), c.Response())
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "セッションの保存に失敗しました")
 		}
 
-		return c.String(http.StatusOK, "あなたの名前をSlimySlimeとして認証しました")
+		return c.String(http.StatusOK, "あなたの名前を"+fmt.Sprint(sess.Values["userid"])+"として認証しました")
 	})
 
 	// なろう講習会
@@ -61,39 +61,24 @@ func main() {
 	// session/ + OAuth認証（+ token認証）
 
 	withLogin := e.Group("")
-	withLogin.Use(checkLogin)
+	withLogin.Use(handler.CheckLogin)
 	
 	withLogin.GET("/comment/:meetingId", handler.GetCommentFromId)
 	withLogin.GET("/reaction/:meetingId", handler.GetReactionFromId)
-
-	withLogin.POST("/meeting", handler.PostMeeting)
 	withLogin.GET("/meeting", handler.GetMeeting)
-	withLogin.PATCH("/meeting/:meetingId", handler.PatchMeetingFromId)
 	withLogin.GET("/meeting/:meetingId", handler.GetMeetingFromId)
-	withLogin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromId)
 
-	withLogin.POST("/token", handler.PostToken)
-	withLogin.GET("/token", handler.GetToken)
-	withLogin.GET("/token/:token", handler.GetTokenFromToken)
-	withLogin.PATCH("/token/:token", handler.PatchTokenFromToken)
+	withAdmin := withLogin.Group("")
+	withAdmin.Use(handler.CheckIsAdmin)
+
+	withAdmin.POST("/meeting", handler.PostMeeting)
+	withAdmin.PATCH("/meeting/:meetingId", handler.PatchMeetingFromId)
+	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromId)
+	withAdmin.POST("/token", handler.PostToken)
+	withAdmin.GET("/token", handler.GetToken)
+	withAdmin.GET("/token/:token", handler.GetTokenFromToken)
+	withAdmin.PATCH("/token/:token", handler.PatchTokenFromToken)
+
 
 	e.Logger.Fatal(e.Start(":8090"))
-}
-
-func checkLogin(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		sess, _ := session.Get("session", c)
-		sess.Options = &sessions.Options{
-			Path:     "/",
-			MaxAge:   86400 * 7,
-			HttpOnly: true,
-		}
-
-		if sess.Values["userid"] == nil {
-			return c.String(http.StatusForbidden, "ログインしてください")
-		}
-		log.Println(""+fmt.Sprint(sess.Values["userid"])+"が入りました")
-
-		return next(c)
-	}
 }
