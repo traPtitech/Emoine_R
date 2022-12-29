@@ -46,7 +46,11 @@ func main() {
 			HttpOnly: true,
 		}
 		sess.Values["userid"] = "SlimySlime"
-		sess.Save(c.Request(), c.Response())
+		err := sess.Save(c.Request(), c.Response())
+		if err {
+			return c.String(http.StatusInternalServerError, "セッションの保存に失敗しました")
+		}
+
 		return c.String(http.StatusOK, "あなたの名前をSlimySlimeとして認証しました")
 	})
 
