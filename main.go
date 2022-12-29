@@ -53,13 +53,7 @@ func main() {
 
 		return c.String(http.StatusOK, "あなたの名前を"+fmt.Sprint(sess.Values["userid"])+"として認証しました")
 	})
-
-	// なろう講習会
-	// session + basic認証（ユーザー名＋パスワードを入力）
-	// サーバー上にusername
-
-	// session/ + OAuth認証（+ token認証）
-
+	
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
 	
