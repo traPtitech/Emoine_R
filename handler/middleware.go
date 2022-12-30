@@ -23,6 +23,7 @@ func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 		sess, _ := session.Get("session", c)
 		sess.Options = &options;
 
+		// UUIDではない方のuserid
 		if sess.Values["userid"] == nil {
 			return c.String(http.StatusForbidden, "ログインしてください")
 		}
