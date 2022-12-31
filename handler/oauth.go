@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
+	"math/big"
 	"net/http"
 	"os"
 
@@ -39,4 +41,19 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 
 func OAuthCallbackHandler(c echo.Context) error {
 
+}
+
+const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_.~"
+
+func randBytes(n int) ([]byte, error) {
+	buf := make([]byte, n)
+	max := big.NewInt(int64(len(letters)))
+	for i := range buf {
+		r, err := rand.Int(rand.Reader, max)
+		if err != nil {
+			return nil, fmt.Errorf("乱数生成に失敗しました %w", err)
+		}
+		buf[i] = letters[r.Int64()]
+	}
+	return buf, nil
 }
