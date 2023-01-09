@@ -8,11 +8,9 @@ import (
 	"math/big"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 
 	"github.com/dvsekhvalnov/jose2go/base64url"
-	"github.com/gorilla/sessions"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -20,15 +18,6 @@ import (
 
 var (
 	envError error = godotenv.Load()
-
-	ClientID string = os.Getenv("CLIENT_ID")
-	SessionKey string = "session"
-
-	sessionOptionsDefault sessions.Options = sessions.Options{
-		Path:     "/",
-		MaxAge:   60 * 60 * 24 * 1000,
-		HttpOnly: true,
-	}
 	urlPrefix string = "https://q.trap.jp/api/v3"
 )
 
@@ -62,7 +51,7 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 	params.CodeChallenge = codeChallenge
 
 	sess.Values["CodeVerifier"] = codeVerifier
-	sess.Options = &sessionOptionsDefault
+	sess.Options = &SessionOptionsDefault
 	err = sess.Save(c.Request(), c.Response())
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションエラー: "+err.Error())
@@ -97,7 +86,7 @@ func OAuthCallbackHandler(c echo.Context) error {
 
 	sess.Values["userid"] = myUserId
 
-	sess.Options = &sessionOptionsDefault
+	sess.Options = &SessionOptionsDefault
 	err = sess.Save(c.Request(), c.Response())
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションエラー: "+err.Error())
