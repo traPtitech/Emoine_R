@@ -11,9 +11,12 @@ import (
 )
 
 var (
-	options = sessions.Options{
+	ClientID string = os.Getenv("CLIENT_ID")
+	SessionKey string = "session"
+
+	SessionOptionsDefault sessions.Options = sessions.Options{
 		Path:     "/",
-		MaxAge:   86400 * 7,
+		MaxAge:   60 * 60 * 24 * 1000,
 		HttpOnly: true,
 	}
 )
@@ -21,7 +24,7 @@ var (
 func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		sess, _ := session.Get("session", c)
-		sess.Options = &options;
+		sess.Options = &SessionOptionsDefault;
 
 		if sess.Values["userid"] == nil {
 			return c.String(http.StatusForbidden, "ログインしてください")
@@ -34,7 +37,7 @@ func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 func CheckIsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		sess, _ := session.Get("session", c)
-		sess.Options = &options;
+		sess.Options = &SessionOptionsDefault;
 
 		adminNames := strings.Split(os.Getenv("ADMIN_NAMES"), ",")
 		myname := sess.Values["userid"]
