@@ -11,13 +11,11 @@ import (
 	"strings"
 
 	"github.com/dvsekhvalnov/jose2go/base64url"
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
 var (
-	envError error = godotenv.Load()
 	urlPrefix string = "https://q.trap.jp/api/v3"
 )
 
