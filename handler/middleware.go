@@ -11,7 +11,6 @@ import (
 )
 
 var (
-	envError error = godotenv.Load()
 	ClientID string = os.Getenv("CLIENT_ID")
 	SessionKey string = "session"
 
