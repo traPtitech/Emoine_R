@@ -18,6 +18,7 @@ import (
 
 var (
 	Db *sqlx.DB
+	ClientID string = os.Getenv("CLIENT_ID")
 )
 
 func main() {
@@ -48,7 +49,7 @@ func main() {
 			MaxAge:   86400 * 7,
 			HttpOnly: true,
 		}
-		sess.Values["userid"] = "s9"
+		sess.Values["userid"] = "aaa"
 		err = sess.Save(c.Request(), c.Response())
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "セッションの保存に失敗しました")
