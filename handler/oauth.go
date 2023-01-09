@@ -94,9 +94,6 @@ func OAuthCallbackHandler(c echo.Context) error {
 }
 
 func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error) {
-	if envError != nil {
-		return AuthResponse{}, envError
-	}
 	form := url.Values{
 		"grant_type":{"authorization_code"}, "client_id":{ClientID},
 		"code":{code}, "code_verifier":{codeVerifier}}

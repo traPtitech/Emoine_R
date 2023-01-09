@@ -12,11 +12,7 @@ import (
 )
 
 var (
-<<<<<<< HEAD
 	_ error = godotenv.Load()
-=======
-	envError error = godotenv.Load()
->>>>>>> middlewareの更新
 	ClientID string = os.Getenv("CLIENT_ID")
 	SessionKey string = "session"
 
