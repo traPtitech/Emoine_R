@@ -23,7 +23,7 @@ var (
 
 func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sess, _ := session.Get("session", c)
+		sess, _ := session.Get(SessionKey, c)
 		sess.Options = &SessionOptionsDefault;
 
 		if sess.Values["userid"] == nil {
@@ -36,7 +36,7 @@ func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 
 func CheckIsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sess, _ := session.Get("session", c)
+		sess, _ := session.Get(SessionKey, c)
 		sess.Options = &SessionOptionsDefault;
 
 		adminNames := strings.Split(os.Getenv("ADMIN_NAMES"), ",")
