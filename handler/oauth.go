@@ -142,6 +142,9 @@ func GetMyUserId(accessToken string) (string, error){
 	
 	var traqJSON TraqJSON
 	err = json.NewDecoder(res.Body).Decode(&traqJSON)
+	if err != nil {
+		return "", err
+	}
 	
 	defer res.Body.Close()
 	return traqJSON.Name, nil
