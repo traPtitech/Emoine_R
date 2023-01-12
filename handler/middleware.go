@@ -25,7 +25,10 @@ var (
 
 func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sess, _ := session.Get(SessionKey, c)
+		sess, err := session.Get(SessionKey, c)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました")
+		}
 		sess.Options = &SessionOptionsDefault;
 
 		if sess.Values["userid"] == nil {

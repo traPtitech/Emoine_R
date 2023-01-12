@@ -3,7 +3,7 @@ module github.com/traPtitech/Emoine_R
 go 1.18
 
 require (
-	github.com/go-session/session/v3 v3.1.7
+	github.com/dvsekhvalnov/jose2go v1.5.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gorilla/sessions v1.2.1
 	github.com/jmoiron/sqlx v1.3.5
