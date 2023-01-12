@@ -1,6 +1,6 @@
-// これを読んでいる自分へ
 // 新しいコードを書く負担よりは、siguredoを使うことにした
 // スタンプとコメントをDBに保存する際、meetingIDが必要で、そのためにはsession管理が必要
+// TODO: protoを使ってwebsocketを実装
 
 package handler
 
