@@ -25,7 +25,10 @@ var (
 
 func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sess, _ := session.Get(SessionKey, c)
+		sess, err := session.Get(SessionKey, c)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました")
+		}
 		sess.Options = &SessionOptionsDefault;
 
 		if sess.Values["userid"] == nil {
@@ -39,7 +42,7 @@ func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 func CheckIsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		sess, _ := session.Get(SessionKey, c)
-		sess.Options = &SessionOptionsDefault;
+		sess.Options = &SessionOptionsDefault
 
 		adminNames := strings.Split(os.Getenv("ADMIN_NAMES"), ",")
 		myname := sess.Values["userid"]
@@ -49,7 +52,7 @@ func CheckIsAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 				isAdmin = true
 			}
 		}
-		
+
 		if !isAdmin {
 			return c.String(http.StatusForbidden, "権限がありません")
 		}
