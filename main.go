@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -12,7 +10,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"github.com/joho/godotenv"
 	"github.com/traPtitech/Emoine_R/handler"
 )
 
@@ -21,24 +18,12 @@ var (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Cannot collect .env: %s", err)
-	}
-	_db, err := sqlx.Connect(
-		"mysql", fmt.Sprintf("root:%s@tcp(127.0.0.1:3306)/%s", os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME")),
-	)
-	if err != nil {
-		log.Fatalf("Cannot Connect to Database: %s", err)
-	}
-	Db = _db
-
 	// TODO: 認証
 	e := echo.New()
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	// デバッグ用 /debugを叩くと認証したものとみなす
-	e.GET("/debug", func(c echo.Context) error{
+	e.GET("/debug", func(c echo.Context) error {
 		sess, _ := session.Get("session", c)
 		sess.Options = &sessions.Options{
 			Path:     "/",
@@ -53,10 +38,10 @@ func main() {
 
 		return c.String(http.StatusOK, "あなたの名前を"+fmt.Sprint(sess.Values["userid"])+"として認証しました")
 	})
-	
+
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
-	
+
 	withLogin.GET("/comment/:meetingId", handler.GetCommentFromId)
 	withLogin.GET("/reaction/:meetingId", handler.GetReactionFromId)
 	withLogin.GET("/meeting", handler.GetMeeting)
@@ -72,7 +57,6 @@ func main() {
 	withAdmin.GET("/token", handler.GetToken)
 	withAdmin.GET("/token/:token", handler.GetTokenFromToken)
 	withAdmin.PATCH("/token/:token", handler.PatchTokenFromToken)
-
 
 	e.Logger.Fatal(e.Start(":8090"))
 }
