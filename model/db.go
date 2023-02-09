@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 )
@@ -16,12 +17,31 @@ func init() {
 		log.Fatalf("Cannot collect .env: %s", err)
 	}
 
-	_db, err := sqlx.Connect(
-		"mysql", fmt.Sprintf("root:%s@tcp(127.0.0.1:3306)/%s", os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME")),
-	)
+	cfg := mysql.Config{
+		User:   getEnvOrDefault("DB_USER", "root"),
+		Passwd: getEnvOrDefault("DB_PASSWORD", ""),
+		Net:    "tcp",
+		Addr: fmt.Sprintf(
+			"%s:%s",
+			getEnvOrDefault("DB_HOST", "127.0.0.1"),
+			getEnvOrDefault("DB_PORT", "3306"),
+		),
+		DBName: getEnvOrDefault("DB_NAME", "emoine"),
+	}
+
+	_db, err := sqlx.Connect("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatalf("Cannot Connect to Database: %s", err)
 	}
 
 	db = _db
+}
+
+func getEnvOrDefault(key string, defaultValue string) string {
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		return defaultValue
+	}
+
+	return value
 }
