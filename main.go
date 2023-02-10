@@ -41,17 +41,18 @@ func main() {
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
 
-	withLogin.GET("/comment/:meetingId", handler.GetCommentFromId)
-	withLogin.GET("/reaction/:meetingId", handler.GetReactionFromId)
+	withLogin.GET("/comment/:meetingId", handler.GetCommentFromID)
+	withLogin.GET("/reaction/:meetingId", handler.GetReactionFromID)
+
 	withLogin.GET("/meeting", handler.GetMeeting)
-	withLogin.GET("/meeting/:meetingId", handler.GetMeetingFromId)
+	withLogin.GET("/meeting/:meetingId", handler.GetMeetingFromID)
 
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
 
 	withAdmin.POST("/meeting", handler.PostMeeting)
-	withAdmin.PATCH("/meeting/:meetingId", handler.PatchMeetingFromId)
-	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromId)
+	withAdmin.PATCH("/meeting/:meetingId", handler.PatchMeetingFromID)
+	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromID)
 	withAdmin.POST("/token", handler.PostToken)
 	withAdmin.GET("/token", handler.GetToken)
 	withAdmin.GET("/token/:token", handler.GetTokenFromToken)
