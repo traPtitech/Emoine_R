@@ -8,12 +8,7 @@ import (
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/traPtitech/Emoine_R/handler"
-)
-
-var (
-	Db *sqlx.DB
 )
 
 func main() {
