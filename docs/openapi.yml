@@ -360,7 +360,7 @@ components:
       properties:
         token:
           type: string
-        created_by:
+        creator_id:
           type: string
         user_id:
           type: string
@@ -376,7 +376,7 @@ components:
           type: string
       required:
         - token
-        - created_by
+        - creator_id
         - user_id
         - created_at
         - expire_at
