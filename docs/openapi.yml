@@ -46,7 +46,7 @@ paths:
         "200":
           description: OK
 
-  "/comment/{meetingId}":
+  "/meetings/{meetingId}/comments":
     parameters:
       - $ref: "#/components/parameters/meetingId"
     get:
@@ -67,7 +67,7 @@ paths:
         "404":
           description: Not Found
 
-  "/reaction/{meetingId}":
+  "/meetings/{meetingId}/reactions":
     parameters:
       - $ref: "#/components/parameters/meetingId"
     get:
