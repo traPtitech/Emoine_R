@@ -46,48 +46,6 @@ paths:
         "200":
           description: OK
 
-  "/meeting/{meetingId}/comments":
-    parameters:
-      - $ref: "#/components/parameters/meetingId"
-    get:
-      operationId: getComment
-      summary: 集会のコメント一覧を取得
-      description: 集会のコメント一覧を取得する
-      tags:
-        - comment
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
-        "404":
-          description: Not Found
-
-  "/meeting/{meetingId}/reactions":
-    parameters:
-      - $ref: "#/components/parameters/meetingId"
-    get:
-      operationId: getReaction
-      summary: 集会のリアクション一覧を取得
-      description: 集会のリアクション一覧を取得する
-      tags:
-        - reaction
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Reaction"
-        "404":
-          description: Not Found
-
   "/meeting":
     post:
       operationId: createMeeting
@@ -193,6 +151,48 @@ paths:
             正常に削除できました。
         "403":
           description: Forbidden
+        "404":
+          description: Not Found
+
+  "/meeting/{meetingId}/comments":
+    parameters:
+      - $ref: "#/components/parameters/meetingId"
+    get:
+      operationId: getComment
+      summary: 集会のコメント一覧を取得
+      description: 集会のコメント一覧を取得する
+      tags:
+        - comment
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "404":
+          description: Not Found
+
+  "/meeting/{meetingId}/reactions":
+    parameters:
+      - $ref: "#/components/parameters/meetingId"
+    get:
+      operationId: getReaction
+      summary: 集会のリアクション一覧を取得
+      description: 集会のリアクション一覧を取得する
+      tags:
+        - reaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reaction"
         "404":
           description: Not Found
 
