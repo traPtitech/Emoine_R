@@ -36,11 +36,10 @@ func main() {
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
 
-	withLogin.GET("/comment/:meetingId", handler.GetCommentFromID)
-	withLogin.GET("/reaction/:meetingId", handler.GetReactionFromID)
-
 	withLogin.GET("/meeting", handler.GetMeeting)
 	withLogin.GET("/meeting/:meetingId", handler.GetMeetingFromID)
+	withLogin.GET("/meeting/:meetingId/comments", handler.GetCommentFromMeetingID)
+	withLogin.GET("/meeting/:meetingId/reactions", handler.GetReactionFromMeetingID)
 
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
