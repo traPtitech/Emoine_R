@@ -20,3 +20,11 @@ go run main.go
 ```sh
 go run github.com/golangci/golangci-lint/cmd/golangci-lint@latest run --fix ./...
 ```
+
+## コード生成
+
+- OpenAPI Schemas: [deepmap/oapi-codegen](https://github.com/deepmap/oapi-codegen)
+
+```sh
+go generate ./...
+```
