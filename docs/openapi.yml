@@ -109,9 +109,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/GetMeeting"
+                $ref: "#/components/schemas/Meeting"
         "404":
           description: Not Found
 
@@ -421,17 +419,6 @@ components:
       required:
         - video_id
         - description
-
-    GetMeeting:
-      type: object
-      properties:
-        meeting:
-          $ref: "#/components/schemas/Meeting"
-        tokens:
-          $ref: "#/components/schemas/Tokens"
-      required:
-        - meeting
-        - tokens
 
     Comment:
       type: object
