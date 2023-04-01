@@ -194,6 +194,27 @@ paths:
         "404":
           description: Not Found
 
+  "/meeting/{meetingId}/tokens":
+    parameters:
+      - $ref: "#/components/parameters/meetingId"
+    get:
+      operationId: getMeetingTokens
+      summary: 集会のトークン一覧を取得
+      description: 集会のトークン一覧を取得する (管理者権限が必要)
+      tags:
+        - token
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Token"
+        "404":
+          description: Not Found
+
   "/token":
     post:
       operationId: createToken
