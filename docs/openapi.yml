@@ -57,7 +57,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateMeeting"
+              $ref: "#/components/schemas/CreateMeetingRequest"
       responses:
         "201":
           description: OK
@@ -125,7 +125,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateMeeting"
+              $ref: "#/components/schemas/CreateMeetingRequest"
       responses:
         "201":
           description: OK
@@ -315,7 +315,7 @@ components:
         maximum: 200
       description: 取得する件数
       example: 50
-      
+
     offsetInQuery:
       in: query
       name: offset
@@ -411,7 +411,7 @@ components:
         - ended_at
         - description
 
-    CreateMeeting:
+    CreateMeetingRequest:
       type: object
       properties:
         video_id:
