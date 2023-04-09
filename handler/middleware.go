@@ -12,9 +12,9 @@ import (
 )
 
 var (
-	_ error = godotenv.Load()
-	ClientID string = os.Getenv("CLIENT_ID")
-	SessionKey string = "session"
+	_          = godotenv.Load()
+	ClientID   = os.Getenv("CLIENT_ID")
+	SessionKey = "session"
 
 	SessionOptionsDefault sessions.Options = sessions.Options{
 		Path:     "/",
@@ -25,11 +25,8 @@ var (
 
 func CheckLogin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		sess, err := session.Get(SessionKey, c)
-		if err != nil {
-			return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました")
-		}
-		sess.Options = &SessionOptionsDefault;
+		sess, _ := session.Get(SessionKey, c)
+		sess.Options = &SessionOptionsDefault
 
 		if sess.Values["userid"] == nil {
 			return c.String(http.StatusForbidden, "ログインしてください")
