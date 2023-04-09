@@ -25,7 +25,7 @@ func main() {
 			HttpOnly: true,
 		}
 		sess.Values["userid"] = "aaa"
-		err = sess.Save(c.Request(), c.Response())
+		err := sess.Save(c.Request(), c.Response())
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "セッションの保存に失敗しました")
 		}
