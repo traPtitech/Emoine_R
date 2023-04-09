@@ -3,6 +3,7 @@ package handler
 import (
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"math/big"
@@ -10,7 +11,6 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/dvsekhvalnov/jose2go/base64url"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
@@ -43,12 +43,11 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "codeVerifierの作成に失敗: "+err.Error())
 	}
 
-	codeVerifier := string(bytesCodeVerifier)
 	bytesCodeChallenge := sha256.Sum256(bytesCodeVerifier[:])
-	codeChallenge := base64url.Encode(bytesCodeChallenge[:])
+	codeChallenge := base64.RawURLEncoding.EncodeToString(bytesCodeChallenge[:])
 	params.CodeChallenge = codeChallenge
 
-	sess.Values["CodeVerifier"] = codeVerifier
+	sess.Values["CodeVerifier"] = string(bytesCodeVerifier)
 	sess.Options = &SessionOptionsDefault
 	err = sess.Save(c.Request(), c.Response())
 	if err != nil {
@@ -59,7 +58,7 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 
 func OAuthCallbackHandler(c echo.Context) error {
 	code := c.QueryParam("code")
-	if (code == "") {
+	if code == "" {
 		return c.String(http.StatusBadRequest, "コードがみつかりません")
 	}
 
@@ -76,7 +75,7 @@ func OAuthCallbackHandler(c echo.Context) error {
 
 	sess.Values["accessToken"] = res.AccessToken
 	sess.Values["refreshToken"] = res.RefreshToken
-	
+
 	myUserId, err := GetMyUserId(res.AccessToken)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "useridを取得できません: "+err.Error())
@@ -95,11 +94,11 @@ func OAuthCallbackHandler(c echo.Context) error {
 
 func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error) {
 	form := url.Values{
-		"grant_type":{"authorization_code"}, "client_id":{ClientID},
-		"code":{code}, "code_verifier":{codeVerifier}}
+		"grant_type": {"authorization_code"}, "client_id": {ClientID},
+		"code": {code}, "code_verifier": {codeVerifier}}
 	reqBody := strings.NewReader(form.Encode())
 
-	req, err := http.NewRequest("POST", urlPrefix + "/oauth2/token", reqBody)
+	req, err := http.NewRequest("POST", urlPrefix+"/oauth2/token", reqBody)
 	if err != nil {
 		return AuthResponse{}, err
 	}
@@ -122,8 +121,8 @@ func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error
 	return authRes, nil
 }
 
-func GetMyUserId(accessToken string) (string, error){
-	req, err := http.NewRequest("GET", urlPrefix + "/users/me", nil)
+func GetMyUserId(accessToken string) (string, error) {
+	req, err := http.NewRequest("GET", urlPrefix+"/users/me", nil)
 	if err != nil {
 		return "", err
 	}
@@ -139,13 +138,13 @@ func GetMyUserId(accessToken string) (string, error){
 	type TraqJSON struct {
 		Name string `json:"name"`
 	}
-	
+
 	var traqJSON TraqJSON
 	err = json.NewDecoder(res.Body).Decode(&traqJSON)
 	if err != nil {
 		return "", err
 	}
-	
+
 	defer res.Body.Close()
 	return traqJSON.Name, nil
 }
@@ -162,5 +161,6 @@ func randBytes(n int) ([]byte, error) {
 		}
 		buf[i] = letters[r.Int64()]
 	}
+
 	return buf, nil
 }
