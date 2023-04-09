@@ -83,16 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  total_meetings:
-                    type: integer
-                  meetings:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Meeting"
-                required:
-                  - total_meetings
-                  - meetings
+                $ref: "#/components/schemas/MeetingsWithTotal"
 
   "/meeting/{meetingId}":
     parameters:
@@ -429,6 +420,19 @@ components:
         - started_at
         - ended_at
         - description
+
+    MeetingsWithTotal:
+      type: object
+      properties:
+        total:
+          type: integer
+        meetings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Meeting"
+      required:
+        - total
+        - meetings
 
     CreateMeetingRequest:
       type: object
