@@ -43,6 +43,12 @@ type Meeting struct {
 	VideoId     string             `json:"video_id"`
 }
 
+// MeetingsWithTotal defines model for MeetingsWithTotal.
+type MeetingsWithTotal struct {
+	Meetings []Meeting `json:"meetings"`
+	Total    int       `json:"total"`
+}
+
 // Reaction defines model for Reaction.
 type Reaction struct {
 	CreatedAt openapi_types.Date `json:"created_at"`
@@ -84,8 +90,8 @@ type SessionsInCookie = string
 // TokenInPath defines model for tokenInPath.
 type TokenInPath = string
 
-// GetAllMeetingParams defines parameters for GetAllMeeting.
-type GetAllMeetingParams struct {
+// GetAllMeetingsParams defines parameters for GetAllMeetings.
+type GetAllMeetingsParams struct {
 	// Limit 取得する件数
 	Limit *LimitInQuery `form:"limit,omitempty" json:"limit,omitempty"`
 
