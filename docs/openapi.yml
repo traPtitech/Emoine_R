@@ -72,7 +72,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/limitInQuery"
         - $ref: "#/components/parameters/offsetInQuery"
-      operationId: getAllMeeting
+      operationId: getAllMeetings
       summary: 全集会の取得
       description: すべての集会を取得する
       tags:
