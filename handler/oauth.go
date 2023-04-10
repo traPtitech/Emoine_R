@@ -20,10 +20,10 @@ var (
 )
 
 type OAuthParams struct {
-	CodeChallenge       string `json:"codeChallenge,omitempty"`
-	CodeChallengeMethod string `json:"codeChallengeMethod,omitempty"`
-	ClientID            string `json:"clientID,omitempty"`
-	ResponseType        string `json:"responseType,omitempty"`
+	CodeChallenge       string `json:"codeChallenge"`
+	CodeChallengeMethod string `json:"codeChallengeMethod"`
+	ClientID            string `json:"clientID"`
+	ResponseType        string `json:"responseType"`
 }
 type AuthResponse struct {
 	AccessToken  string `json:"access_token"`
@@ -36,8 +36,6 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました")
 	}
-	params := OAuthParams{ResponseType: "code", ClientID: ClientID, CodeChallengeMethod: "S256"}
-
 	bytesCodeVerifier, err := randBytes(43)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "codeVerifierの作成に失敗: "+err.Error())
@@ -45,9 +43,11 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 
 	bytesCodeChallenge := sha256.Sum256(bytesCodeVerifier[:])
 	codeChallenge := base64.RawURLEncoding.EncodeToString(bytesCodeChallenge[:])
+	
+	params := OAuthParams{ResponseType: "code", ClientID: ClientID, CodeChallengeMethod: "S256"}
 	params.CodeChallenge = codeChallenge
 
-	sess.Values["CodeVerifier"] = string(bytesCodeVerifier)
+	sess.Values["codeVerifier"] = string(bytesCodeVerifier)
 	sess.Options = &SessionOptionsDefault
 	err = sess.Save(c.Request(), c.Response())
 	if err != nil {
@@ -66,7 +66,7 @@ func OAuthCallbackHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました: "+err.Error())
 	}
-	codeVerifier := sess.Values["CodeVerifier"].(string)
+	codeVerifier := sess.Values["codeVerifier"].(string)
 
 	res, err := collectOAuthResponse(code, codeVerifier)
 	if err != nil {
@@ -94,8 +94,10 @@ func OAuthCallbackHandler(c echo.Context) error {
 
 func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error) {
 	form := url.Values{
-		"grant_type": {"authorization_code"}, "client_id": {ClientID},
-		"code": {code}, "code_verifier": {codeVerifier}}
+		"grant_type": {"authorization_code"},
+		"client_id": {ClientID},
+		"code": {code},
+		"code_verifier": {codeVerifier}}
 	reqBody := strings.NewReader(form.Encode())
 
 	req, err := http.NewRequest("POST", urlPrefix+"/oauth2/token", reqBody)
