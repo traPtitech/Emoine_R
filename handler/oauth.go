@@ -15,7 +15,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var (
+const (
 	urlPrefix string = "https://q.trap.jp/api/v3"
 )
 
@@ -25,6 +25,7 @@ type OAuthParams struct {
 	ClientID            string `json:"clientID"`
 	ResponseType        string `json:"responseType"`
 }
+
 type AuthResponse struct {
 	AccessToken  string `json:"access_token"`
 	ExpiresIn    int    `json:"expires_in"`
@@ -36,18 +37,18 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました")
 	}
-	bytesCodeVerifier, err := randBytes(43)
+	codeVerifier, err := randBytes(43)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "codeVerifierの作成に失敗: "+err.Error())
 	}
 
-	bytesCodeChallenge := sha256.Sum256(bytesCodeVerifier[:])
-	codeChallenge := base64.RawURLEncoding.EncodeToString(bytesCodeChallenge[:])
+	h := sha256.Sum256(codeVerifier[:])
+	codeChallenge := base64.RawURLEncoding.EncodeToString(h[:])
 	
 	params := OAuthParams{ResponseType: "code", ClientID: ClientID, CodeChallengeMethod: "S256"}
 	params.CodeChallenge = codeChallenge
 
-	sess.Values["codeVerifier"] = string(bytesCodeVerifier)
+	sess.Values["codeVerifier"] = string(codeVerifier)
 	sess.Options = &SessionOptionsDefault
 	err = sess.Save(c.Request(), c.Response())
 	if err != nil {
@@ -97,7 +98,8 @@ func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error
 		"grant_type": {"authorization_code"},
 		"client_id": {ClientID},
 		"code": {code},
-		"code_verifier": {codeVerifier}}
+		"code_verifier": {codeVerifier},
+	}
 	reqBody := strings.NewReader(form.Encode())
 
 	req, err := http.NewRequest("POST", urlPrefix+"/oauth2/token", reqBody)
