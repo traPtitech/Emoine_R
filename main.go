@@ -47,7 +47,7 @@ func main() {
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
 
-	withAdmin.POST("/meeting", handler.PostMeeting)
+	withAdmin.POST("/meeting", handler.CreateMeeting)
 	withAdmin.PATCH("/meeting/:meetingId", handler.PatchMeetingFromID)
 	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromID)
 	withAdmin.POST("/token", handler.PostToken)

@@ -10,7 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var db *sqlx.DB
+var DB *sqlx.DB
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -26,7 +26,8 @@ func init() {
 			getEnvOrDefault("DB_HOST", "127.0.0.1"),
 			getEnvOrDefault("DB_PORT", "3306"),
 		),
-		DBName: getEnvOrDefault("DB_NAME", "emoine"),
+		DBName:               getEnvOrDefault("DB_NAME", "emoine"),
+		AllowNativePasswords: true,
 	}
 
 	_db, err := sqlx.Connect("mysql", cfg.FormatDSN())
@@ -34,7 +35,7 @@ func init() {
 		log.Fatalf("Cannot Connect to Database: %s", err)
 	}
 
-	db = _db
+	DB = _db
 }
 
 func getEnvOrDefault(key string, defaultValue string) string {
