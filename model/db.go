@@ -1,16 +1,16 @@
 package model
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 )
 
-var DB *sqlx.DB
+var DB *sql.DB
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -30,9 +30,14 @@ func init() {
 		AllowNativePasswords: true,
 	}
 
-	_db, err := sqlx.Connect("mysql", cfg.FormatDSN())
+	_db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatalf("Cannot Connect to Database: %s", err)
+	}
+
+	if err := _db.Ping(); err != nil {
+		_db.Close()
+		log.Fatalf("Cannot Ping Database: %s", err)
 	}
 
 	DB = _db
