@@ -36,7 +36,7 @@ type CreateToken struct {
 type Meeting struct {
 	Description string             `json:"description"`
 	EndedAt     openapi_types.Date `json:"ended_at"`
-	Id          string             `json:"id"`
+	Id          openapi_types.UUID `json:"id"`
 	StartedAt   openapi_types.Date `json:"started_at"`
 	Thumbnail   string             `json:"thumbnail"`
 	Title       string             `json:"title"`

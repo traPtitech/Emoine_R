@@ -398,6 +398,7 @@ components:
       properties:
         id:
           type: string
+          format: uuid
         video_id:
           type: string
         title:
