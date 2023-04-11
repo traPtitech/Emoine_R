@@ -42,14 +42,13 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "codeVerifierの作成に失敗: "+err.Error())
 	}
 
-	h := sha256.Sum256(codeVerifier[:])
+	h := sha256.Sum256([]byte(codeVerifier[:]))
 	codeChallenge := base64.RawURLEncoding.EncodeToString(h[:])
 	
 	params := OAuthParams{ResponseType: "code", ClientID: ClientID, CodeChallengeMethod: "S256"}
 	params.CodeChallenge = codeChallenge
 
-	sess.Values["codeVerifier"] = string(codeVerifier)
-	sess.Options = &SessionOptionsDefault
+	sess.Values["codeVerifier"] = codeVerifier
 	err = sess.Save(c.Request(), c.Response())
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションエラー: "+err.Error())
@@ -155,16 +154,16 @@ func GetMyUserId(accessToken string) (string, error) {
 
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_.~"
 
-func randBytes(n int) ([]byte, error) {
+func randBytes(n int) (string, error) {
 	buf := make([]byte, n)
 	max := big.NewInt(int64(len(letters)))
 	for i := range buf {
 		r, err := rand.Int(rand.Reader, max)
 		if err != nil {
-			return nil, fmt.Errorf("乱数生成に失敗しました %w", err)
+			return "", fmt.Errorf("乱数生成に失敗しました %w", err)
 		}
 		buf[i] = letters[r.Int64()]
 	}
 
-	return buf, nil
+	return string(buf), nil
 }
