@@ -157,7 +157,6 @@ const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-
 
 func randString(n int) (string, error) {
 	buf := new(bytes.Buffer)
-	//buf := make([]byte, n)
 	max := big.NewInt(int64(len(letters)))
 	for i := 0; i < n; i++ {
 		r, err := rand.Int(rand.Reader, max)
