@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
@@ -37,14 +38,14 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションの読み込みに失敗しました")
 	}
-	codeVerifier, err := randBytes(43)
+	codeVerifier, err := randString(43)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "codeVerifierの作成に失敗: "+err.Error())
 	}
 
 	h := sha256.Sum256([]byte(codeVerifier[:]))
 	codeChallenge := base64.RawURLEncoding.EncodeToString(h[:])
-	
+
 	params := OAuthParams{ResponseType: "code", ClientID: ClientID, CodeChallengeMethod: "S256"}
 	params.CodeChallenge = codeChallenge
 
@@ -94,9 +95,9 @@ func OAuthCallbackHandler(c echo.Context) error {
 
 func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error) {
 	form := url.Values{
-		"grant_type": {"authorization_code"},
-		"client_id": {ClientID},
-		"code": {code},
+		"grant_type":    {"authorization_code"},
+		"client_id":     {ClientID},
+		"code":          {code},
 		"code_verifier": {codeVerifier},
 	}
 	reqBody := strings.NewReader(form.Encode())
@@ -154,16 +155,17 @@ func GetMyUserId(accessToken string) (string, error) {
 
 const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_.~"
 
-func randBytes(n int) (string, error) {
-	buf := make([]byte, n)
+func randString(n int) (string, error) {
+	buf := new(bytes.Buffer)
+	//buf := make([]byte, n)
 	max := big.NewInt(int64(len(letters)))
-	for i := range buf {
+	for i := 0; i < n; i++ {
 		r, err := rand.Int(rand.Reader, max)
 		if err != nil {
 			return "", fmt.Errorf("乱数生成に失敗しました %w", err)
 		}
-		buf[i] = letters[r.Int64()]
+		buf.WriteByte(letters[r.Int64()])
 	}
 
-	return string(buf), nil
+	return buf.String(), nil
 }
