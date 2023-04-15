@@ -60,7 +60,41 @@ func CreateMeeting(c echo.Context) error {
 }
 
 func GetMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+	req := new(schema.GetAllMeetingsParams)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
+	}
+	if req.Limit == nil {
+		req.Limit = new(int)
+		*req.Limit = 10
+	}
+	if req.Offset == nil {
+		req.Offset = new(int)
+		*req.Offset = 0
+	}
+	m, err := dbschema.SelectMeetingAll(c.Request().Context(), model.DB, *req.Limit, *req.Offset)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
+	}
+	return c.JSON(http.StatusOK, schema.MeetingsWithTotal{
+		Total: len(m),
+		Meetings: func() []schema.Meeting {
+			ms := make([]schema.Meeting, len(m))
+			for i, v := range m {
+				ms[i] = schema.Meeting{
+					Id:          v.ID,
+					VideoId:     v.VideoID,
+					Title:       v.Title,
+					Thumbnail:   v.Thumbnail,
+					Description: mustValue[string](v.Description),
+					StartedAt:   v.StartedAt,
+					EndedAt:     mustValue[time.Time](v.EndedAt),
+				}
+			}
+			return ms
+		}(),
+	})
+
 }
 
 func PatchMeeting(c echo.Context) error {
