@@ -69,15 +69,19 @@ func GetMeeting(c echo.Context) error {
 		*req.Limit = 10
 	}
 	if req.Offset == nil {
-		req.Offset = new(int)
-		*req.Offset = 0
+		offset := 0
+		req.Offset = &offset
 	}
 	m, err := dbschema.SelectMeetingAll(c.Request().Context(), model.DB, *req.Limit, *req.Offset)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
 	}
+	cnt, err := dbschema.CountMeeting(c.Request().Context(), model.DB)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
+	}
 	return c.JSON(http.StatusOK, schema.MeetingsWithTotal{
-		Total: len(m),
+		Total: cnt,
 		Meetings: func() []schema.Meeting {
 			ms := make([]schema.Meeting, len(m))
 			for i, v := range m {
