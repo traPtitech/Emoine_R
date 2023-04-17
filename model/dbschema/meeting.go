@@ -36,3 +36,19 @@ func SelectMeetingAll(ctx context.Context, db DB, limit int, offset int) ([]Meet
 	}
 	return m, nil
 }
+
+func CountMeeting(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`COUNT(*) ` +
+		`FROM emoine.meeting`
+	// run
+	logf(sqlstr)
+
+	var count int
+	err := db.QueryRowContext(ctx, sqlstr).Scan(&count)
+	if err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
