@@ -65,8 +65,8 @@ func GetMeeting(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
 	}
 	if req.Limit == nil {
-		req.Limit = new(int)
-		*req.Limit = 10
+		limit := 0
+		req.Limit = &limit
 	}
 	if req.Offset == nil {
 		offset := 0
