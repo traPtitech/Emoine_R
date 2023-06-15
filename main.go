@@ -27,7 +27,7 @@ func main() {
 			MaxAge:   86400 * 7,
 			HttpOnly: true,
 		}
-		sess.Values["userid"] = "s9"
+		sess.Values["userid"] = "aaa"
 		err := sess.Save(c.Request(), c.Response())
 		if err != nil {
 			return c.String(http.StatusInternalServerError, "セッションの保存に失敗しました")
@@ -35,6 +35,9 @@ func main() {
 
 		return c.String(http.StatusOK, "あなたの名前を"+fmt.Sprint(sess.Values["userid"])+"として認証しました")
 	})
+
+	e.POST("/oauth/generate/code", handler.OAuthGenerateCodeHandler)
+	e.POST("/oauth/callback", handler.OAuthCallbackHandler)
 
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
