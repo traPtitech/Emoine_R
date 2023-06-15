@@ -4,19 +4,24 @@
 package schema
 
 import (
+	"time"
+
 	openapi_types "github.com/deepmap/oapi-codegen/pkg/types"
 )
 
 // Comment defines model for Comment.
 type Comment struct {
-	Color       string             `json:"color"`
-	CreatedAt   openapi_types.Date `json:"created_at"`
-	Id          string             `json:"id"`
-	IsAnonymous bool               `json:"is_anonymous"`
-	MeetingId   string             `json:"meeting_id"`
-	Text        string             `json:"text"`
-	UserId      string             `json:"user_id"`
+	Color       string    `json:"color"`
+	CreatedAt   time.Time `json:"created_at"`
+	Id          CommentId `json:"id"`
+	IsAnonymous bool      `json:"is_anonymous"`
+	MeetingId   MeetingId `json:"meeting_id"`
+	Text        string    `json:"text"`
+	UserId      string    `json:"user_id"`
 }
+
+// CommentId defines model for CommentId.
+type CommentId = openapi_types.UUID
 
 // CreateMeetingRequest defines model for CreateMeetingRequest.
 type CreateMeetingRequest struct {
@@ -26,22 +31,25 @@ type CreateMeetingRequest struct {
 
 // CreateToken defines model for CreateToken.
 type CreateToken struct {
-	Description string             `json:"description"`
-	ExpireAt    openapi_types.Date `json:"expire_at"`
-	MeetingId   float32            `json:"meeting_id"`
-	UserId      string             `json:"user_id"`
+	Description string    `json:"description"`
+	ExpireAt    time.Time `json:"expire_at"`
+	MeetingId   MeetingId `json:"meeting_id"`
+	UserId      string    `json:"user_id"`
 }
 
 // Meeting defines model for Meeting.
 type Meeting struct {
-	Description string             `json:"description"`
-	EndedAt     openapi_types.Date `json:"ended_at"`
-	Id          string             `json:"id"`
-	StartedAt   openapi_types.Date `json:"started_at"`
-	Thumbnail   string             `json:"thumbnail"`
-	Title       string             `json:"title"`
-	VideoId     string             `json:"video_id"`
+	Description string    `json:"description"`
+	EndedAt     time.Time `json:"ended_at"`
+	Id          MeetingId `json:"id"`
+	StartedAt   time.Time `json:"started_at"`
+	Thumbnail   string    `json:"thumbnail"`
+	Title       string    `json:"title"`
+	VideoId     string    `json:"video_id"`
 }
+
+// MeetingId defines model for MeetingId.
+type MeetingId = openapi_types.UUID
 
 // MeetingsWithTotal defines model for MeetingsWithTotal.
 type MeetingsWithTotal struct {
@@ -51,22 +59,25 @@ type MeetingsWithTotal struct {
 
 // Reaction defines model for Reaction.
 type Reaction struct {
-	CreatedAt openapi_types.Date `json:"created_at"`
-	Id        string             `json:"id"`
-	MeetingId string             `json:"meeting_id"`
-	StampId   string             `json:"stamp_id"`
-	UserId    string             `json:"user_id"`
+	CreatedAt time.Time  `json:"created_at"`
+	Id        ReactionId `json:"id"`
+	MeetingId MeetingId  `json:"meeting_id"`
+	StampId   string     `json:"stamp_id"`
+	UserId    string     `json:"user_id"`
 }
+
+// ReactionId defines model for ReactionId.
+type ReactionId = openapi_types.UUID
 
 // Token defines model for Token.
 type Token struct {
-	CreatedAt   openapi_types.Date `json:"created_at"`
-	CreatorId   string             `json:"creator_id"`
-	Description string             `json:"description"`
-	ExpireAt    openapi_types.Date `json:"expire_at"`
-	MeetingId   string             `json:"meeting_id"`
-	Token       string             `json:"token"`
-	UserId      string             `json:"user_id"`
+	CreatedAt   time.Time `json:"created_at"`
+	CreatorId   string    `json:"creator_id"`
+	Description string    `json:"description"`
+	ExpireAt    time.Time `json:"expire_at"`
+	MeetingId   MeetingId `json:"meeting_id"`
+	Token       string    `json:"token"`
+	UserId      string    `json:"user_id"`
 }
 
 // Tokens defines model for Tokens.
@@ -79,7 +90,7 @@ type Tokens struct {
 type LimitInQuery = int
 
 // MeetingIdInPath defines model for meetingIdInPath.
-type MeetingIdInPath = openapi_types.UUID
+type MeetingIdInPath = MeetingId
 
 // OffsetInQuery defines model for offsetInQuery.
 type OffsetInQuery = int
