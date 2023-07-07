@@ -21,18 +21,18 @@ type Meeting struct {
 	_exists, _deleted bool
 }
 
-// Exists returns true when the Meeting exists in the database.
+// Exists returns true when the [Meeting] exists in the database.
 func (m *Meeting) Exists() bool {
 	return m._exists
 }
 
-// Deleted returns true when the Meeting has been marked for deletion from
-// the database.
+// Deleted returns true when the [Meeting] has been marked for deletion
+// from the database.
 func (m *Meeting) Deleted() bool {
 	return m._deleted
 }
 
-// Insert inserts the Meeting to the database.
+// Insert inserts the [Meeting] to the database.
 func (m *Meeting) Insert(ctx context.Context, db DB) error {
 	switch {
 	case m._exists: // already exists
@@ -56,7 +56,7 @@ func (m *Meeting) Insert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Update updates a Meeting in the database.
+// Update updates a [Meeting] in the database.
 func (m *Meeting) Update(ctx context.Context, db DB) error {
 	switch {
 	case !m._exists: // doesn't exist
@@ -76,7 +76,7 @@ func (m *Meeting) Update(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Save saves the Meeting to the database.
+// Save saves the [Meeting] to the database.
 func (m *Meeting) Save(ctx context.Context, db DB) error {
 	if m.Exists() {
 		return m.Update(ctx, db)
@@ -84,7 +84,7 @@ func (m *Meeting) Save(ctx context.Context, db DB) error {
 	return m.Insert(ctx, db)
 }
 
-// Upsert performs an upsert for Meeting.
+// Upsert performs an upsert for [Meeting].
 func (m *Meeting) Upsert(ctx context.Context, db DB) error {
 	switch {
 	case m._deleted: // deleted
@@ -108,7 +108,7 @@ func (m *Meeting) Upsert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Delete deletes the Meeting from the database.
+// Delete deletes the [Meeting] from the database.
 func (m *Meeting) Delete(ctx context.Context, db DB) error {
 	switch {
 	case !m._exists: // doesn't exist
@@ -129,7 +129,54 @@ func (m *Meeting) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
-// MeetingByID retrieves a row from 'emoine.meeting' as a Meeting.
+// Meetings retrieves all rows from 'emoine.meeting' as a [Meeting].
+func Meetings(ctx context.Context, db DB, limit, offset int) ([]Meeting, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, video_id, title, thumbnail, started_at, ended_at, description ` +
+		`FROM emoine.meeting ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []Meeting
+	for rows.Next() {
+		m := Meeting{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&m.ID, &m.VideoID, &m.Title, &m.Thumbnail, &m.StartedAt, &m.EndedAt, &m.Description); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, m)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
+// MeetingCount retrieves the number of rows in 'emoine.meeting'.
+func MeetingCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.meeting`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
+// MeetingByID retrieves a row from 'emoine.meeting' as a [Meeting].
 //
 // Generated from index 'meeting_id_pkey'.
 func MeetingByID(ctx context.Context, db DB, id UUID) (*Meeting, error) {

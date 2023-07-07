@@ -18,18 +18,18 @@ type State struct {
 	_exists, _deleted bool
 }
 
-// Exists returns true when the State exists in the database.
+// Exists returns true when the [State] exists in the database.
 func (s *State) Exists() bool {
 	return s._exists
 }
 
-// Deleted returns true when the State has been marked for deletion from
-// the database.
+// Deleted returns true when the [State] has been marked for deletion
+// from the database.
 func (s *State) Deleted() bool {
 	return s._deleted
 }
 
-// Insert inserts the State to the database.
+// Insert inserts the [State] to the database.
 func (s *State) Insert(ctx context.Context, db DB) error {
 	switch {
 	case s._exists: // already exists
@@ -60,7 +60,7 @@ func (s *State) Insert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Update updates a State in the database.
+// Update updates a [State] in the database.
 func (s *State) Update(ctx context.Context, db DB) error {
 	switch {
 	case !s._exists: // doesn't exist
@@ -80,7 +80,7 @@ func (s *State) Update(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Save saves the State to the database.
+// Save saves the [State] to the database.
 func (s *State) Save(ctx context.Context, db DB) error {
 	if s.Exists() {
 		return s.Update(ctx, db)
@@ -88,7 +88,7 @@ func (s *State) Save(ctx context.Context, db DB) error {
 	return s.Insert(ctx, db)
 }
 
-// Upsert performs an upsert for State.
+// Upsert performs an upsert for [State].
 func (s *State) Upsert(ctx context.Context, db DB) error {
 	switch {
 	case s._deleted: // deleted
@@ -112,7 +112,7 @@ func (s *State) Upsert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Delete deletes the State from the database.
+// Delete deletes the [State] from the database.
 func (s *State) Delete(ctx context.Context, db DB) error {
 	switch {
 	case !s._exists: // doesn't exist
@@ -133,7 +133,54 @@ func (s *State) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
-// StateByID retrieves a row from 'emoine.state' as a State.
+// States retrieves all rows from 'emoine.state' as a [State].
+func States(ctx context.Context, db DB, limit, offset int) ([]State, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, status, info, createdAt, updatedAt ` +
+		`FROM emoine.state ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []State
+	for rows.Next() {
+		s := State{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&s.ID, &s.Status, &s.Info, &s.CreatedAt, &s.UpdatedAt); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, s)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
+// StateCount retrieves the number of rows in 'emoine.state'.
+func StateCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.state`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
+// StateByID retrieves a row from 'emoine.state' as a [State].
 //
 // Generated from index 'state_id_pkey'.
 func StateByID(ctx context.Context, db DB, id uint16) (*State, error) {

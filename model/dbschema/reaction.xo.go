@@ -18,18 +18,18 @@ type Reaction struct {
 	_exists, _deleted bool
 }
 
-// Exists returns true when the Reaction exists in the database.
+// Exists returns true when the [Reaction] exists in the database.
 func (r *Reaction) Exists() bool {
 	return r._exists
 }
 
-// Deleted returns true when the Reaction has been marked for deletion from
-// the database.
+// Deleted returns true when the [Reaction] has been marked for deletion
+// from the database.
 func (r *Reaction) Deleted() bool {
 	return r._deleted
 }
 
-// Insert inserts the Reaction to the database.
+// Insert inserts the [Reaction] to the database.
 func (r *Reaction) Insert(ctx context.Context, db DB) error {
 	switch {
 	case r._exists: // already exists
@@ -53,7 +53,7 @@ func (r *Reaction) Insert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Update updates a Reaction in the database.
+// Update updates a [Reaction] in the database.
 func (r *Reaction) Update(ctx context.Context, db DB) error {
 	switch {
 	case !r._exists: // doesn't exist
@@ -73,7 +73,7 @@ func (r *Reaction) Update(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Save saves the Reaction to the database.
+// Save saves the [Reaction] to the database.
 func (r *Reaction) Save(ctx context.Context, db DB) error {
 	if r.Exists() {
 		return r.Update(ctx, db)
@@ -81,7 +81,7 @@ func (r *Reaction) Save(ctx context.Context, db DB) error {
 	return r.Insert(ctx, db)
 }
 
-// Upsert performs an upsert for Reaction.
+// Upsert performs an upsert for [Reaction].
 func (r *Reaction) Upsert(ctx context.Context, db DB) error {
 	switch {
 	case r._deleted: // deleted
@@ -105,7 +105,7 @@ func (r *Reaction) Upsert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Delete deletes the Reaction from the database.
+// Delete deletes the [Reaction] from the database.
 func (r *Reaction) Delete(ctx context.Context, db DB) error {
 	switch {
 	case !r._exists: // doesn't exist
@@ -126,7 +126,54 @@ func (r *Reaction) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
-// ReactionByID retrieves a row from 'emoine.reaction' as a Reaction.
+// Reactions retrieves all rows from 'emoine.reaction' as a [Reaction].
+func Reactions(ctx context.Context, db DB, limit, offset int) ([]Reaction, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, user_id, meeting_id, stamp_id, created_at ` +
+		`FROM emoine.reaction ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []Reaction
+	for rows.Next() {
+		r := Reaction{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&r.ID, &r.UserID, &r.MeetingID, &r.StampID, &r.CreatedAt); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, r)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
+// ReactionCount retrieves the number of rows in 'emoine.reaction'.
+func ReactionCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.reaction`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
+// ReactionByID retrieves a row from 'emoine.reaction' as a [Reaction].
 //
 // Generated from index 'reaction_id_pkey'.
 func ReactionByID(ctx context.Context, db DB, id UUID) (*Reaction, error) {
