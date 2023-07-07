@@ -78,11 +78,11 @@ func GetMeeting(c echo.Context) error {
 		offset := 0
 		req.Offset = &offset
 	}
-	m, err := dbschema.SelectMeetingAll(c.Request().Context(), model.DB, *req.Limit, *req.Offset)
+	m, err := dbschema.Meetings(c.Request().Context(), model.DB, *req.Limit, *req.Offset)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
 	}
-	cnt, err := dbschema.CountMeeting(c.Request().Context(), model.DB)
+	cnt, err := dbschema.MeetingCount(c.Request().Context(), model.DB)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
 	}
