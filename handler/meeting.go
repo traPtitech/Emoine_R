@@ -2,6 +2,7 @@ package handler
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 	"time"
 
@@ -19,6 +20,7 @@ func CreateMeeting(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
 	}
 
+	c.Logger().Info(req.VideoId, req.Description)
 	video, err := youtube.GetVideo(c.Request().Context(), req.VideoId)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "動画の取得に失敗しました").SetInternal(err)
@@ -26,7 +28,11 @@ func CreateMeeting(c echo.Context) error {
 
 	startedAt, endedAt, err := getVideoStreamingDates(video)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "動画の開始時刻または終了時刻の取得に失敗しました").SetInternal(err)
+		msg := "動画の開始時刻または終了時刻の取得に失敗しました"
+		if errors.Is(err, errIsNotLiveStreaming) {
+			msg += ": ライブ配信のIDを指定してください"
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, msg).SetInternal(err)
 	}
 
 	var description sql.NullString

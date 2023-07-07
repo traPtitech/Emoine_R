@@ -24,13 +24,18 @@ func mustValue[T any](v driver.Valuer) (value T) {
 }
 
 func getVideoStreamingDates(video *youtube.Video) (time.Time, sql.NullTime, error) {
-	startedAt, err := time.Parse(time.RFC3339, video.LiveStreamingDetails.ActualStartTime)
+	videoLiveStreamingDetails := video.LiveStreamingDetails
+	if videoLiveStreamingDetails == nil {
+		return time.Time{}, sql.NullTime{}, errIsNotLiveStreaming
+	}
+
+	startedAt, err := time.Parse(time.RFC3339, videoLiveStreamingDetails.ActualStartTime)
 	if err != nil {
 		return time.Time{}, sql.NullTime{}, err
 	}
 
 	var endedAt sql.NullTime
-	if video.LiveStreamingDetails.ActualEndTime != "" {
+	if videoLiveStreamingDetails.ActualEndTime != "" {
 		endedAt.Time, err = time.Parse(time.RFC3339, video.LiveStreamingDetails.ActualEndTime)
 		if err != nil {
 			return time.Time{}, sql.NullTime{}, err
