@@ -1,16 +1,16 @@
 package model
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 )
 
-var db *sqlx.DB
+var DB *sql.DB
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -26,15 +26,22 @@ func init() {
 			getEnvOrDefault("DB_HOST", "127.0.0.1"),
 			getEnvOrDefault("DB_PORT", "3306"),
 		),
-		DBName: getEnvOrDefault("DB_NAME", "emoine"),
+		DBName:               getEnvOrDefault("DB_NAME", "emoine"),
+		AllowNativePasswords: true,
+		ParseTime:            true,
 	}
 
-	_db, err := sqlx.Connect("mysql", cfg.FormatDSN())
+	_db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatalf("Cannot Connect to Database: %s", err)
 	}
 
-	db = _db
+	if err := _db.Ping(); err != nil {
+		_db.Close()
+		log.Fatalf("Cannot Ping Database: %s", err)
+	}
+
+	DB = _db
 }
 
 func getEnvOrDefault(key string, defaultValue string) string {

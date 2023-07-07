@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/traPtitech/Emoine_R/handler"
 )
@@ -15,6 +16,8 @@ func main() {
 	// TODO: 認証
 	e := echo.New()
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	// デバッグ用 /debugを叩くと認証したものとみなす
 	e.GET("/debug", func(c echo.Context) error {
@@ -47,8 +50,8 @@ func main() {
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
 
-	withAdmin.POST("/meeting", handler.PostMeeting)
-	withAdmin.PATCH("/meeting/:meetingId", handler.PatchMeetingFromID)
+	withAdmin.POST("/meeting", handler.CreateMeeting)
+	withAdmin.PATCH("/meeting/:meetingId", handler.UpdateMeeting)
 	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromID)
 	withAdmin.POST("/token", handler.PostToken)
 	withAdmin.GET("/token", handler.GetToken)
