@@ -306,8 +306,7 @@ components:
       required: true
       description: Presentation ID
       schema:
-        type: string
-        format: uuid
+        $ref: "#/components/schemas/MeetingId"
     tokenInPath:
       name: token
       in: path
@@ -336,6 +335,18 @@ components:
       example: 50
 
   schemas:
+    MeetingId:
+      type: string
+      format: uuid
+
+    CommentId:
+      type: string
+      format: uuid
+
+    ReactionId:
+      type: string
+      format: uuid
+
     CreateToken:
       type: object
       properties:
@@ -345,7 +356,7 @@ components:
           type: string
           format: date-time
         meeting_id:
-          type: number
+          $ref: "#/components/schemas/MeetingId"
         description:
           type: string
       required:
@@ -381,7 +392,7 @@ components:
           type: string
           format: date-time
         meeting_id:
-          type: string
+          $ref: "#/components/schemas/MeetingId"
         description:
           type: string
       required:
@@ -397,8 +408,7 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
+          $ref: "#/components/schemas/MeetingId"
         video_id:
           type: string
         title:
@@ -450,11 +460,11 @@ components:
       type: object
       properties:
         id:
-          type: string
+          $ref: "#/components/schemas/CommentId"
         user_id:
           type: string
         meeting_id:
-          type: string
+          $ref: "#/components/schemas/MeetingId"
         text:
           type: string
         created_at:
@@ -477,11 +487,11 @@ components:
       type: object
       properties:
         id:
-          type: string
+          $ref: "#/components/schemas/ReactionId"
         user_id:
           type: string
         meeting_id:
-          type: string
+          $ref: "#/components/schemas/MeetingId"
         stamp_id:
           type: string
         created_at:
