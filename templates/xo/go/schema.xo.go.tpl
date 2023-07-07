@@ -432,4 +432,7 @@ func ({{ short $t }} *{{ $t.GoName }}) Deleted() bool {
 }
 {{- end -}}
 {{- end }}
+
+{{/* call custom templates */}}
+{{ template "all" . }}
 {{ end }}

@@ -133,6 +133,39 @@ func (s *State) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
+// States retrieves all rows from 'emoine.state' as a [State].
+func States(ctx context.Context, db DB, limit, int, offset int) ([]State, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, status, info, createdAt, updatedAt ` +
+		`FROM emoine.state ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []State
+	for rows.Next() {
+		s := State{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&s.ID, &s.Status, &s.Info, &s.CreatedAt, &s.UpdatedAt); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, s)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
 // StateByID retrieves a row from 'emoine.state' as a [State].
 //
 // Generated from index 'state_id_pkey'.

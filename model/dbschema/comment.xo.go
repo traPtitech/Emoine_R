@@ -130,6 +130,39 @@ func (c *Comment) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
+// Comments retrieves all rows from 'emoine.comment' as a [Comment].
+func Comments(ctx context.Context, db DB, limit, int, offset int) ([]Comment, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, user_id, meeting_id, text, created_at, is_anonymous, color ` +
+		`FROM emoine.comment ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []Comment
+	for rows.Next() {
+		c := Comment{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&c.ID, &c.UserID, &c.MeetingID, &c.Text, &c.CreatedAt, &c.IsAnonymous, &c.Color); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, c)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
 // CommentByID retrieves a row from 'emoine.comment' as a [Comment].
 //
 // Generated from index 'comment_id_pkey'.

@@ -126,6 +126,39 @@ func (r *Reaction) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
+// Reactions retrieves all rows from 'emoine.reaction' as a [Reaction].
+func Reactions(ctx context.Context, db DB, limit, int, offset int) ([]Reaction, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, user_id, meeting_id, stamp_id, created_at ` +
+		`FROM emoine.reaction ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []Reaction
+	for rows.Next() {
+		r := Reaction{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&r.ID, &r.UserID, &r.MeetingID, &r.StampID, &r.CreatedAt); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, r)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
 // ReactionByID retrieves a row from 'emoine.reaction' as a [Reaction].
 //
 // Generated from index 'reaction_id_pkey'.

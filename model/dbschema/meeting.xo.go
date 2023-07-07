@@ -129,6 +129,39 @@ func (m *Meeting) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
+// Meetings retrieves all rows from 'emoine.meeting' as a [Meeting].
+func Meetings(ctx context.Context, db DB, limit, int, offset int) ([]Meeting, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`id, video_id, title, thumbnail, started_at, ended_at, description ` +
+		`FROM emoine.meeting ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []Meeting
+	for rows.Next() {
+		m := Meeting{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&m.ID, &m.VideoID, &m.Title, &m.Thumbnail, &m.StartedAt, &m.EndedAt, &m.Description); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, m)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
 // MeetingByID retrieves a row from 'emoine.meeting' as a [Meeting].
 //
 // Generated from index 'meeting_id_pkey'.

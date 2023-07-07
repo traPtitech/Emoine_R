@@ -129,6 +129,39 @@ func (t *Token) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
+// Tokens retrieves all rows from 'emoine.token' as a [Token].
+func Tokens(ctx context.Context, db DB, limit, int, offset int) ([]Token, error) {
+	// query
+	const sqlstr = `SELECT ` +
+		`token, creator_id, user_id, created_at, meeting_id, exprie_at, description ` +
+		`FROM emoine.token ` +
+		`LIMIT ? OFFSET ?`
+	// run
+	logf(sqlstr, limit, offset)
+
+	rows, err := db.QueryContext(ctx, sqlstr, limit, offset)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// process
+	var res []Token
+	for rows.Next() {
+		t := Token{
+			_exists: true,
+		}
+		// scan
+		if err := rows.Scan(&t.Token, &t.CreatorID, &t.UserID, &t.CreatedAt, &t.MeetingID, &t.ExprieAt, &t.Description); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, t)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
+
 // TokenByToken retrieves a row from 'emoine.token' as a [Token].
 //
 // Generated from index 'token_token_pkey'.
