@@ -166,6 +166,20 @@ func States(ctx context.Context, db DB, limit, int, offset int) ([]State, error)
 	return res, nil
 }
 
+// StateCount retrieves the number of rows in 'emoine.state'.
+func StateCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.state`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
 // StateByID retrieves a row from 'emoine.state' as a [State].
 //
 // Generated from index 'state_id_pkey'.

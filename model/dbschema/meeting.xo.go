@@ -162,6 +162,20 @@ func Meetings(ctx context.Context, db DB, limit, int, offset int) ([]Meeting, er
 	return res, nil
 }
 
+// MeetingCount retrieves the number of rows in 'emoine.meeting'.
+func MeetingCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.meeting`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
 // MeetingByID retrieves a row from 'emoine.meeting' as a [Meeting].
 //
 // Generated from index 'meeting_id_pkey'.

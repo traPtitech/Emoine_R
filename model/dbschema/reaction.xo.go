@@ -159,6 +159,20 @@ func Reactions(ctx context.Context, db DB, limit, int, offset int) ([]Reaction, 
 	return res, nil
 }
 
+// ReactionCount retrieves the number of rows in 'emoine.reaction'.
+func ReactionCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.reaction`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
 // ReactionByID retrieves a row from 'emoine.reaction' as a [Reaction].
 //
 // Generated from index 'reaction_id_pkey'.

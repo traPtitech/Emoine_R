@@ -163,6 +163,20 @@ func Comments(ctx context.Context, db DB, limit, int, offset int) ([]Comment, er
 	return res, nil
 }
 
+// CommentCount retrieves the number of rows in 'emoine.comment'.
+func CommentCount(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM emoine.comment`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
+}
+
 // CommentByID retrieves a row from 'emoine.comment' as a [Comment].
 //
 // Generated from index 'comment_id_pkey'.

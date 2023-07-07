@@ -1,6 +1,7 @@
 {{/* custom template for Emoine_R */}}
 
-{{/* all: use in typedef func */}}
+{{/* all: get all rows */}}
+{{/* use in typedef func */}}
 {{ define "all" }}
 {{- $t := .Data -}}
 // {{ $t.GoName }}s retrieves all rows from '{{ schema $t.SQLName }}' as a [{{ $t.GoName }}].
@@ -36,5 +37,24 @@ func {{ $t.GoName }}s(ctx context.Context, db DB, limit, int, offset int) ([]{{ 
 		return nil, logerror(err)
 	}
 	return res, nil
+}
+{{ end }}
+
+{{/* count: get count of rows */}}
+{{/* use in typedef func */}}
+{{ define "count" }}
+{{- $t := .Data -}}
+// {{ $t.GoName }}Count retrieves the number of rows in '{{ schema $t.SQLName }}'.
+func {{ $t.GoName }}Count(ctx context.Context, db DB) (int, error) {
+	// query
+	const sqlstr = `SELECT COUNT(*) FROM {{ schema $t.SQLName }}`
+	// run
+	logf(sqlstr)
+
+	var count int
+	if err := db.QueryRowContext(ctx, sqlstr).Scan(&count); err != nil {
+		return 0, logerror(err)
+	}
+	return count, nil
 }
 {{ end }}
