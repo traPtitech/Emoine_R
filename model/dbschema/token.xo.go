@@ -21,18 +21,18 @@ type Token struct {
 	_exists, _deleted bool
 }
 
-// Exists returns true when the Token exists in the database.
+// Exists returns true when the [Token] exists in the database.
 func (t *Token) Exists() bool {
 	return t._exists
 }
 
-// Deleted returns true when the Token has been marked for deletion from
-// the database.
+// Deleted returns true when the [Token] has been marked for deletion
+// from the database.
 func (t *Token) Deleted() bool {
 	return t._deleted
 }
 
-// Insert inserts the Token to the database.
+// Insert inserts the [Token] to the database.
 func (t *Token) Insert(ctx context.Context, db DB) error {
 	switch {
 	case t._exists: // already exists
@@ -56,7 +56,7 @@ func (t *Token) Insert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Update updates a Token in the database.
+// Update updates a [Token] in the database.
 func (t *Token) Update(ctx context.Context, db DB) error {
 	switch {
 	case !t._exists: // doesn't exist
@@ -76,7 +76,7 @@ func (t *Token) Update(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Save saves the Token to the database.
+// Save saves the [Token] to the database.
 func (t *Token) Save(ctx context.Context, db DB) error {
 	if t.Exists() {
 		return t.Update(ctx, db)
@@ -84,7 +84,7 @@ func (t *Token) Save(ctx context.Context, db DB) error {
 	return t.Insert(ctx, db)
 }
 
-// Upsert performs an upsert for Token.
+// Upsert performs an upsert for [Token].
 func (t *Token) Upsert(ctx context.Context, db DB) error {
 	switch {
 	case t._deleted: // deleted
@@ -108,7 +108,7 @@ func (t *Token) Upsert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Delete deletes the Token from the database.
+// Delete deletes the [Token] from the database.
 func (t *Token) Delete(ctx context.Context, db DB) error {
 	switch {
 	case !t._exists: // doesn't exist
@@ -129,7 +129,7 @@ func (t *Token) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
-// TokenByToken retrieves a row from 'emoine.token' as a Token.
+// TokenByToken retrieves a row from 'emoine.token' as a [Token].
 //
 // Generated from index 'token_token_pkey'.
 func TokenByToken(ctx context.Context, db DB, token string) (*Token, error) {

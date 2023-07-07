@@ -22,18 +22,18 @@ type Comment struct {
 	_exists, _deleted bool
 }
 
-// Exists returns true when the Comment exists in the database.
+// Exists returns true when the [Comment] exists in the database.
 func (c *Comment) Exists() bool {
 	return c._exists
 }
 
-// Deleted returns true when the Comment has been marked for deletion from
-// the database.
+// Deleted returns true when the [Comment] has been marked for deletion
+// from the database.
 func (c *Comment) Deleted() bool {
 	return c._deleted
 }
 
-// Insert inserts the Comment to the database.
+// Insert inserts the [Comment] to the database.
 func (c *Comment) Insert(ctx context.Context, db DB) error {
 	switch {
 	case c._exists: // already exists
@@ -57,7 +57,7 @@ func (c *Comment) Insert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Update updates a Comment in the database.
+// Update updates a [Comment] in the database.
 func (c *Comment) Update(ctx context.Context, db DB) error {
 	switch {
 	case !c._exists: // doesn't exist
@@ -77,7 +77,7 @@ func (c *Comment) Update(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Save saves the Comment to the database.
+// Save saves the [Comment] to the database.
 func (c *Comment) Save(ctx context.Context, db DB) error {
 	if c.Exists() {
 		return c.Update(ctx, db)
@@ -85,7 +85,7 @@ func (c *Comment) Save(ctx context.Context, db DB) error {
 	return c.Insert(ctx, db)
 }
 
-// Upsert performs an upsert for Comment.
+// Upsert performs an upsert for [Comment].
 func (c *Comment) Upsert(ctx context.Context, db DB) error {
 	switch {
 	case c._deleted: // deleted
@@ -109,7 +109,7 @@ func (c *Comment) Upsert(ctx context.Context, db DB) error {
 	return nil
 }
 
-// Delete deletes the Comment from the database.
+// Delete deletes the [Comment] from the database.
 func (c *Comment) Delete(ctx context.Context, db DB) error {
 	switch {
 	case !c._exists: // doesn't exist
@@ -130,7 +130,7 @@ func (c *Comment) Delete(ctx context.Context, db DB) error {
 	return nil
 }
 
-// CommentByID retrieves a row from 'emoine.comment' as a Comment.
+// CommentByID retrieves a row from 'emoine.comment' as a [Comment].
 //
 // Generated from index 'comment_id_pkey'.
 func CommentByID(ctx context.Context, db DB, id UUID) (*Comment, error) {

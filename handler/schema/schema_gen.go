@@ -104,10 +104,10 @@ type TokenInPath = string
 // GetAllMeetingsParams defines parameters for GetAllMeetings.
 type GetAllMeetingsParams struct {
 	// Limit 取得する件数
-	Limit *LimitInQuery `form:"limit,omitempty" query:"limit" json:"limit,omitempty"`
+	Limit *LimitInQuery `form:"limit,omitempty" json:"limit,omitempty" query:"limit"`
 
 	// Offset 取得を開始する件数（0-index）
-	Offset *OffsetInQuery `form:"offset,omitempty" query:"offset" json:"offset,omitempty"`
+	Offset *OffsetInQuery `form:"offset,omitempty" json:"offset,omitempty" query:"offset"`
 }
 
 // CallbackParams defines parameters for Callback.
