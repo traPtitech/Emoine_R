@@ -320,8 +320,11 @@ components:
         type: integer
         minimum: 1
         maximum: 200
+        default: 10
       description: 取得する件数
       example: 50
+      x-oapi-codegen-extra-tags:
+        query: limit
 
     offsetInQuery:
       in: query
@@ -329,8 +332,11 @@ components:
       schema:
         type: integer
         minimum: 0
+        default: 0
       description: 取得を開始する件数（0-index）
       example: 50
+      x-oapi-codegen-extra-tags:
+        query: offset
 
   schemas:
     MeetingId:
