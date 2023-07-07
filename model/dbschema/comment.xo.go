@@ -131,7 +131,7 @@ func (c *Comment) Delete(ctx context.Context, db DB) error {
 }
 
 // Comments retrieves all rows from 'emoine.comment' as a [Comment].
-func Comments(ctx context.Context, db DB, limit, int, offset int) ([]Comment, error) {
+func Comments(ctx context.Context, db DB, limit, offset int) ([]Comment, error) {
 	// query
 	const sqlstr = `SELECT ` +
 		`id, user_id, meeting_id, text, created_at, is_anonymous, color ` +

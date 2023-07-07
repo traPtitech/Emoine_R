@@ -127,7 +127,7 @@ func (r *Reaction) Delete(ctx context.Context, db DB) error {
 }
 
 // Reactions retrieves all rows from 'emoine.reaction' as a [Reaction].
-func Reactions(ctx context.Context, db DB, limit, int, offset int) ([]Reaction, error) {
+func Reactions(ctx context.Context, db DB, limit, offset int) ([]Reaction, error) {
 	// query
 	const sqlstr = `SELECT ` +
 		`id, user_id, meeting_id, stamp_id, created_at ` +

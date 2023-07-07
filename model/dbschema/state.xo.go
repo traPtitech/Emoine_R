@@ -134,7 +134,7 @@ func (s *State) Delete(ctx context.Context, db DB) error {
 }
 
 // States retrieves all rows from 'emoine.state' as a [State].
-func States(ctx context.Context, db DB, limit, int, offset int) ([]State, error) {
+func States(ctx context.Context, db DB, limit, offset int) ([]State, error) {
 	// query
 	const sqlstr = `SELECT ` +
 		`id, status, info, createdAt, updatedAt ` +

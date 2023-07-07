@@ -5,7 +5,7 @@
 {{ define "all" }}
 {{- $t := .Data -}}
 // {{ $t.GoName }}s retrieves all rows from '{{ schema $t.SQLName }}' as a [{{ $t.GoName }}].
-func {{ $t.GoName }}s(ctx context.Context, db DB, limit, int, offset int) ([]{{ $t.GoName }}, error) {
+func {{ $t.GoName }}s(ctx context.Context, db DB, limit int, offset int) ([]{{ $t.GoName }}, error) {
 	// query
 	const sqlstr = `SELECT ` +
 		`{{ range $i, $f := $t.Fields }}{{ if $i }}, {{ end }}{{ $f.SQLName }}{{ end }} ` +

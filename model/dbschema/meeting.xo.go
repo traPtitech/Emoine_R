@@ -130,7 +130,7 @@ func (m *Meeting) Delete(ctx context.Context, db DB) error {
 }
 
 // Meetings retrieves all rows from 'emoine.meeting' as a [Meeting].
-func Meetings(ctx context.Context, db DB, limit, int, offset int) ([]Meeting, error) {
+func Meetings(ctx context.Context, db DB, limit, offset int) ([]Meeting, error) {
 	// query
 	const sqlstr = `SELECT ` +
 		`id, video_id, title, thumbnail, started_at, ended_at, description ` +

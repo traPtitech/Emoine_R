@@ -130,7 +130,7 @@ func (t *Token) Delete(ctx context.Context, db DB) error {
 }
 
 // Tokens retrieves all rows from 'emoine.token' as a [Token].
-func Tokens(ctx context.Context, db DB, limit, int, offset int) ([]Token, error) {
+func Tokens(ctx context.Context, db DB, limit, offset int) ([]Token, error) {
 	// query
 	const sqlstr = `SELECT ` +
 		`token, creator_id, user_id, created_at, meeting_id, exprie_at, description ` +
