@@ -69,16 +69,36 @@ func GetMeeting(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
 
-func PatchMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
 func GetMeetingFromID(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
 
-func PatchMeetingFromID(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+func UpdateMeeting(c echo.Context) error {
+	req := new(schema.UpdateMeetingJSONRequestBody)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
+	}
+
+	mid, err := uuid.Parse(c.Param("meetingId"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "meetingIdのパースに失敗しました").SetInternal(err)
+	}
+
+	m, err := dbschema.MeetingByID(c.Request().Context(), model.DB, mid)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
+	}
+
+	if len(req.Description) > 0 {
+		m.Description.String = req.Description
+		m.Description.Valid = true
+	}
+
+	if err := m.Update(c.Request().Context(), model.DB); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの更新に失敗しました").SetInternal(err)
+	}
+
+	return c.NoContent(http.StatusNoContent)
 }
 
 func DeleteMeetingFromID(c echo.Context) error {

@@ -28,6 +28,7 @@ func init() {
 		),
 		DBName:               getEnvOrDefault("DB_NAME", "emoine"),
 		AllowNativePasswords: true,
+		ParseTime:            true,
 	}
 
 	_db, err := sql.Open("mysql", cfg.FormatDSN())
