@@ -351,11 +351,14 @@ components:
       type: string
       format: uuid
 
+    Username:
+      type: string
+
     CreateToken:
       type: object
       properties:
-        userId:
-          type: string
+        username:
+          $ref: "#/components/schemas/Username"
         expireAt:
           type: string
           format: date-time
@@ -364,7 +367,7 @@ components:
         description:
           type: string
       required:
-        - userId
+        - username
         - expireAt
         - meetingId
         - description
@@ -387,8 +390,8 @@ components:
           type: string
         creatorId:
           type: string
-        userId:
-          type: string
+        username:
+          $ref: "#/components/schemas/Username"
         createdAt:
           type: string
           format: date-time
@@ -402,7 +405,7 @@ components:
       required:
         - token
         - creatorId
-        - userId
+        - username
         - createdAt
         - expireAt
         - meetingId
@@ -465,8 +468,8 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/CommentId"
-        userId:
-          type: string
+        username:
+          $ref: "#/components/schemas/Username"
         meetingId:
           $ref: "#/components/schemas/MeetingId"
         text:
@@ -480,7 +483,7 @@ components:
           type: string
       required:
         - id
-        - userId
+        - username
         - meetingId
         - text
         - createdAt
@@ -492,8 +495,8 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/ReactionId"
-        userId:
-          type: string
+        username:
+          $ref: "#/components/schemas/Username"
         meetingId:
           $ref: "#/components/schemas/MeetingId"
         stampId:
@@ -503,7 +506,7 @@ components:
           format: date-time
       required:
         - id
-        - userId
+        - username
         - meetingId
         - stampId
         - createdAt

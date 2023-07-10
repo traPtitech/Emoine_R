@@ -17,7 +17,7 @@ type Comment struct {
 	IsAnonymous bool      `json:"isAnonymous"`
 	MeetingId   MeetingId `json:"meetingId"`
 	Text        string    `json:"text"`
-	UserId      string    `json:"userId"`
+	Username    Username  `json:"username"`
 }
 
 // CommentId defines model for CommentId.
@@ -34,7 +34,7 @@ type CreateToken struct {
 	Description string    `json:"description"`
 	ExpireAt    time.Time `json:"expireAt"`
 	MeetingId   MeetingId `json:"meetingId"`
-	UserId      string    `json:"userId"`
+	Username    Username  `json:"username"`
 }
 
 // Meeting defines model for Meeting.
@@ -63,7 +63,7 @@ type Reaction struct {
 	Id        ReactionId `json:"id"`
 	MeetingId MeetingId  `json:"meetingId"`
 	StampId   string     `json:"stampId"`
-	UserId    string     `json:"userId"`
+	Username  Username   `json:"username"`
 }
 
 // ReactionId defines model for ReactionId.
@@ -77,7 +77,7 @@ type Token struct {
 	ExpireAt    time.Time `json:"expireAt"`
 	MeetingId   MeetingId `json:"meetingId"`
 	Token       string    `json:"token"`
-	UserId      string    `json:"userId"`
+	Username    Username  `json:"username"`
 }
 
 // Tokens defines model for Tokens.
@@ -85,6 +85,9 @@ type Tokens struct {
 	Meeting Meeting `json:"meeting"`
 	Token   Token   `json:"token"`
 }
+
+// Username defines model for Username.
+type Username = string
 
 // LimitInQuery defines model for limitInQuery.
 type LimitInQuery = int
