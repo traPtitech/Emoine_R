@@ -12,12 +12,12 @@ import (
 // Comment defines model for Comment.
 type Comment struct {
 	Color       string    `json:"color"`
-	CreatedAt   time.Time `json:"created_at"`
+	CreatedAt   time.Time `json:"createdAt"`
 	Id          CommentId `json:"id"`
-	IsAnonymous bool      `json:"is_anonymous"`
-	MeetingId   MeetingId `json:"meeting_id"`
+	IsAnonymous bool      `json:"isAnonymous"`
+	MeetingId   MeetingId `json:"meetingId"`
 	Text        string    `json:"text"`
-	UserId      string    `json:"user_id"`
+	UserId      string    `json:"userId"`
 }
 
 // CommentId defines model for CommentId.
@@ -26,26 +26,26 @@ type CommentId = openapi_types.UUID
 // CreateMeetingRequest defines model for CreateMeetingRequest.
 type CreateMeetingRequest struct {
 	Description string `json:"description"`
-	VideoId     string `json:"video_id"`
+	VideoId     string `json:"videoId"`
 }
 
 // CreateToken defines model for CreateToken.
 type CreateToken struct {
 	Description string    `json:"description"`
-	ExpireAt    time.Time `json:"expire_at"`
-	MeetingId   MeetingId `json:"meeting_id"`
-	UserId      string    `json:"user_id"`
+	ExpireAt    time.Time `json:"expireAt"`
+	MeetingId   MeetingId `json:"meetingId"`
+	UserId      string    `json:"userId"`
 }
 
 // Meeting defines model for Meeting.
 type Meeting struct {
 	Description string    `json:"description"`
-	EndedAt     time.Time `json:"ended_at"`
+	EndedAt     time.Time `json:"endedAt"`
 	Id          MeetingId `json:"id"`
-	StartedAt   time.Time `json:"started_at"`
+	StartedAt   time.Time `json:"startedAt"`
 	Thumbnail   string    `json:"thumbnail"`
 	Title       string    `json:"title"`
-	VideoId     string    `json:"video_id"`
+	VideoId     string    `json:"videoId"`
 }
 
 // MeetingId defines model for MeetingId.
@@ -59,11 +59,11 @@ type MeetingsWithTotal struct {
 
 // Reaction defines model for Reaction.
 type Reaction struct {
-	CreatedAt time.Time  `json:"created_at"`
+	CreatedAt time.Time  `json:"createdAt"`
 	Id        ReactionId `json:"id"`
-	MeetingId MeetingId  `json:"meeting_id"`
-	StampId   string     `json:"stamp_id"`
-	UserId    string     `json:"user_id"`
+	MeetingId MeetingId  `json:"meetingId"`
+	StampId   string     `json:"stampId"`
+	UserId    string     `json:"userId"`
 }
 
 // ReactionId defines model for ReactionId.
@@ -71,13 +71,13 @@ type ReactionId = openapi_types.UUID
 
 // Token defines model for Token.
 type Token struct {
-	CreatedAt   time.Time `json:"created_at"`
-	CreatorId   string    `json:"creator_id"`
+	CreatedAt   time.Time `json:"createdAt"`
+	CreatorId   string    `json:"creatorId"`
 	Description string    `json:"description"`
-	ExpireAt    time.Time `json:"expire_at"`
-	MeetingId   MeetingId `json:"meeting_id"`
+	ExpireAt    time.Time `json:"expireAt"`
+	MeetingId   MeetingId `json:"meetingId"`
 	Token       string    `json:"token"`
-	UserId      string    `json:"user_id"`
+	UserId      string    `json:"userId"`
 }
 
 // Tokens defines model for Tokens.
