@@ -90,8 +90,8 @@ paths:
       - $ref: "#/components/parameters/meetingIdInPath"
     get:
       operationId: getMeeting
-      summary: meeting_idの集会情報の取得
-      description: meeting_idの集会情報を取得する
+      summary: meetingIdの集会情報の取得
+      description: meetingIdの集会情報を取得する
       tags:
         - meeting
       responses:
@@ -354,19 +354,19 @@ components:
     CreateToken:
       type: object
       properties:
-        user_id:
+        userId:
           type: string
-        expire_at:
+        expireAt:
           type: string
           format: date-time
-        meeting_id:
+        meetingId:
           $ref: "#/components/schemas/MeetingId"
         description:
           type: string
       required:
-        - user_id
-        - expire_at
-        - meeting_id
+        - userId
+        - expireAt
+        - meetingId
         - description
 
     Tokens:
@@ -385,27 +385,27 @@ components:
       properties:
         token:
           type: string
-        creator_id:
+        creatorId:
           type: string
-        user_id:
+        userId:
           type: string
-        created_at:
-          type: string
-          format: date-time
-        expire_at:
+        createdAt:
           type: string
           format: date-time
-        meeting_id:
+        expireAt:
+          type: string
+          format: date-time
+        meetingId:
           $ref: "#/components/schemas/MeetingId"
         description:
           type: string
       required:
         - token
-        - creator_id
-        - user_id
-        - created_at
-        - expire_at
-        - meeting_id
+        - creatorId
+        - userId
+        - createdAt
+        - expireAt
+        - meetingId
         - description
 
     Meeting:
@@ -413,27 +413,27 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/MeetingId"
-        video_id:
+        videoId:
           type: string
         title:
           type: string
         thumbnail:
           type: string
-        started_at:
+        startedAt:
           type: string
           format: date-time
-        ended_at:
+        endedAt:
           type: string
           format: date-time
         description:
           type: string
       required:
         - id
-        - video_id
+        - videoId
         - title
         - thumbnail
-        - started_at
-        - ended_at
+        - startedAt
+        - endedAt
         - description
 
     MeetingsWithTotal:
@@ -452,12 +452,12 @@ components:
     CreateMeetingRequest:
       type: object
       properties:
-        video_id:
+        videoId:
           type: string
         description:
           type: string
       required:
-        - video_id
+        - videoId
         - description
 
     Comment:
@@ -465,26 +465,26 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/CommentId"
-        user_id:
+        userId:
           type: string
-        meeting_id:
+        meetingId:
           $ref: "#/components/schemas/MeetingId"
         text:
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
-        is_anonymous:
+        isAnonymous:
           type: boolean
         color:
           type: string
       required:
         - id
-        - user_id
-        - meeting_id
+        - userId
+        - meetingId
         - text
-        - created_at
-        - is_anonymous
+        - createdAt
+        - isAnonymous
         - color
 
     Reaction:
@@ -492,18 +492,18 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/ReactionId"
-        user_id:
+        userId:
           type: string
-        meeting_id:
+        meetingId:
           $ref: "#/components/schemas/MeetingId"
-        stamp_id:
+        stampId:
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
       required:
         - id
-        - user_id
-        - meeting_id
-        - stamp_id
-        - created_at
+        - userId
+        - meetingId
+        - stampId
+        - createdAt
