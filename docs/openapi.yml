@@ -272,7 +272,7 @@ paths:
           description: Not Found
 
     patch:
-      operationId: editToken
+      operationId: updateToken
       summary: トークン情報を更新
       description: トークン情報を更新する。権限者のみ
       tags:

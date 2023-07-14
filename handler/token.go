@@ -28,6 +28,6 @@ func GetToken(c echo.Context) error {
 	return c.JSON(http.StatusOK, token_struct)
 }
 
-func EditToken(c echo.Context) error {
+func UpdateToken(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }

@@ -57,7 +57,7 @@ func main() {
 	withAdmin.POST("/token", handler.CreateToken)
 	withAdmin.GET("/token", handler.GetTokens)
 	withAdmin.GET("/token/:token", handler.GetToken)
-	withAdmin.PATCH("/token/:token", handler.EditToken)
+	withAdmin.PATCH("/token/:token", handler.UpdateToken)
 
 	e.Logger.Fatal(e.Start(":8090"))
 }
