@@ -42,21 +42,22 @@ func main() {
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
 
-	withLogin.GET("/meeting", handler.GetMeeting)
-	withLogin.GET("/meeting/:meetingId", handler.GetMeetingFromID)
-	withLogin.GET("/meeting/:meetingId/comments", handler.GetCommentFromMeetingID)
-	withLogin.GET("/meeting/:meetingId/reactions", handler.GetReactionFromMeetingID)
+	withLogin.GET("/meeting", handler.GetMeetings)
+	withLogin.GET("/meeting/:meetingId", handler.GetMeeting)
+	withLogin.GET("/meeting/:meetingId/comments", handler.GetMeetingComments)
+	withLogin.GET("/meeting/:meetingId/reactions", handler.GetMeetingReactions)
 
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
 
 	withAdmin.POST("/meeting", handler.CreateMeeting)
 	withAdmin.PATCH("/meeting/:meetingId", handler.UpdateMeeting)
-	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeetingFromID)
-	withAdmin.POST("/token", handler.PostToken)
-	withAdmin.GET("/token", handler.GetToken)
-	withAdmin.GET("/token/:token", handler.GetTokenFromToken)
-	withAdmin.PATCH("/token/:token", handler.PatchTokenFromToken)
+	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeeting)
+	withAdmin.GET("/meeting/:meetingId/tokens", handler.GetMeetingTokens)
+	withAdmin.POST("/token", handler.CreateToken)
+	withAdmin.GET("/token", handler.GetTokens)
+	withAdmin.GET("/token/:token", handler.GetToken)
+	withAdmin.PATCH("/token/:token", handler.EditToken)
 
 	e.Logger.Fatal(e.Start(":8090"))
 }

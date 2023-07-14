@@ -72,7 +72,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/limitInQuery"
         - $ref: "#/components/parameters/offsetInQuery"
-      operationId: getAllMeetings
+      operationId: getMeetings
       summary: 全集会の取得
       description: すべての集会を取得する
       tags:
@@ -145,7 +145,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/meetingIdInPath"
     get:
-      operationId: getComment
+      operationId: getMeetingComments
       summary: 集会のコメント一覧を取得
       description: 集会のコメント一覧を取得する
       tags:
@@ -166,7 +166,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/meetingIdInPath"
     get:
-      operationId: getReaction
+      operationId: getMeetingReactions
       summary: 集会のリアクション一覧を取得
       description: 集会のリアクション一覧を取得する
       tags:
@@ -227,7 +227,7 @@ paths:
           description: Forbidden
 
     get:
-      operationId: getAllTokens
+      operationId: getTokens
       summary: 全トークン情報を取得
       description: 全トークン情報を取得する。
       tags:
@@ -266,7 +266,7 @@ paths:
           description: Not Found
 
     patch:
-      operationId: patchToken
+      operationId: editToken
       summary: トークン情報を更新
       description: トークン情報を更新する。権限者のみ
       tags:
