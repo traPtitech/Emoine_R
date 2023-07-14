@@ -24,7 +24,7 @@ paths:
         description: OAuth2.0のcode
         schema:
           type: string
-      - $ref: "#/components/parameters/sessions"
+      - $ref: "#/components/parameters/sessionsInCookie"
 
     get:
       tags:
@@ -46,48 +46,6 @@ paths:
         "200":
           description: OK
 
-  "/comment/{meetingId}":
-    parameters:
-      - $ref: "#/components/parameters/meetingId"
-    get:
-      operationId: getComment
-      summary: 集会のコメント一覧を取得
-      description: 集会のコメント一覧を取得する
-      tags:
-        - comment
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
-        "404":
-          description: Not Found
-
-  "/reaction/{meetingId}":
-    parameters:
-      - $ref: "#/components/parameters/meetingId"
-    get:
-      operationId: getReaction
-      summary: 集会のリアクション一覧を取得
-      description: 集会のリアクション一覧を取得する
-      tags:
-        - reaction
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Reaction"
-        "404":
-          description: Not Found
-
   "/meeting":
     post:
       operationId: createMeeting
@@ -99,7 +57,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateMeeting"
+              $ref: "#/components/schemas/CreateMeetingRequest"
       responses:
         "201":
           description: OK
@@ -114,7 +72,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/limitInQuery"
         - $ref: "#/components/parameters/offsetInQuery"
-      operationId: getAllMeeting
+      operationId: getAllMeetings
       summary: 全集会の取得
       description: すべての集会を取得する
       tags:
@@ -125,24 +83,15 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  total_meetings:
-                    type: integer
-                  meetings:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Meeting"
-                required:
-                  - total_meetings
-                  - meetings
+                $ref: "#/components/schemas/MeetingsWithTotal"
 
   "/meeting/{meetingId}":
     parameters:
-      - $ref: "#/components/parameters/meetingId"
+      - $ref: "#/components/parameters/meetingIdInPath"
     get:
       operationId: getMeeting
-      summary: meeting_idの集会情報の取得
-      description: meeting_idの集会情報を取得する
+      summary: meetingIdの集会情報の取得
+      description: meetingIdの集会情報を取得する
       tags:
         - meeting
       responses:
@@ -151,9 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/GetMeeting"
+                $ref: "#/components/schemas/Meeting"
         "404":
           description: Not Found
 
@@ -167,14 +114,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateMeeting"
+              $ref: "#/components/schemas/CreateMeetingRequest"
       responses:
-        "201":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Meeting"
+        "204":
+          description: |-
+            No Content
+            正常に更新できました。
         "400":
           description: Bad Request
         "403":
@@ -193,6 +138,69 @@ paths:
             正常に削除できました。
         "403":
           description: Forbidden
+        "404":
+          description: Not Found
+
+  "/meeting/{meetingId}/comments":
+    parameters:
+      - $ref: "#/components/parameters/meetingIdInPath"
+    get:
+      operationId: getComment
+      summary: 集会のコメント一覧を取得
+      description: 集会のコメント一覧を取得する
+      tags:
+        - comment
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "404":
+          description: Not Found
+
+  "/meeting/{meetingId}/reactions":
+    parameters:
+      - $ref: "#/components/parameters/meetingIdInPath"
+    get:
+      operationId: getReaction
+      summary: 集会のリアクション一覧を取得
+      description: 集会のリアクション一覧を取得する
+      tags:
+        - reaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reaction"
+        "404":
+          description: Not Found
+
+  "/meeting/{meetingId}/tokens":
+    parameters:
+      - $ref: "#/components/parameters/meetingIdInPath"
+    get:
+      operationId: getMeetingTokens
+      summary: 集会のトークン一覧を取得
+      description: 集会のトークン一覧を取得する (管理者権限が必要)
+      tags:
+        - token
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Token"
         "404":
           description: Not Found
 
@@ -238,7 +246,7 @@ paths:
 
   "/token/{token}":
     parameters:
-      - $ref: "#/components/parameters/token"
+      - $ref: "#/components/parameters/tokenInPath"
     get:
       operationId: getToken
       summary: トークン情報を取得
@@ -284,21 +292,20 @@ paths:
 
 components:
   parameters:
-    sessions:
+    sessionsInCookie:
       name: sessions
       in: cookie
       required: false
       schema:
         type: string
-    meetingId:
+    meetingIdInPath:
       name: meetingId
       in: path
       required: true
       description: Presentation ID
       schema:
-        type: string
-        format: uuid
-    token:
+        $ref: "#/components/schemas/MeetingId"
+    tokenInPath:
       name: token
       in: path
       required: true
@@ -313,35 +320,56 @@ components:
         type: integer
         minimum: 1
         maximum: 200
+        default: 10
       description: 取得する件数
       example: 50
-      
+      x-oapi-codegen-extra-tags:
+        query: limit
+
     offsetInQuery:
       in: query
       name: offset
       schema:
         type: integer
         minimum: 0
+        default: 0
       description: 取得を開始する件数（0-index）
       example: 50
+      x-oapi-codegen-extra-tags:
+        query: offset
 
   schemas:
+    MeetingId:
+      type: string
+      format: uuid
+
+    CommentId:
+      type: string
+      format: uuid
+
+    ReactionId:
+      type: string
+      format: uuid
+
+    Username:
+      type: string
+
     CreateToken:
       type: object
       properties:
-        user_id:
+        username:
+          $ref: "#/components/schemas/Username"
+        expireAt:
           type: string
-        expire_at:
-          type: string
-          format: date
-        meeting_id:
-          type: number
+          format: date-time
+        meetingId:
+          $ref: "#/components/schemas/MeetingId"
         description:
           type: string
       required:
-        - user_id
-        - expire_at
-        - meeting_id
+        - username
+        - expireAt
+        - meetingId
         - description
 
     Tokens:
@@ -360,123 +388,125 @@ components:
       properties:
         token:
           type: string
-        created_by:
+        creatorId:
           type: string
-        user_id:
+        username:
+          $ref: "#/components/schemas/Username"
+        createdAt:
           type: string
-        created_at:
+          format: date-time
+        expireAt:
           type: string
-          format: date
-        expire_at:
-          type: string
-          format: date
-        meeting_id:
-          type: string
+          format: date-time
+        meetingId:
+          $ref: "#/components/schemas/MeetingId"
         description:
           type: string
       required:
         - token
-        - created_by
-        - user_id
-        - created_at
-        - expire_at
-        - meeting_id
+        - creatorId
+        - username
+        - createdAt
+        - expireAt
+        - meetingId
         - description
 
     Meeting:
       type: object
       properties:
         id:
-          type: string
-        video_id:
+          $ref: "#/components/schemas/MeetingId"
+        videoId:
           type: string
         title:
           type: string
         thumbnail:
           type: string
-        started_at:
+        startedAt:
           type: string
-          format: date
-        ended_at:
+          format: date-time
+        endedAt:
           type: string
-          format: date
+          format: date-time
         description:
           type: string
       required:
         - id
-        - video_id
+        - videoId
         - title
         - thumbnail
-        - started_at
-        - ended_at
+        - startedAt
+        - endedAt
         - description
 
-    CreateMeeting:
+    MeetingsWithTotal:
       type: object
       properties:
-        video_id:
+        total:
+          type: integer
+        meetings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Meeting"
+      required:
+        - total
+        - meetings
+
+    CreateMeetingRequest:
+      type: object
+      properties:
+        videoId:
           type: string
         description:
           type: string
       required:
-        - video_id
+        - videoId
         - description
-
-    GetMeeting:
-      type: object
-      properties:
-        meeting:
-          $ref: "#/components/schemas/Meeting"
-        tokens:
-          $ref: "#/components/schemas/Tokens"
-      required:
-        - meeting
-        - tokens
 
     Comment:
       type: object
       properties:
         id:
-          type: string
-        user_id:
-          type: string
-        meeting_id:
-          type: string
+          $ref: "#/components/schemas/CommentId"
+        username:
+          $ref: "#/components/schemas/Username"
+        meetingId:
+          $ref: "#/components/schemas/MeetingId"
         text:
           type: string
-        created_at:
+        createdAt:
           type: string
-          format: date
-        is_anonymous:
+          format: date-time
+        isAnonymous:
           type: boolean
         color:
           type: string
       required:
         - id
-        - user_id
-        - meeting_id
+        - username
+        - meetingId
         - text
-        - created_at
-        - is_anonymous
+        - createdAt
+        - isAnonymous
         - color
 
     Reaction:
       type: object
       properties:
         id:
+          $ref: "#/components/schemas/ReactionId"
+        username:
+          $ref: "#/components/schemas/Username"
+        meetingId:
+          $ref: "#/components/schemas/MeetingId"
+        stampId:
           type: string
-        user_id:
+        createdAt:
           type: string
-        meeting_id:
-          type: string
-        stamp_id:
-          type: string
-        created_at:
-          type: string
-          format: date
+          format: date-time
       required:
         - id
-        - user_id
-        - meeting_id
-        - stamp_id
-        - created_at
+        - username
+        - meetingId
+        - stampId
+        - createdAt

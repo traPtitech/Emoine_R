@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS meeting
 CREATE TABLE IF NOT EXISTS token
 (
     token       CHAR(44)    NOT NULL,
-    created_by  VARCHAR(32) NOT NULL,
+    creator_id  VARCHAR(32) NOT NULL,
     user_id     VARCHAR(32) NOT NULL,
     created_at  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     meeting_id	UUID        NOT NULL,

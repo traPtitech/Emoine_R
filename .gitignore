@@ -1,3 +1,6 @@
 .env
 Emoine_R.exe
 tmp/
+
+go.work
+go.work.sum

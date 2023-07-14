@@ -6,6 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func GetCommentFromId(c echo.Context) error {
+func GetCommentFromMeetingID(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
