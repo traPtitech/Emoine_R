@@ -19,13 +19,13 @@ func PostToken(c echo.Context) error {
 
 // stringなキーのtokenから構造体のtokenを得る。
 func GetTokenFromToken(c echo.Context) error {
-	token_string := c.Param("token")
-	token_struct, err := dbschema.TokenByToken(c.Request().Context(), model.DB, token_string)
+	tokenPrimaryKey := c.Param("token")
+	tokenRecord, err := dbschema.TokenByToken(c.Request().Context(), model.DB, tokenPrimaryKey)
 
 	if err != nil {
 		return c.String(http.StatusNotFound, "tokenが見つかりませんでした: "+err.Error())
 	}
-	return c.JSON(http.StatusOK, token_struct)
+	return c.JSON(http.StatusOK, tokenRecord)
 }
 
 func PatchTokenFromToken(c echo.Context) error {
