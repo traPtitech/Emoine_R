@@ -66,7 +66,7 @@ func CreateMeeting(c echo.Context) error {
 }
 
 func GetMeetings(c echo.Context) error {
-	req := new(schema.GetAllMeetingsParams)
+	req := new(schema.GetMeetingsParams)
 	if err := c.Bind(req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
 	}
