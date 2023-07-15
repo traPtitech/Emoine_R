@@ -1,12 +1,16 @@
 package handler
 
 import (
+	"time"
+
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
+	"github.com/traPtitech/Emoine_R/handler/schema"
+
 )
 
 func GetToken(c echo.Context) error {
@@ -19,13 +23,22 @@ func PostToken(c echo.Context) error {
 
 // stringなキーのtokenから構造体のtokenを得る。
 func GetTokenFromToken(c echo.Context) error {
-	tokenPrimaryKey := c.Param("token")
-	tokenRecord, err := dbschema.TokenByToken(c.Request().Context(), model.DB, tokenPrimaryKey)
+	tokenDBSchema, err := dbschema.TokenByToken(c.Request().Context(), model.DB, c.Param("token"))
 
 	if err != nil {
 		return c.String(http.StatusNotFound, "tokenが見つかりませんでした: "+err.Error())
 	}
-	return c.JSON(http.StatusOK, tokenRecord)
+	token := schema.Token{
+			CreatedAt: 		tokenDBSchema.CreatedAt,
+			CreatorId: 		tokenDBSchema.CreatorID,
+			Description: 	mustValue[string](tokenDBSchema.Description),
+			ExpireAt: 		mustValue[time.Time](tokenDBSchema.ExprieAt),
+			MeetingId: 		tokenDBSchema.MeetingID,
+			Token: 			tokenDBSchema.Token,
+			Username: 		tokenDBSchema.UserID,
+	}
+
+	return c.JSON(http.StatusOK, token)
 }
 
 func PatchTokenFromToken(c echo.Context) error {
