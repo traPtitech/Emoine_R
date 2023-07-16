@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
@@ -54,6 +55,7 @@ func OAuthGenerateCodeHandler(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "セッションエラー: "+err.Error())
 	}
+
 	return c.JSON(http.StatusOK, params)
 }
 
@@ -77,12 +79,12 @@ func OAuthCallbackHandler(c echo.Context) error {
 	sess.Values["accessToken"] = res.AccessToken
 	sess.Values["refreshToken"] = res.RefreshToken
 
-	myUserId, err := GetMyUserId(res.AccessToken)
+	myUserID, err := GetMyUserID(res.AccessToken)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "useridを取得できません: "+err.Error())
 	}
 
-	sess.Values["userid"] = myUserId
+	sess.Values["userid"] = myUserID
 
 	sess.Options = &SessionOptionsDefault
 	err = sess.Save(c.Request(), c.Response())
@@ -102,7 +104,7 @@ func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error
 	}
 	reqBody := strings.NewReader(form.Encode())
 
-	req, err := http.NewRequest("POST", urlPrefix+"/oauth2/token", reqBody)
+	req, err := http.NewRequestWithContext(context.Background(), "POST", urlPrefix+"/oauth2/token", reqBody)
 	if err != nil {
 		return AuthResponse{}, err
 	}
@@ -120,13 +122,13 @@ func collectOAuthResponse(code string, codeVerifier string) (AuthResponse, error
 	if err != nil {
 		return AuthResponse{}, err
 	}
-
 	defer res.Body.Close()
+
 	return authRes, nil
 }
 
-func GetMyUserId(accessToken string) (string, error) {
-	req, err := http.NewRequest("GET", urlPrefix+"/users/me", nil)
+func GetMyUserID(accessToken string) (string, error) {
+	req, err := http.NewRequestWithContext(context.Background(), "GET", urlPrefix+"/users/me", nil)
 	if err != nil {
 		return "", err
 	}
@@ -148,8 +150,8 @@ func GetMyUserId(accessToken string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	defer res.Body.Close()
+
 	return traqJSON.Name, nil
 }
 

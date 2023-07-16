@@ -32,6 +32,7 @@ func CreateMeeting(c echo.Context) error {
 		if errors.Is(err, errIsNotLiveStreaming) {
 			msg += ": ライブ配信のIDを指定してください"
 		}
+
 		return echo.NewHTTPError(http.StatusBadRequest, msg).SetInternal(err)
 	}
 
@@ -86,6 +87,7 @@ func GetMeeting(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
 	}
+
 	return c.JSON(http.StatusOK, schema.MeetingsWithTotal{
 		Total: cnt,
 		Meetings: func() []schema.Meeting {
@@ -101,10 +103,10 @@ func GetMeeting(c echo.Context) error {
 					EndedAt:     mustValue[time.Time](v.EndedAt),
 				}
 			}
+
 			return ms
 		}(),
 	})
-
 }
 
 func GetMeetingFromID(c echo.Context) error {
