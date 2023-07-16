@@ -2,6 +2,4 @@ package handler
 
 import "errors"
 
-var (
-	errIsNotLiveStreaming = errors.New("this video is not live streaming")
-)
+var errIsNotLiveStreaming = errors.New("this video is not live streaming")

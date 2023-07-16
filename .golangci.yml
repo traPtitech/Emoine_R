@@ -1,0 +1,20 @@
+# https://golangci-lint.run/usage/linters/
+linters:
+  enable:
+    # default linters
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    # additional linters
+    - gci
+    - gofmt
+    - nlreturn
+    - noctx
+    - revive
+    - tenv
+    - thelper
+    - tparallel
+    - whitespace

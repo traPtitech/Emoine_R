@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
 )
@@ -21,7 +20,6 @@ func PostToken(c echo.Context) error {
 func GetTokenFromToken(c echo.Context) error {
 	token_string := c.Param("token")
 	token_struct, err := dbschema.TokenByToken(c.Request().Context(), model.DB, token_string)
-
 	if err != nil {
 		return c.String(http.StatusNotFound, "tokenが見つかりませんでした: "+err.Error())
 	}
