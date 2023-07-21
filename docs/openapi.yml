@@ -53,6 +53,7 @@ paths:
       description: 新しい集会を設定します。権限者のみ
       tags:
         - meeting
+        - admin
       requestBody:
         content:
           application/json:
@@ -72,7 +73,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/limitInQuery"
         - $ref: "#/components/parameters/offsetInQuery"
-      operationId: getAllMeetings
+      operationId: getMeetings
       summary: 全集会の取得
       description: すべての集会を取得する
       tags:
@@ -103,13 +104,13 @@ paths:
                 $ref: "#/components/schemas/Meeting"
         "404":
           description: Not Found
-
     patch:
       operationId: updateMeeting
       summary: 集会のdescriptionを変更
       description: 集会のdescriptionを変更します。権限者のみ
       tags:
         - meeting
+        - admin
       requestBody:
         content:
           application/json:
@@ -128,9 +129,10 @@ paths:
           description: Not Found
     delete:
       operationId: deleteMeeting
-      summary: 集会を削除
+      summary: 集会を削除。権限者のみ
       tags:
         - meeting
+        - admin
       responses:
         "204":
           description: |-
@@ -145,7 +147,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/meetingIdInPath"
     get:
-      operationId: getComment
+      operationId: getMeetingComments
       summary: 集会のコメント一覧を取得
       description: 集会のコメント一覧を取得する
       tags:
@@ -166,7 +168,7 @@ paths:
     parameters:
       - $ref: "#/components/parameters/meetingIdInPath"
     get:
-      operationId: getReaction
+      operationId: getMeetingReactions
       summary: 集会のリアクション一覧を取得
       description: 集会のリアクション一覧を取得する
       tags:
@@ -189,9 +191,10 @@ paths:
     get:
       operationId: getMeetingTokens
       summary: 集会のトークン一覧を取得
-      description: 集会のトークン一覧を取得する (管理者権限が必要)
+      description: 集会のトークン一覧を取得する。権限者のみ
       tags:
         - token
+        - admin
       responses:
         "200":
           description: OK
@@ -208,9 +211,10 @@ paths:
     post:
       operationId: createToken
       summary: アクセストークンの生成
-      description: アクセストークンの生成をします。
+      description: アクセストークンを生成する。権限者のみ
       tags:
         - token
+        - admin
       requestBody:
         content:
           application/json:
@@ -227,11 +231,12 @@ paths:
           description: Forbidden
 
     get:
-      operationId: getAllTokens
+      operationId: getTokens
       summary: 全トークン情報を取得
-      description: 全トークン情報を取得する。
+      description: 全トークン情報を取得する。権限者のみ
       tags:
         - token
+        - admin
       responses:
         "200":
           description: OK
@@ -253,6 +258,7 @@ paths:
       description: トークン情報を取得する。権限者のみ
       tags:
         - token
+        - admin
       responses:
         "200":
           description: OK
@@ -266,11 +272,12 @@ paths:
           description: Not Found
 
     patch:
-      operationId: patchToken
+      operationId: updateToken
       summary: トークン情報を更新
       description: トークン情報を更新する。権限者のみ
       tags:
         - token
+        - admin
       requestBody:
         content:
           application/json:

@@ -104,8 +104,8 @@ type SessionsInCookie = string
 // TokenInPath defines model for tokenInPath.
 type TokenInPath = string
 
-// GetAllMeetingsParams defines parameters for GetAllMeetings.
-type GetAllMeetingsParams struct {
+// GetMeetingsParams defines parameters for GetMeetings.
+type GetMeetingsParams struct {
 	// Limit 取得する件数
 	Limit *LimitInQuery `form:"limit,omitempty" json:"limit,omitempty" query:"limit"`
 
@@ -129,5 +129,5 @@ type UpdateMeetingJSONRequestBody = CreateMeetingRequest
 // CreateTokenJSONRequestBody defines body for CreateToken for application/json ContentType.
 type CreateTokenJSONRequestBody = CreateToken
 
-// PatchTokenJSONRequestBody defines body for PatchToken for application/json ContentType.
-type PatchTokenJSONRequestBody = Token
+// UpdateTokenJSONRequestBody defines body for UpdateToken for application/json ContentType.
+type UpdateTokenJSONRequestBody = Token

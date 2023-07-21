@@ -66,8 +66,8 @@ func CreateMeeting(c echo.Context) error {
 	})
 }
 
-func GetMeeting(c echo.Context) error {
-	req := new(schema.GetAllMeetingsParams)
+func GetMeetings(c echo.Context) error {
+	req := new(schema.GetMeetingsParams)
 	if err := c.Bind(req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
 	}
@@ -109,7 +109,7 @@ func GetMeeting(c echo.Context) error {
 	})
 }
 
-func GetMeetingFromID(c echo.Context) error {
+func GetMeeting(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
 
@@ -141,6 +141,18 @@ func UpdateMeeting(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
-func DeleteMeetingFromID(c echo.Context) error {
+func DeleteMeeting(c echo.Context) error {
+	return c.String(http.StatusNotImplemented, "未実装です")
+}
+
+func GetMeetingComments(c echo.Context) error {
+	return c.String(http.StatusNotImplemented, "未実装です")
+}
+
+func GetMeetingReactions(c echo.Context) error {
+	return c.String(http.StatusNotImplemented, "未実装です")
+}
+
+func GetMeetingTokens(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
