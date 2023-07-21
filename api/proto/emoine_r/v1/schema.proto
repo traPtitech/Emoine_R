@@ -1,0 +1,42 @@
+syntax = "proto3";
+package emoine_r.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message Meeting {
+  string id = 1;
+  string title = 2;
+  string video_id = 3;
+  string thumbnail = 4;
+  string description = 5;
+  google.protobuf.Timestamp started_at = 6;
+  google.protobuf.Timestamp ended_at = 7;
+}
+
+message Token {
+  string token = 1;
+  string username = 2;
+  string meeting_id = 3;
+  string creator_id = 4;
+  string description = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp expire_at = 7;
+}
+
+message Comment {
+  string id = 1;
+  string meeting_id = 2;
+  string username = 3;
+  string text = 4;
+  bool is_anonymous = 5;
+  string color = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message Reaction {
+  string id = 1;
+  string meeting_id = 2;
+  string username = 3;
+  string stamp_id = 4;
+  google.protobuf.Timestamp created_at = 5;
+}

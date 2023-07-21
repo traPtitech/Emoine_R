@@ -1,6 +1,9 @@
 syntax = "proto3";
 package emoine_r.v1;
 
+import "emoine_r/v1/schema.proto";
+import "google/protobuf/empty.proto";
+
 // GeneralAPIService 権限が必要ないAPIを提供します
 service GeneralAPIService {
   // GetMeetings 集会一覧を取得します
@@ -18,7 +21,82 @@ service GeneralAPIService {
   // SendReaction 集会中にリアクションを送信します (リアクションは集会のストリームに反映されます)
   rpc SendReaction(SendReactionRequest) returns (SendReactionResponse);
   // OAuth2Authorize OAuth2による認可を行います
-  rpc OAuth2Authorize(OAuth2AuthorizeRequest) returns (OAuth2AuthorizeResponse);
+  rpc OAuth2Authorize(OAuth2AuthorizeRequest) returns (google.protobuf.Empty);
   // OAuth2Callback OAuth2のコールバックを受け取ります
-  rpc OAuth2Callback(OAuth2CallbackRequest) returns (OAuth2CallbackResponse);
+  rpc OAuth2Callback(OAuth2CallbackRequest) returns (google.protobuf.Empty);
+}
+
+message GetMeetingsRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message GetMeetingsResponse {
+  int64 total = 1;
+  repeated Meeting meetings = 2;
+}
+
+message GetMeetingRequest {
+  string id = 1;
+}
+
+message GetMeetingResponse {
+  Meeting meeting = 1;
+}
+
+message GetMeetingCommentsRequest {
+  string meeting_id = 1;
+}
+
+message GetMeetingCommentsResponse {
+  repeated Comment comments = 1;
+}
+
+message GetMeetingReactionsRequest {
+  string meeting_id = 1;
+}
+
+message GetMeetingReactionsResponse {
+  repeated Reaction reactions = 1;
+}
+
+message ConnectToMeetingStreamRequest {
+  string meeting_id = 1;
+}
+
+message ConnectToMeetingStreamResponse {
+  oneof event {
+    Meeting meeting = 1;
+    Comment comment = 2;
+    Reaction reaction = 3;
+  }
+}
+
+message SendCommentRequest {
+  string meeting_id = 1;
+  string text = 2;
+  bool is_anonymous = 3;
+  string color = 4;
+}
+
+message SendCommentResponse {
+  Comment comment = 1;
+}
+
+message SendReactionRequest {
+  string meeting_id = 1;
+  string stamp_id = 2;
+}
+
+message SendReactionResponse {
+  Reaction reaction = 1;
+}
+
+message OAuth2AuthorizeRequest {
+  string state = 1;
+}
+
+message OAuth2CallbackRequest {
+  string code = 1;
+  string state = 2;
 }
