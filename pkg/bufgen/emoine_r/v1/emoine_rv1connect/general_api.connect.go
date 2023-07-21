@@ -65,23 +65,23 @@ const (
 
 // GeneralAPIServiceClient is a client for the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceClient interface {
-	// GetMeetings 集会一覧を取得します
+	// 集会一覧を取得します
 	GetMeetings(context.Context, *connect_go.Request[v1.GetMeetingsRequest]) (*connect_go.Response[v1.GetMeetingsResponse], error)
-	// GetMeeting 該当する集会を取得します
+	// 該当する集会を取得します
 	GetMeeting(context.Context, *connect_go.Request[v1.GetMeetingRequest]) (*connect_go.Response[v1.GetMeetingResponse], error)
-	// GetMeetingComments 該当する集会のコメント一覧を取得します
+	// 該当する集会のコメント一覧を取得します
 	GetMeetingComments(context.Context, *connect_go.Request[v1.GetMeetingCommentsRequest]) (*connect_go.Response[v1.GetMeetingCommentsResponse], error)
-	// GetMeetingReactions 該当する集会のリアクション一覧を取得します
+	// 該当する集会のリアクション一覧を取得します
 	GetMeetingReactions(context.Context, *connect_go.Request[v1.GetMeetingReactionsRequest]) (*connect_go.Response[v1.GetMeetingReactionsResponse], error)
-	// ConnectToMeetingStream 集会のストリームに接続します
+	// 集会のストリームに接続します
 	ConnectToMeetingStream(context.Context, *connect_go.Request[v1.ConnectToMeetingStreamRequest]) (*connect_go.ServerStreamForClient[v1.ConnectToMeetingStreamResponse], error)
-	// SendComment 集会中にコメントを送信します (コメントは集会のストリームに反映されます)
+	// (コメントは集会のストリームに反映されます)
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
-	// SendReaction 集会中にリアクションを送信します (リアクションは集会のストリームに反映されます)
+	// (リアクションは集会のストリームに反映されます)
 	SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error)
-	// OAuth2Authorize OAuth2による認可を行います
+	// OAuth2による認可を行います
 	OAuth2Authorize(context.Context, *connect_go.Request[v1.OAuth2AuthorizeRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// OAuth2Callback OAuth2のコールバックを受け取ります
+	// OAuth2のコールバックを受け取ります
 	OAuth2Callback(context.Context, *connect_go.Request[v1.OAuth2CallbackRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
@@ -203,23 +203,23 @@ func (c *generalAPIServiceClient) OAuth2Callback(ctx context.Context, req *conne
 
 // GeneralAPIServiceHandler is an implementation of the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceHandler interface {
-	// GetMeetings 集会一覧を取得します
+	// 集会一覧を取得します
 	GetMeetings(context.Context, *connect_go.Request[v1.GetMeetingsRequest]) (*connect_go.Response[v1.GetMeetingsResponse], error)
-	// GetMeeting 該当する集会を取得します
+	// 該当する集会を取得します
 	GetMeeting(context.Context, *connect_go.Request[v1.GetMeetingRequest]) (*connect_go.Response[v1.GetMeetingResponse], error)
-	// GetMeetingComments 該当する集会のコメント一覧を取得します
+	// 該当する集会のコメント一覧を取得します
 	GetMeetingComments(context.Context, *connect_go.Request[v1.GetMeetingCommentsRequest]) (*connect_go.Response[v1.GetMeetingCommentsResponse], error)
-	// GetMeetingReactions 該当する集会のリアクション一覧を取得します
+	// 該当する集会のリアクション一覧を取得します
 	GetMeetingReactions(context.Context, *connect_go.Request[v1.GetMeetingReactionsRequest]) (*connect_go.Response[v1.GetMeetingReactionsResponse], error)
-	// ConnectToMeetingStream 集会のストリームに接続します
+	// 集会のストリームに接続します
 	ConnectToMeetingStream(context.Context, *connect_go.Request[v1.ConnectToMeetingStreamRequest], *connect_go.ServerStream[v1.ConnectToMeetingStreamResponse]) error
-	// SendComment 集会中にコメントを送信します (コメントは集会のストリームに反映されます)
+	// (コメントは集会のストリームに反映されます)
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
-	// SendReaction 集会中にリアクションを送信します (リアクションは集会のストリームに反映されます)
+	// (リアクションは集会のストリームに反映されます)
 	SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error)
-	// OAuth2Authorize OAuth2による認可を行います
+	// OAuth2による認可を行います
 	OAuth2Authorize(context.Context, *connect_go.Request[v1.OAuth2AuthorizeRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// OAuth2Callback OAuth2のコールバックを受け取ります
+	// OAuth2のコールバックを受け取ります
 	OAuth2Callback(context.Context, *connect_go.Request[v1.OAuth2CallbackRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 

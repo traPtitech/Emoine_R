@@ -363,18 +363,18 @@
 <a name="emoine_r-v1-AdminAPIService"></a>
 
 ### AdminAPIService
-AdminAPIService 管理者権限が必要なAPIを提供します
+管理者権限が必要なAPIを提供します
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| CreateMeeting | [CreateMeetingRequest](#emoine_r-v1-CreateMeetingRequest) | [CreateMeetingResponse](#emoine_r-v1-CreateMeetingResponse) | CreateMeeting 集会を作成します |
-| UpdateMeeting | [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | UpdateMeeting 集会情報を更新します |
-| DeleteMeeting | [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | DeleteMeeting 集会を削除します |
-| GetMeetingTokens | [GetMeetingTokensRequest](#emoine_r-v1-GetMeetingTokensRequest) | [GetMeetingTokensResponse](#emoine_r-v1-GetMeetingTokensResponse) | GetMeetingTokens 該当する集会のトークン一覧を取得します |
-| GetTokens | [.google.protobuf.Empty](#google-protobuf-Empty) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | GetTokens トークン一覧を取得します |
-| GetToken | [GetTokenRequest](#emoine_r-v1-GetTokenRequest) | [GetTokenResponse](#emoine_r-v1-GetTokenResponse) | GetToken 該当するトークンを取得します |
-| CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | CreateToken トークンを作成します |
-| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [UpdateTokenResponse](#emoine_r-v1-UpdateTokenResponse) | UpdateToken トークン情報を更新します |
+| CreateMeeting | [CreateMeetingRequest](#emoine_r-v1-CreateMeetingRequest) | [CreateMeetingResponse](#emoine_r-v1-CreateMeetingResponse) | 集会を作成します |
+| UpdateMeeting | [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会情報を更新します |
+| DeleteMeeting | [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会を削除します |
+| GetMeetingTokens | [GetMeetingTokensRequest](#emoine_r-v1-GetMeetingTokensRequest) | [GetMeetingTokensResponse](#emoine_r-v1-GetMeetingTokensResponse) | 該当する集会のトークン一覧を取得します |
+| GetTokens | [.google.protobuf.Empty](#google-protobuf-Empty) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | トークン一覧を取得します |
+| GetToken | [GetTokenRequest](#emoine_r-v1-GetTokenRequest) | [GetTokenResponse](#emoine_r-v1-GetTokenResponse) | 該当するトークンを取得します |
+| CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | トークンを作成します |
+| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [UpdateTokenResponse](#emoine_r-v1-UpdateTokenResponse) | トークン情報を更新します |
 
  
 
@@ -645,19 +645,19 @@ AdminAPIService 管理者権限が必要なAPIを提供します
 <a name="emoine_r-v1-GeneralAPIService"></a>
 
 ### GeneralAPIService
-GeneralAPIService 権限が必要ないAPIを提供します
+権限が必要ないAPIを提供します
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetMeetings | [GetMeetingsRequest](#emoine_r-v1-GetMeetingsRequest) | [GetMeetingsResponse](#emoine_r-v1-GetMeetingsResponse) | GetMeetings 集会一覧を取得します |
-| GetMeeting | [GetMeetingRequest](#emoine_r-v1-GetMeetingRequest) | [GetMeetingResponse](#emoine_r-v1-GetMeetingResponse) | GetMeeting 該当する集会を取得します |
-| GetMeetingComments | [GetMeetingCommentsRequest](#emoine_r-v1-GetMeetingCommentsRequest) | [GetMeetingCommentsResponse](#emoine_r-v1-GetMeetingCommentsResponse) | GetMeetingComments 該当する集会のコメント一覧を取得します |
-| GetMeetingReactions | [GetMeetingReactionsRequest](#emoine_r-v1-GetMeetingReactionsRequest) | [GetMeetingReactionsResponse](#emoine_r-v1-GetMeetingReactionsResponse) | GetMeetingReactions 該当する集会のリアクション一覧を取得します |
-| ConnectToMeetingStream | [ConnectToMeetingStreamRequest](#emoine_r-v1-ConnectToMeetingStreamRequest) | [ConnectToMeetingStreamResponse](#emoine_r-v1-ConnectToMeetingStreamResponse) stream | ConnectToMeetingStream 集会のストリームに接続します |
-| SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | SendComment 集会中にコメントを送信します (コメントは集会のストリームに反映されます) |
-| SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | SendReaction 集会中にリアクションを送信します (リアクションは集会のストリームに反映されます) |
-| OAuth2Authorize | [OAuth2AuthorizeRequest](#emoine_r-v1-OAuth2AuthorizeRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | OAuth2Authorize OAuth2による認可を行います |
-| OAuth2Callback | [OAuth2CallbackRequest](#emoine_r-v1-OAuth2CallbackRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | OAuth2Callback OAuth2のコールバックを受け取ります |
+| GetMeetings | [GetMeetingsRequest](#emoine_r-v1-GetMeetingsRequest) | [GetMeetingsResponse](#emoine_r-v1-GetMeetingsResponse) | 集会一覧を取得します |
+| GetMeeting | [GetMeetingRequest](#emoine_r-v1-GetMeetingRequest) | [GetMeetingResponse](#emoine_r-v1-GetMeetingResponse) | 該当する集会を取得します |
+| GetMeetingComments | [GetMeetingCommentsRequest](#emoine_r-v1-GetMeetingCommentsRequest) | [GetMeetingCommentsResponse](#emoine_r-v1-GetMeetingCommentsResponse) | 該当する集会のコメント一覧を取得します |
+| GetMeetingReactions | [GetMeetingReactionsRequest](#emoine_r-v1-GetMeetingReactionsRequest) | [GetMeetingReactionsResponse](#emoine_r-v1-GetMeetingReactionsResponse) | 該当する集会のリアクション一覧を取得します |
+| ConnectToMeetingStream | [ConnectToMeetingStreamRequest](#emoine_r-v1-ConnectToMeetingStreamRequest) | [ConnectToMeetingStreamResponse](#emoine_r-v1-ConnectToMeetingStreamResponse) stream | 集会のストリームに接続します |
+| SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | (コメントは集会のストリームに反映されます) |
+| SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | (リアクションは集会のストリームに反映されます) |
+| OAuth2Authorize | [OAuth2AuthorizeRequest](#emoine_r-v1-OAuth2AuthorizeRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | OAuth2による認可を行います |
+| OAuth2Callback | [OAuth2CallbackRequest](#emoine_r-v1-OAuth2CallbackRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | OAuth2のコールバックを受け取ります |
 
  
 

@@ -4,25 +4,25 @@ package emoine_r.v1;
 import "emoine_r/v1/schema.proto";
 import "google/protobuf/empty.proto";
 
-// GeneralAPIService 権限が必要ないAPIを提供します
+// 権限が必要ないAPIを提供します
 service GeneralAPIService {
-  // GetMeetings 集会一覧を取得します
+  // 集会一覧を取得します
   rpc GetMeetings(GetMeetingsRequest) returns (GetMeetingsResponse);
-  // GetMeeting 該当する集会を取得します
+  // 該当する集会を取得します
   rpc GetMeeting(GetMeetingRequest) returns (GetMeetingResponse);
-  // GetMeetingComments 該当する集会のコメント一覧を取得します
+  // 該当する集会のコメント一覧を取得します
   rpc GetMeetingComments(GetMeetingCommentsRequest) returns (GetMeetingCommentsResponse);
-  // GetMeetingReactions 該当する集会のリアクション一覧を取得します
+  // 該当する集会のリアクション一覧を取得します
   rpc GetMeetingReactions(GetMeetingReactionsRequest) returns (GetMeetingReactionsResponse);
-  // ConnectToMeetingStream 集会のストリームに接続します
+  // 集会のストリームに接続します
   rpc ConnectToMeetingStream(ConnectToMeetingStreamRequest) returns (stream ConnectToMeetingStreamResponse);
-  // SendComment 集会中にコメントを送信します (コメントは集会のストリームに反映されます)
+  // (コメントは集会のストリームに反映されます)
   rpc SendComment(SendCommentRequest) returns (SendCommentResponse);
-  // SendReaction 集会中にリアクションを送信します (リアクションは集会のストリームに反映されます)
+  // (リアクションは集会のストリームに反映されます)
   rpc SendReaction(SendReactionRequest) returns (SendReactionResponse);
-  // OAuth2Authorize OAuth2による認可を行います
+  // OAuth2による認可を行います
   rpc OAuth2Authorize(OAuth2AuthorizeRequest) returns (google.protobuf.Empty);
-  // OAuth2Callback OAuth2のコールバックを受け取ります
+  // OAuth2のコールバックを受け取ります
   rpc OAuth2Callback(OAuth2CallbackRequest) returns (google.protobuf.Empty);
 }
 

@@ -4,23 +4,23 @@ package emoine_r.v1;
 import "emoine_r/v1/schema.proto";
 import "google/protobuf/empty.proto";
 
-// AdminAPIService 管理者権限が必要なAPIを提供します
+// 管理者権限が必要なAPIを提供します
 service AdminAPIService {
-  // CreateMeeting 集会を作成します
+  // 集会を作成します
   rpc CreateMeeting(CreateMeetingRequest) returns (CreateMeetingResponse);
-  // UpdateMeeting 集会情報を更新します
+  // 集会情報を更新します
   rpc UpdateMeeting(UpdateMeetingRequest) returns (google.protobuf.Empty);
-  // DeleteMeeting 集会を削除します
+  // 集会を削除します
   rpc DeleteMeeting(DeleteMeetingRequest) returns (google.protobuf.Empty);
-  // GetMeetingTokens 該当する集会のトークン一覧を取得します
+  // 該当する集会のトークン一覧を取得します
   rpc GetMeetingTokens(GetMeetingTokensRequest) returns (GetMeetingTokensResponse);
-  // GetTokens トークン一覧を取得します
+  // トークン一覧を取得します
   rpc GetTokens(google.protobuf.Empty) returns (GetTokensResponse);
-  // GetToken 該当するトークンを取得します
+  // 該当するトークンを取得します
   rpc GetToken(GetTokenRequest) returns (GetTokenResponse);
-  // CreateToken トークンを作成します
+  // トークンを作成します
   rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse);
-  // UpdateToken トークン情報を更新します
+  // トークン情報を更新します
   rpc UpdateToken(UpdateTokenRequest) returns (UpdateTokenResponse);
 }
 

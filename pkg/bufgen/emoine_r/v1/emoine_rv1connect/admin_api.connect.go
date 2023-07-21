@@ -62,21 +62,21 @@ const (
 
 // AdminAPIServiceClient is a client for the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceClient interface {
-	// CreateMeeting 集会を作成します
+	// 集会を作成します
 	CreateMeeting(context.Context, *connect_go.Request[v1.CreateMeetingRequest]) (*connect_go.Response[v1.CreateMeetingResponse], error)
-	// UpdateMeeting 集会情報を更新します
+	// 集会情報を更新します
 	UpdateMeeting(context.Context, *connect_go.Request[v1.UpdateMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// DeleteMeeting 集会を削除します
+	// 集会を削除します
 	DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// GetMeetingTokens 該当する集会のトークン一覧を取得します
+	// 該当する集会のトークン一覧を取得します
 	GetMeetingTokens(context.Context, *connect_go.Request[v1.GetMeetingTokensRequest]) (*connect_go.Response[v1.GetMeetingTokensResponse], error)
-	// GetTokens トークン一覧を取得します
+	// トークン一覧を取得します
 	GetTokens(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.GetTokensResponse], error)
-	// GetToken 該当するトークンを取得します
+	// 該当するトークンを取得します
 	GetToken(context.Context, *connect_go.Request[v1.GetTokenRequest]) (*connect_go.Response[v1.GetTokenResponse], error)
-	// CreateToken トークンを作成します
+	// トークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
-	// UpdateToken トークン情報を更新します
+	// トークン情報を更新します
 	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[v1.UpdateTokenResponse], error)
 }
 
@@ -187,21 +187,21 @@ func (c *adminAPIServiceClient) UpdateToken(ctx context.Context, req *connect_go
 
 // AdminAPIServiceHandler is an implementation of the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceHandler interface {
-	// CreateMeeting 集会を作成します
+	// 集会を作成します
 	CreateMeeting(context.Context, *connect_go.Request[v1.CreateMeetingRequest]) (*connect_go.Response[v1.CreateMeetingResponse], error)
-	// UpdateMeeting 集会情報を更新します
+	// 集会情報を更新します
 	UpdateMeeting(context.Context, *connect_go.Request[v1.UpdateMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// DeleteMeeting 集会を削除します
+	// 集会を削除します
 	DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// GetMeetingTokens 該当する集会のトークン一覧を取得します
+	// 該当する集会のトークン一覧を取得します
 	GetMeetingTokens(context.Context, *connect_go.Request[v1.GetMeetingTokensRequest]) (*connect_go.Response[v1.GetMeetingTokensResponse], error)
-	// GetTokens トークン一覧を取得します
+	// トークン一覧を取得します
 	GetTokens(context.Context, *connect_go.Request[emptypb.Empty]) (*connect_go.Response[v1.GetTokensResponse], error)
-	// GetToken 該当するトークンを取得します
+	// 該当するトークンを取得します
 	GetToken(context.Context, *connect_go.Request[v1.GetTokenRequest]) (*connect_go.Response[v1.GetTokenResponse], error)
-	// CreateToken トークンを作成します
+	// トークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
-	// UpdateToken トークン情報を更新します
+	// トークン情報を更新します
 	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[v1.UpdateTokenResponse], error)
 }
 
