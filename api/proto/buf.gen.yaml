@@ -11,12 +11,12 @@ plugins:
       - go
       - run
       - google.golang.org/protobuf/cmd/protoc-gen-go@latest
-    out: pkg/bufgen
+    out: ../../pkg/bufgen
     opt: paths=source_relative
   - name: connect-go
     path:
       - go
       - run
       - github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go@latest
-    out: pkg/bufgen
+    out: ../../pkg/bufgen
     opt: paths=source_relative
