@@ -21,12 +21,12 @@ service AdminAPIService {
   // トークンを作成します
   rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse);
   // トークン情報を更新します
-  rpc UpdateToken(UpdateTokenRequest) returns (UpdateTokenResponse);
+  rpc UpdateToken(UpdateTokenRequest) returns (google.protobuf.Empty);
 }
 
 message CreateMeetingRequest {
-  string description = 1;
-  string video_id = 2;
+  string video_id = 1;
+  string description = 2;
 }
 
 message CreateMeetingResponse {
@@ -73,9 +73,7 @@ message CreateTokenResponse {
 }
 
 message UpdateTokenRequest {
-  Token token = 1;
-}
-
-message UpdateTokenResponse {
-  Token token = 1;
+  string token = 1;
+  string meeting_id = 2;
+  string description = 3;
 }

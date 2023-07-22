@@ -22,7 +22,6 @@
     - [GetTokensResponse](#emoine_r-v1-GetTokensResponse)
     - [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest)
     - [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest)
-    - [UpdateTokenResponse](#emoine_r-v1-UpdateTokenResponse)
   
     - [AdminAPIService](#emoine_r-v1-AdminAPIService)
   
@@ -163,8 +162,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| description | [string](#string) |  |  |
 | video_id | [string](#string) |  |  |
+| description | [string](#string) |  |  |
 
 
 
@@ -332,22 +331,9 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| token | [Token](#emoine_r-v1-Token) |  |  |
-
-
-
-
-
-
-<a name="emoine_r-v1-UpdateTokenResponse"></a>
-
-### UpdateTokenResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| token | [Token](#emoine_r-v1-Token) |  |  |
+| token | [string](#string) |  |  |
+| meeting_id | [string](#string) |  |  |
+| description | [string](#string) |  |  |
 
 
 
@@ -374,7 +360,7 @@
 | GetTokens | [.google.protobuf.Empty](#google-protobuf-Empty) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | トークン一覧を取得します |
 | GetToken | [GetTokenRequest](#emoine_r-v1-GetTokenRequest) | [GetTokenResponse](#emoine_r-v1-GetTokenResponse) | 該当するトークンを取得します |
 | CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | トークンを作成します |
-| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [UpdateTokenResponse](#emoine_r-v1-UpdateTokenResponse) | トークン情報を更新します |
+| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | トークン情報を更新します |
 
  
 

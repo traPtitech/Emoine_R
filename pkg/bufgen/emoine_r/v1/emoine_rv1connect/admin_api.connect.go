@@ -77,7 +77,7 @@ type AdminAPIServiceClient interface {
 	// トークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
 	// トークン情報を更新します
-	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[v1.UpdateTokenResponse], error)
+	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewAdminAPIServiceClient constructs a client for the emoine_r.v1.AdminAPIService service. By
@@ -125,7 +125,7 @@ func NewAdminAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+AdminAPIServiceCreateTokenProcedure,
 			opts...,
 		),
-		updateToken: connect_go.NewClient[v1.UpdateTokenRequest, v1.UpdateTokenResponse](
+		updateToken: connect_go.NewClient[v1.UpdateTokenRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceUpdateTokenProcedure,
 			opts...,
@@ -142,7 +142,7 @@ type adminAPIServiceClient struct {
 	getTokens        *connect_go.Client[emptypb.Empty, v1.GetTokensResponse]
 	getToken         *connect_go.Client[v1.GetTokenRequest, v1.GetTokenResponse]
 	createToken      *connect_go.Client[v1.CreateTokenRequest, v1.CreateTokenResponse]
-	updateToken      *connect_go.Client[v1.UpdateTokenRequest, v1.UpdateTokenResponse]
+	updateToken      *connect_go.Client[v1.UpdateTokenRequest, emptypb.Empty]
 }
 
 // CreateMeeting calls emoine_r.v1.AdminAPIService.CreateMeeting.
@@ -181,7 +181,7 @@ func (c *adminAPIServiceClient) CreateToken(ctx context.Context, req *connect_go
 }
 
 // UpdateToken calls emoine_r.v1.AdminAPIService.UpdateToken.
-func (c *adminAPIServiceClient) UpdateToken(ctx context.Context, req *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[v1.UpdateTokenResponse], error) {
+func (c *adminAPIServiceClient) UpdateToken(ctx context.Context, req *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
 	return c.updateToken.CallUnary(ctx, req)
 }
 
@@ -202,7 +202,7 @@ type AdminAPIServiceHandler interface {
 	// トークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
 	// トークン情報を更新します
-	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[v1.UpdateTokenResponse], error)
+	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewAdminAPIServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -306,6 +306,6 @@ func (UnimplementedAdminAPIServiceHandler) CreateToken(context.Context, *connect
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.CreateToken is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[v1.UpdateTokenResponse], error) {
+func (UnimplementedAdminAPIServiceHandler) UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.UpdateToken is not implemented"))
 }
