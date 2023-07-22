@@ -110,7 +110,19 @@ func GetMeetings(c echo.Context) error {
 }
 
 func GetMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+	mid, err := uuid.Parse(c.Param("meetingId"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "meetingIdのパースに失敗しました").SetInternal(err)
+	}
+
+	m, err := dbschema.MeetingByID(c.Request().Context(), model.DB, mid)
+	if errors.Is(err, sql.ErrNoRows) {
+		return echo.NewHTTPError(http.StatusNotFound, "ミーティングが見つかりませんでした").SetInternal(err)
+	} else if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
+	}
+
+	return c.JSON(http.StatusOK, m)
 }
 
 func UpdateMeeting(c echo.Context) error {
