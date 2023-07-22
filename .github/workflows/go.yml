@@ -44,3 +44,13 @@ jobs:
       - uses: stoplightio/spectral-action@latest
         with:
           file_glob: 'doc/openapi.yml'
+
+  buf-lint:
+    name: Buf Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+      - uses: bufbuild/buf-lint-action@v1
+        with:
+          input: "api/proto"
