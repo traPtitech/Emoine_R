@@ -64,13 +64,13 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [string](#string) |  |  |
-| meeting_id | [string](#string) |  |  |
-| username | [string](#string) |  |  |
-| text | [string](#string) |  |  |
-| is_anonymous | [bool](#bool) |  |  |
-| color | [string](#string) |  |  |
-| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| id | [string](#string) |  | コメントのID (UUID) |
+| meeting_id | [string](#string) |  | コメントが送信された集会のID |
+| username | [string](#string) |  | コメントの送信者名 |
+| text | [string](#string) |  | コメントの本文 |
+| is_anonymous | [bool](#bool) |  | コメントが匿名かどうか |
+| color | [string](#string) |  | コメントの色 |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | コメントの作成日時 |
 
 
 
@@ -85,13 +85,13 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [string](#string) |  |  |
-| title | [string](#string) |  |  |
-| video_id | [string](#string) |  |  |
-| thumbnail | [string](#string) |  |  |
-| description | [string](#string) |  |  |
-| started_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| ended_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| id | [string](#string) |  | 集会ID (UUID) |
+| video_id | [string](#string) |  | YouTubeの動画ID |
+| description | [string](#string) |  | 集会の説明 |
+| title | [string](#string) |  | 動画タイトル (YouTubeから取得) |
+| thumbnail | [string](#string) |  | 動画サムネイル (YouTubeから取得) |
+| started_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | 集会の開始日時 (YouTubeから取得) |
+| ended_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | 集会の終了日時 (YouTubeから取得) |
 
 
 
@@ -106,11 +106,11 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [string](#string) |  |  |
-| meeting_id | [string](#string) |  |  |
-| username | [string](#string) |  |  |
-| stamp_id | [string](#string) |  |  |
-| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| id | [string](#string) |  | リアクションのID (UUID) |
+| meeting_id | [string](#string) |  | リアクションが送信された集会のID |
+| username | [string](#string) |  | リアクションの送信者名 |
+| stamp_id | [string](#string) |  | 送信されたリアクションのスタンプID (UUID, traQと同期) |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | リアクションの作成日時 |
 
 
 
@@ -125,13 +125,13 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| token | [string](#string) |  |  |
-| username | [string](#string) |  |  |
-| meeting_id | [string](#string) |  |  |
-| creator_id | [string](#string) |  |  |
-| description | [string](#string) |  |  |
-| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
-| expire_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| token | [string](#string) |  | トークン文字列 |
+| username | [string](#string) |  | トークンの所有者名 |
+| meeting_id | [string](#string) |  | トークンが有効な集会のID |
+| creator_id | [string](#string) |  | トークン発行者のtraQID (traQと同期) |
+| description | [string](#string) |  | トークンの説明 |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | トークンの作成日時 |
+| expire_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | トークンの有効期限 |
 
 
 

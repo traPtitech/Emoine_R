@@ -4,39 +4,65 @@ package emoine_r.v1;
 import "google/protobuf/timestamp.proto";
 
 message Meeting {
+  // 集会ID (UUID)
   string id = 1;
-  string title = 2;
-  string video_id = 3;
-  string thumbnail = 4;
-  string description = 5;
+  // YouTubeの動画ID
+  string video_id = 2;
+  // 集会の説明
+  string description = 3;
+  // 動画タイトル (YouTubeから取得)
+  string title = 4;
+  // 動画サムネイル (YouTubeから取得)
+  string thumbnail = 5;
+  // 集会の開始日時 (YouTubeから取得)
   google.protobuf.Timestamp started_at = 6;
+  // 集会の終了日時 (YouTubeから取得)
   google.protobuf.Timestamp ended_at = 7;
 }
 
 message Token {
+  // トークン文字列
   string token = 1;
+  // トークンの所有者名
   string username = 2;
+  // トークンが有効な集会のID
   string meeting_id = 3;
+  // トークン発行者のtraQID (traQと同期)
   string creator_id = 4;
+  // トークンの説明
   string description = 5;
+  // トークンの作成日時
   google.protobuf.Timestamp created_at = 6;
+  // トークンの有効期限
   google.protobuf.Timestamp expire_at = 7;
 }
 
 message Comment {
+  // コメントのID (UUID)
   string id = 1;
+  // コメントが送信された集会のID
   string meeting_id = 2;
+  // コメントの送信者名
   string username = 3;
+  // コメントの本文
   string text = 4;
+  // コメントが匿名かどうか
   bool is_anonymous = 5;
+  // コメントの色
   string color = 6;
+  // コメントの作成日時
   google.protobuf.Timestamp created_at = 7;
 }
 
 message Reaction {
+  // リアクションのID (UUID)
   string id = 1;
+  // リアクションが送信された集会のID
   string meeting_id = 2;
+  // リアクションの送信者名
   string username = 3;
+  // 送信されたリアクションのスタンプID (UUID, traQと同期)
   string stamp_id = 4;
+  // リアクションの作成日時
   google.protobuf.Timestamp created_at = 5;
 }

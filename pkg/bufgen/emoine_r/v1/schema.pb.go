@@ -26,13 +26,20 @@ type Meeting struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id          string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Title       string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	VideoId     string                 `protobuf:"bytes,3,opt,name=video_id,json=videoId,proto3" json:"video_id,omitempty"`
-	Thumbnail   string                 `protobuf:"bytes,4,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
-	Description string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	StartedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	EndedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=ended_at,json=endedAt,proto3" json:"ended_at,omitempty"`
+	// 集会ID (UUID)
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// YouTubeの動画ID
+	VideoId string `protobuf:"bytes,2,opt,name=video_id,json=videoId,proto3" json:"video_id,omitempty"`
+	// 集会の説明
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	// 動画タイトル (YouTubeから取得)
+	Title string `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
+	// 動画サムネイル (YouTubeから取得)
+	Thumbnail string `protobuf:"bytes,5,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
+	// 集会の開始日時 (YouTubeから取得)
+	StartedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	// 集会の終了日時 (YouTubeから取得)
+	EndedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=ended_at,json=endedAt,proto3" json:"ended_at,omitempty"`
 }
 
 func (x *Meeting) Reset() {
@@ -74,13 +81,6 @@ func (x *Meeting) GetId() string {
 	return ""
 }
 
-func (x *Meeting) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
 func (x *Meeting) GetVideoId() string {
 	if x != nil {
 		return x.VideoId
@@ -88,16 +88,23 @@ func (x *Meeting) GetVideoId() string {
 	return ""
 }
 
-func (x *Meeting) GetThumbnail() string {
+func (x *Meeting) GetDescription() string {
 	if x != nil {
-		return x.Thumbnail
+		return x.Description
 	}
 	return ""
 }
 
-func (x *Meeting) GetDescription() string {
+func (x *Meeting) GetTitle() string {
 	if x != nil {
-		return x.Description
+		return x.Title
+	}
+	return ""
+}
+
+func (x *Meeting) GetThumbnail() string {
+	if x != nil {
+		return x.Thumbnail
 	}
 	return ""
 }
@@ -121,13 +128,20 @@ type Token struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Token       string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	Username    string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
-	MeetingId   string                 `protobuf:"bytes,3,opt,name=meeting_id,json=meetingId,proto3" json:"meeting_id,omitempty"`
-	CreatorId   string                 `protobuf:"bytes,4,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
-	Description string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ExpireAt    *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expire_at,json=expireAt,proto3" json:"expire_at,omitempty"`
+	// トークン文字列
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	// トークンの所有者名
+	Username string `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	// トークンが有効な集会のID
+	MeetingId string `protobuf:"bytes,3,opt,name=meeting_id,json=meetingId,proto3" json:"meeting_id,omitempty"`
+	// トークン発行者のtraQID (traQと同期)
+	CreatorId string `protobuf:"bytes,4,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	// トークンの説明
+	Description string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	// トークンの作成日時
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// トークンの有効期限
+	ExpireAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=expire_at,json=expireAt,proto3" json:"expire_at,omitempty"`
 }
 
 func (x *Token) Reset() {
@@ -216,13 +230,20 @@ type Comment struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id          string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	MeetingId   string                 `protobuf:"bytes,2,opt,name=meeting_id,json=meetingId,proto3" json:"meeting_id,omitempty"`
-	Username    string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	Text        string                 `protobuf:"bytes,4,opt,name=text,proto3" json:"text,omitempty"`
-	IsAnonymous bool                   `protobuf:"varint,5,opt,name=is_anonymous,json=isAnonymous,proto3" json:"is_anonymous,omitempty"`
-	Color       string                 `protobuf:"bytes,6,opt,name=color,proto3" json:"color,omitempty"`
-	CreatedAt   *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// コメントのID (UUID)
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// コメントが送信された集会のID
+	MeetingId string `protobuf:"bytes,2,opt,name=meeting_id,json=meetingId,proto3" json:"meeting_id,omitempty"`
+	// コメントの送信者名
+	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	// コメントの本文
+	Text string `protobuf:"bytes,4,opt,name=text,proto3" json:"text,omitempty"`
+	// コメントが匿名かどうか
+	IsAnonymous bool `protobuf:"varint,5,opt,name=is_anonymous,json=isAnonymous,proto3" json:"is_anonymous,omitempty"`
+	// コメントの色
+	Color string `protobuf:"bytes,6,opt,name=color,proto3" json:"color,omitempty"`
+	// コメントの作成日時
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 }
 
 func (x *Comment) Reset() {
@@ -311,10 +332,15 @@ type Reaction struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id        string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	MeetingId string                 `protobuf:"bytes,2,opt,name=meeting_id,json=meetingId,proto3" json:"meeting_id,omitempty"`
-	Username  string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	StampId   string                 `protobuf:"bytes,4,opt,name=stamp_id,json=stampId,proto3" json:"stamp_id,omitempty"`
+	// リアクションのID (UUID)
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// リアクションが送信された集会のID
+	MeetingId string `protobuf:"bytes,2,opt,name=meeting_id,json=meetingId,proto3" json:"meeting_id,omitempty"`
+	// リアクションの送信者名
+	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	// 送信されたリアクションのスタンプID (UUID, traQと同期)
+	StampId string `protobuf:"bytes,4,opt,name=stamp_id,json=stampId,proto3" json:"stamp_id,omitempty"`
+	// リアクションの作成日時
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 }
 
@@ -394,14 +420,14 @@ var file_emoine_r_v1_schema_proto_rawDesc = []byte{
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61,
 	0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xfc, 0x01, 0x0a, 0x07, 0x4d, 0x65, 0x65,
 	0x74, 0x69, 0x6e, 0x67, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x02, 0x69, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x76, 0x69,
-	0x64, 0x65, 0x6f, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x76, 0x69,
-	0x64, 0x65, 0x6f, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x68, 0x75, 0x6d, 0x62, 0x6e, 0x61,
-	0x69, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x74, 0x68, 0x75, 0x6d, 0x62, 0x6e,
-	0x61, 0x69, 0x6c, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69,
-	0x6f, 0x6e, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69,
-	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x39, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x65, 0x64,
+	0x52, 0x02, 0x69, 0x64, 0x12, 0x19, 0x0a, 0x08, 0x76, 0x69, 0x64, 0x65, 0x6f, 0x5f, 0x69, 0x64,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x76, 0x69, 0x64, 0x65, 0x6f, 0x49, 0x64, 0x12,
+	0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x68, 0x75, 0x6d, 0x62,
+	0x6e, 0x61, 0x69, 0x6c, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x74, 0x68, 0x75, 0x6d,
+	0x62, 0x6e, 0x61, 0x69, 0x6c, 0x12, 0x39, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x65, 0x64,
 	0x5f, 0x61, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
 	0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65,
 	0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x65, 0x64, 0x41, 0x74,
