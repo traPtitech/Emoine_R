@@ -122,7 +122,15 @@ func GetMeeting(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
 	}
 
-	return c.JSON(http.StatusOK, m)
+	return c.JSON(http.StatusOK, schema.Meeting{
+		Id:          m.ID,
+		VideoId:     m.VideoID,
+		Title:       m.Title,
+		Thumbnail:   m.Thumbnail,
+		Description: mustValue[string](m.Description),
+		StartedAt:   m.StartedAt,
+		EndedAt:     mustValue[time.Time](m.EndedAt),
+	})
 }
 
 func UpdateMeeting(c echo.Context) error {
