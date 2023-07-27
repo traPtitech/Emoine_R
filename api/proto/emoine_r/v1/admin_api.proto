@@ -32,8 +32,8 @@ message CreateMeetingResponse {
 
 message UpdateMeetingRequest {
   string meeting_id = 1;
-  string video_id = 2;
-  string description = 3;
+  optional string video_id = 2;
+  optional string description = 3;
 }
 
 message DeleteMeetingRequest {
@@ -62,7 +62,7 @@ message CreateTokenResponse {
 message UpdateTokenRequest {
   string token = 1;
   string meeting_id = 2;
-  string username = 3;
-  string description = 4;
-  google.protobuf.Timestamp expire_at = 5;
+  optional string username = 3;
+  optional string description = 4;
+  optional google.protobuf.Timestamp expire_at = 5;
 }
