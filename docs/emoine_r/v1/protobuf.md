@@ -453,8 +453,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| limit | [int64](#int64) |  |  |
-| offset | [int64](#int64) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -469,7 +469,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| total | [int64](#int64) |  |  |
+| total | [int32](#int32) |  |  |
 | meetings | [Meeting](#emoine_r-v1-Meeting) | repeated |  |
 
 
