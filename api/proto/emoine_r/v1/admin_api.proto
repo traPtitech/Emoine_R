@@ -15,9 +15,9 @@ service AdminAPIService {
   rpc DeleteMeeting(DeleteMeetingRequest) returns (google.protobuf.Empty);
   // 該当する集会のトークン一覧を取得します
   rpc GetTokens(GetTokensRequest) returns (GetTokensResponse);
-  // 集会のトークンを作成します
-  rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse);
-  // 集会のトークンを無効化します
+  // 集会用のトークンを生成します
+  rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse);
+  // 集会用のトークンを無効化します
   rpc RevokeToken(RevokeTokenRequest) returns (google.protobuf.Empty);
 }
 
@@ -48,14 +48,14 @@ message GetTokensResponse {
   repeated Token tokens = 1;
 }
 
-message CreateTokenRequest {
+message GenerateTokenRequest {
   string meeting_id = 1;
   string username = 2;
   string description = 3;
   google.protobuf.Timestamp expire_at = 4;
 }
 
-message CreateTokenResponse {
+message GenerateTokenResponse {
   Token token = 1;
 }
 

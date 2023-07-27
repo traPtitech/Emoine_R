@@ -12,9 +12,9 @@
 - [emoine_r/v1/admin_api.proto](#emoine_r_v1_admin_api-proto)
     - [CreateMeetingRequest](#emoine_r-v1-CreateMeetingRequest)
     - [CreateMeetingResponse](#emoine_r-v1-CreateMeetingResponse)
-    - [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest)
-    - [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse)
     - [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest)
+    - [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest)
+    - [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse)
     - [GetTokensRequest](#emoine_r-v1-GetTokensRequest)
     - [GetTokensResponse](#emoine_r-v1-GetTokensResponse)
     - [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest)
@@ -180,9 +180,24 @@
 
 
 
-<a name="emoine_r-v1-CreateTokenRequest"></a>
+<a name="emoine_r-v1-DeleteMeetingRequest"></a>
 
-### CreateTokenRequest
+### DeleteMeetingRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| meeting_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="emoine_r-v1-GenerateTokenRequest"></a>
+
+### GenerateTokenRequest
 
 
 
@@ -198,30 +213,15 @@
 
 
 
-<a name="emoine_r-v1-CreateTokenResponse"></a>
+<a name="emoine_r-v1-GenerateTokenResponse"></a>
 
-### CreateTokenResponse
+### GenerateTokenResponse
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | token | [Token](#emoine_r-v1-Token) |  |  |
-
-
-
-
-
-
-<a name="emoine_r-v1-DeleteMeetingRequest"></a>
-
-### DeleteMeetingRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
 
 
 
@@ -308,8 +308,8 @@
 | UpdateMeeting | [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会情報を更新します |
 | DeleteMeeting | [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会を削除します |
 | GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当する集会のトークン一覧を取得します |
-| CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | 集会のトークンを作成します |
-| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会のトークンを無効化します |
+| GenerateToken | [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest) | [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse) | 集会用のトークンを生成します |
+| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会用のトークンを無効化します |
 
  
 
