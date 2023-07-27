@@ -120,7 +120,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| token | [string](#string) |  | トークン文字列 |
+| id | [string](#string) |  | トークンのID (UUID) |
+| raw | [string](#string) |  | トークン文字列 |
 | username | [string](#string) |  | トークンの所有者名 |
 | meeting_id | [string](#string) |  | トークンが有効な集会のID |
 | creator_id | [string](#string) |  | トークン発行者のtraQID (traQと同期) |
@@ -266,7 +267,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| token | [string](#string) |  |  |
+| token_id | [string](#string) |  |  |
 | meeting_id | [string](#string) |  |  |
 
 

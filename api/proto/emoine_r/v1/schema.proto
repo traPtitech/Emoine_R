@@ -21,20 +21,22 @@ message Meeting {
 }
 
 message Token {
+  // トークンのID (UUID)
+  string id = 1;
   // トークン文字列
-  string token = 1;
+  string raw = 2;
   // トークンの所有者名
-  string username = 2;
+  string username = 3;
   // トークンが有効な集会のID
-  string meeting_id = 3;
+  string meeting_id = 4;
   // トークン発行者のtraQID (traQと同期)
-  string creator_id = 4;
+  string creator_id = 5;
   // トークンの説明
-  string description = 5;
+  string description = 6;
   // トークンの作成日時
-  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp created_at = 7;
   // トークンの有効期限
-  google.protobuf.Timestamp expire_at = 7;
+  google.protobuf.Timestamp expire_at = 8;
 }
 
 message Comment {

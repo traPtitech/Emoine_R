@@ -60,6 +60,6 @@ message GenerateTokenResponse {
 }
 
 message RevokeTokenRequest {
-  string token = 1;
+  string token_id = 1;
   string meeting_id = 2;
 }
