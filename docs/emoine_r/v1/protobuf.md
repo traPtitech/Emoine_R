@@ -191,7 +191,9 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | meeting_id | [string](#string) |  |  |
+| username | [string](#string) |  |  |
 | description | [string](#string) |  |  |
+| expire_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
@@ -267,8 +269,8 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | meeting_id | [string](#string) |  |  |
-| video_id | [string](#string) |  |  |
-| description | [string](#string) |  |  |
+| video_id | [string](#string) | optional |  |
+| description | [string](#string) | optional |  |
 
 
 
@@ -285,7 +287,9 @@
 | ----- | ---- | ----- | ----------- |
 | token | [string](#string) |  |  |
 | meeting_id | [string](#string) |  |  |
-| description | [string](#string) |  |  |
+| username | [string](#string) | optional |  |
+| description | [string](#string) | optional |  |
+| expire_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) | optional |  |
 
 
 
