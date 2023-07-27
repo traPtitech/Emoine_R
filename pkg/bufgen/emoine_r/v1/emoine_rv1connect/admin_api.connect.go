@@ -49,9 +49,9 @@ const (
 	// AdminAPIServiceCreateTokenProcedure is the fully-qualified name of the AdminAPIService's
 	// CreateToken RPC.
 	AdminAPIServiceCreateTokenProcedure = "/emoine_r.v1.AdminAPIService/CreateToken"
-	// AdminAPIServiceUpdateTokenProcedure is the fully-qualified name of the AdminAPIService's
-	// UpdateToken RPC.
-	AdminAPIServiceUpdateTokenProcedure = "/emoine_r.v1.AdminAPIService/UpdateToken"
+	// AdminAPIServiceRevokeTokenProcedure is the fully-qualified name of the AdminAPIService's
+	// RevokeToken RPC.
+	AdminAPIServiceRevokeTokenProcedure = "/emoine_r.v1.AdminAPIService/RevokeToken"
 )
 
 // AdminAPIServiceClient is a client for the emoine_r.v1.AdminAPIService service.
@@ -66,8 +66,8 @@ type AdminAPIServiceClient interface {
 	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
 	// 集会のトークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
-	// 集会のトークン情報を更新します
-	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
+	// 集会のトークンを無効化します
+	RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewAdminAPIServiceClient constructs a client for the emoine_r.v1.AdminAPIService service. By
@@ -105,9 +105,9 @@ func NewAdminAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+AdminAPIServiceCreateTokenProcedure,
 			opts...,
 		),
-		updateToken: connect_go.NewClient[v1.UpdateTokenRequest, emptypb.Empty](
+		revokeToken: connect_go.NewClient[v1.RevokeTokenRequest, emptypb.Empty](
 			httpClient,
-			baseURL+AdminAPIServiceUpdateTokenProcedure,
+			baseURL+AdminAPIServiceRevokeTokenProcedure,
 			opts...,
 		),
 	}
@@ -120,7 +120,7 @@ type adminAPIServiceClient struct {
 	deleteMeeting *connect_go.Client[v1.DeleteMeetingRequest, emptypb.Empty]
 	getTokens     *connect_go.Client[v1.GetTokensRequest, v1.GetTokensResponse]
 	createToken   *connect_go.Client[v1.CreateTokenRequest, v1.CreateTokenResponse]
-	updateToken   *connect_go.Client[v1.UpdateTokenRequest, emptypb.Empty]
+	revokeToken   *connect_go.Client[v1.RevokeTokenRequest, emptypb.Empty]
 }
 
 // CreateMeeting calls emoine_r.v1.AdminAPIService.CreateMeeting.
@@ -148,9 +148,9 @@ func (c *adminAPIServiceClient) CreateToken(ctx context.Context, req *connect_go
 	return c.createToken.CallUnary(ctx, req)
 }
 
-// UpdateToken calls emoine_r.v1.AdminAPIService.UpdateToken.
-func (c *adminAPIServiceClient) UpdateToken(ctx context.Context, req *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return c.updateToken.CallUnary(ctx, req)
+// RevokeToken calls emoine_r.v1.AdminAPIService.RevokeToken.
+func (c *adminAPIServiceClient) RevokeToken(ctx context.Context, req *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return c.revokeToken.CallUnary(ctx, req)
 }
 
 // AdminAPIServiceHandler is an implementation of the emoine_r.v1.AdminAPIService service.
@@ -165,8 +165,8 @@ type AdminAPIServiceHandler interface {
 	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
 	// 集会のトークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
-	// 集会のトークン情報を更新します
-	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
+	// 集会のトークンを無効化します
+	RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewAdminAPIServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -200,9 +200,9 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect_go.Ha
 		svc.CreateToken,
 		opts...,
 	)
-	adminAPIServiceUpdateTokenHandler := connect_go.NewUnaryHandler(
-		AdminAPIServiceUpdateTokenProcedure,
-		svc.UpdateToken,
+	adminAPIServiceRevokeTokenHandler := connect_go.NewUnaryHandler(
+		AdminAPIServiceRevokeTokenProcedure,
+		svc.RevokeToken,
 		opts...,
 	)
 	return "/emoine_r.v1.AdminAPIService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -217,8 +217,8 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect_go.Ha
 			adminAPIServiceGetTokensHandler.ServeHTTP(w, r)
 		case AdminAPIServiceCreateTokenProcedure:
 			adminAPIServiceCreateTokenHandler.ServeHTTP(w, r)
-		case AdminAPIServiceUpdateTokenProcedure:
-			adminAPIServiceUpdateTokenHandler.ServeHTTP(w, r)
+		case AdminAPIServiceRevokeTokenProcedure:
+			adminAPIServiceRevokeTokenHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -248,6 +248,6 @@ func (UnimplementedAdminAPIServiceHandler) CreateToken(context.Context, *connect
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.CreateToken is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.UpdateToken is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.RevokeToken is not implemented"))
 }

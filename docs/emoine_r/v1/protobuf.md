@@ -17,8 +17,8 @@
     - [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest)
     - [GetTokensRequest](#emoine_r-v1-GetTokensRequest)
     - [GetTokensResponse](#emoine_r-v1-GetTokensResponse)
+    - [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest)
     - [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest)
-    - [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest)
   
     - [AdminAPIService](#emoine_r-v1-AdminAPIService)
   
@@ -258,6 +258,22 @@
 
 
 
+<a name="emoine_r-v1-RevokeTokenRequest"></a>
+
+### RevokeTokenRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| token | [string](#string) |  |  |
+| meeting_id | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="emoine_r-v1-UpdateMeetingRequest"></a>
 
 ### UpdateMeetingRequest
@@ -269,25 +285,6 @@
 | meeting_id | [string](#string) |  |  |
 | video_id | [string](#string) | optional |  |
 | description | [string](#string) | optional |  |
-
-
-
-
-
-
-<a name="emoine_r-v1-UpdateTokenRequest"></a>
-
-### UpdateTokenRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| token | [string](#string) |  |  |
-| meeting_id | [string](#string) |  |  |
-| username | [string](#string) | optional |  |
-| description | [string](#string) | optional |  |
-| expire_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) | optional |  |
 
 
 
@@ -312,7 +309,7 @@
 | DeleteMeeting | [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会を削除します |
 | GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当する集会のトークン一覧を取得します |
 | CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | 集会のトークンを作成します |
-| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会のトークン情報を更新します |
+| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会のトークンを無効化します |
 
  
 
