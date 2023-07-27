@@ -8,7 +8,7 @@ import (
 	context "context"
 	errors "errors"
 	connect_go "github.com/bufbuild/connect-go"
-	v1 "github.com/traPtitech/Emoine_R/pkg/bufgen/emoine_r/v1"
+	v1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	http "net/http"
 	strings "strings"
 )
