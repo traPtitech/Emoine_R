@@ -33,8 +33,6 @@
     - [GetMeetingResponse](#emoine_r-v1-GetMeetingResponse)
     - [GetMeetingsRequest](#emoine_r-v1-GetMeetingsRequest)
     - [GetMeetingsResponse](#emoine_r-v1-GetMeetingsResponse)
-    - [OAuth2AuthorizeRequest](#emoine_r-v1-OAuth2AuthorizeRequest)
-    - [OAuth2CallbackRequest](#emoine_r-v1-OAuth2CallbackRequest)
     - [SendCommentRequest](#emoine_r-v1-SendCommentRequest)
     - [SendCommentResponse](#emoine_r-v1-SendCommentResponse)
     - [SendReactionRequest](#emoine_r-v1-SendReactionRequest)
@@ -481,37 +479,6 @@
 
 
 
-<a name="emoine_r-v1-OAuth2AuthorizeRequest"></a>
-
-### OAuth2AuthorizeRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| state | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="emoine_r-v1-OAuth2CallbackRequest"></a>
-
-### OAuth2CallbackRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [string](#string) |  |  |
-| state | [string](#string) |  |  |
-
-
-
-
-
-
 <a name="emoine_r-v1-SendCommentRequest"></a>
 
 ### SendCommentRequest
@@ -596,8 +563,6 @@
 | ConnectToMeetingStream | [ConnectToMeetingStreamRequest](#emoine_r-v1-ConnectToMeetingStreamRequest) | [ConnectToMeetingStreamResponse](#emoine_r-v1-ConnectToMeetingStreamResponse) stream | 集会のストリームに接続します |
 | SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | (コメントは集会のストリームに反映されます) |
 | SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | (リアクションは集会のストリームに反映されます) |
-| OAuth2Authorize | [OAuth2AuthorizeRequest](#emoine_r-v1-OAuth2AuthorizeRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | OAuth2による認可を行います |
-| OAuth2Callback | [OAuth2CallbackRequest](#emoine_r-v1-OAuth2CallbackRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | OAuth2のコールバックを受け取ります |
 
  
 

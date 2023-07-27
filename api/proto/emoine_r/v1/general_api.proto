@@ -2,7 +2,6 @@ syntax = "proto3";
 package emoine_r.v1;
 
 import "emoine_r/v1/schema.proto";
-import "google/protobuf/empty.proto";
 
 // 権限が必要ないAPIを提供します
 service GeneralAPIService {
@@ -20,10 +19,6 @@ service GeneralAPIService {
   rpc SendComment(SendCommentRequest) returns (SendCommentResponse);
   // (リアクションは集会のストリームに反映されます)
   rpc SendReaction(SendReactionRequest) returns (SendReactionResponse);
-  // OAuth2による認可を行います
-  rpc OAuth2Authorize(OAuth2AuthorizeRequest) returns (google.protobuf.Empty);
-  // OAuth2のコールバックを受け取ります
-  rpc OAuth2Callback(OAuth2CallbackRequest) returns (google.protobuf.Empty);
 }
 
 message GetMeetingsRequest {
@@ -90,13 +85,4 @@ message SendReactionRequest {
 
 message SendReactionResponse {
   Reaction reaction = 1;
-}
-
-message OAuth2AuthorizeRequest {
-  string state = 1;
-}
-
-message OAuth2CallbackRequest {
-  string code = 1;
-  string state = 2;
 }

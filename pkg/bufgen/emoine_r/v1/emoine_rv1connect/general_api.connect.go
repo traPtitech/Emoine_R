@@ -9,7 +9,6 @@ import (
 	errors "errors"
 	connect_go "github.com/bufbuild/connect-go"
 	v1 "github.com/traPtitech/Emoine_R/pkg/bufgen/emoine_r/v1"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -55,12 +54,6 @@ const (
 	// GeneralAPIServiceSendReactionProcedure is the fully-qualified name of the GeneralAPIService's
 	// SendReaction RPC.
 	GeneralAPIServiceSendReactionProcedure = "/emoine_r.v1.GeneralAPIService/SendReaction"
-	// GeneralAPIServiceOAuth2AuthorizeProcedure is the fully-qualified name of the GeneralAPIService's
-	// OAuth2Authorize RPC.
-	GeneralAPIServiceOAuth2AuthorizeProcedure = "/emoine_r.v1.GeneralAPIService/OAuth2Authorize"
-	// GeneralAPIServiceOAuth2CallbackProcedure is the fully-qualified name of the GeneralAPIService's
-	// OAuth2Callback RPC.
-	GeneralAPIServiceOAuth2CallbackProcedure = "/emoine_r.v1.GeneralAPIService/OAuth2Callback"
 )
 
 // GeneralAPIServiceClient is a client for the emoine_r.v1.GeneralAPIService service.
@@ -79,10 +72,6 @@ type GeneralAPIServiceClient interface {
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
 	// (リアクションは集会のストリームに反映されます)
 	SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error)
-	// OAuth2による認可を行います
-	OAuth2Authorize(context.Context, *connect_go.Request[v1.OAuth2AuthorizeRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// OAuth2のコールバックを受け取ります
-	OAuth2Callback(context.Context, *connect_go.Request[v1.OAuth2CallbackRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewGeneralAPIServiceClient constructs a client for the emoine_r.v1.GeneralAPIService service. By
@@ -130,16 +119,6 @@ func NewGeneralAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string
 			baseURL+GeneralAPIServiceSendReactionProcedure,
 			opts...,
 		),
-		oAuth2Authorize: connect_go.NewClient[v1.OAuth2AuthorizeRequest, emptypb.Empty](
-			httpClient,
-			baseURL+GeneralAPIServiceOAuth2AuthorizeProcedure,
-			opts...,
-		),
-		oAuth2Callback: connect_go.NewClient[v1.OAuth2CallbackRequest, emptypb.Empty](
-			httpClient,
-			baseURL+GeneralAPIServiceOAuth2CallbackProcedure,
-			opts...,
-		),
 	}
 }
 
@@ -152,8 +131,6 @@ type generalAPIServiceClient struct {
 	connectToMeetingStream *connect_go.Client[v1.ConnectToMeetingStreamRequest, v1.ConnectToMeetingStreamResponse]
 	sendComment            *connect_go.Client[v1.SendCommentRequest, v1.SendCommentResponse]
 	sendReaction           *connect_go.Client[v1.SendReactionRequest, v1.SendReactionResponse]
-	oAuth2Authorize        *connect_go.Client[v1.OAuth2AuthorizeRequest, emptypb.Empty]
-	oAuth2Callback         *connect_go.Client[v1.OAuth2CallbackRequest, emptypb.Empty]
 }
 
 // GetMeetings calls emoine_r.v1.GeneralAPIService.GetMeetings.
@@ -191,16 +168,6 @@ func (c *generalAPIServiceClient) SendReaction(ctx context.Context, req *connect
 	return c.sendReaction.CallUnary(ctx, req)
 }
 
-// OAuth2Authorize calls emoine_r.v1.GeneralAPIService.OAuth2Authorize.
-func (c *generalAPIServiceClient) OAuth2Authorize(ctx context.Context, req *connect_go.Request[v1.OAuth2AuthorizeRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return c.oAuth2Authorize.CallUnary(ctx, req)
-}
-
-// OAuth2Callback calls emoine_r.v1.GeneralAPIService.OAuth2Callback.
-func (c *generalAPIServiceClient) OAuth2Callback(ctx context.Context, req *connect_go.Request[v1.OAuth2CallbackRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return c.oAuth2Callback.CallUnary(ctx, req)
-}
-
 // GeneralAPIServiceHandler is an implementation of the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceHandler interface {
 	// 集会一覧を取得します
@@ -217,10 +184,6 @@ type GeneralAPIServiceHandler interface {
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
 	// (リアクションは集会のストリームに反映されます)
 	SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error)
-	// OAuth2による認可を行います
-	OAuth2Authorize(context.Context, *connect_go.Request[v1.OAuth2AuthorizeRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// OAuth2のコールバックを受け取ります
-	OAuth2Callback(context.Context, *connect_go.Request[v1.OAuth2CallbackRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
 // NewGeneralAPIServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -264,16 +227,6 @@ func NewGeneralAPIServiceHandler(svc GeneralAPIServiceHandler, opts ...connect_g
 		svc.SendReaction,
 		opts...,
 	)
-	generalAPIServiceOAuth2AuthorizeHandler := connect_go.NewUnaryHandler(
-		GeneralAPIServiceOAuth2AuthorizeProcedure,
-		svc.OAuth2Authorize,
-		opts...,
-	)
-	generalAPIServiceOAuth2CallbackHandler := connect_go.NewUnaryHandler(
-		GeneralAPIServiceOAuth2CallbackProcedure,
-		svc.OAuth2Callback,
-		opts...,
-	)
 	return "/emoine_r.v1.GeneralAPIService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case GeneralAPIServiceGetMeetingsProcedure:
@@ -290,10 +243,6 @@ func NewGeneralAPIServiceHandler(svc GeneralAPIServiceHandler, opts ...connect_g
 			generalAPIServiceSendCommentHandler.ServeHTTP(w, r)
 		case GeneralAPIServiceSendReactionProcedure:
 			generalAPIServiceSendReactionHandler.ServeHTTP(w, r)
-		case GeneralAPIServiceOAuth2AuthorizeProcedure:
-			generalAPIServiceOAuth2AuthorizeHandler.ServeHTTP(w, r)
-		case GeneralAPIServiceOAuth2CallbackProcedure:
-			generalAPIServiceOAuth2CallbackHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -329,12 +278,4 @@ func (UnimplementedGeneralAPIServiceHandler) SendComment(context.Context, *conne
 
 func (UnimplementedGeneralAPIServiceHandler) SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.SendReaction is not implemented"))
-}
-
-func (UnimplementedGeneralAPIServiceHandler) OAuth2Authorize(context.Context, *connect_go.Request[v1.OAuth2AuthorizeRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.OAuth2Authorize is not implemented"))
-}
-
-func (UnimplementedGeneralAPIServiceHandler) OAuth2Callback(context.Context, *connect_go.Request[v1.OAuth2CallbackRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.OAuth2Callback is not implemented"))
 }
