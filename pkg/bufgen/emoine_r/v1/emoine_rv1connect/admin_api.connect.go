@@ -43,9 +43,9 @@ const (
 	// AdminAPIServiceDeleteMeetingProcedure is the fully-qualified name of the AdminAPIService's
 	// DeleteMeeting RPC.
 	AdminAPIServiceDeleteMeetingProcedure = "/emoine_r.v1.AdminAPIService/DeleteMeeting"
-	// AdminAPIServiceGetMeetingTokensProcedure is the fully-qualified name of the AdminAPIService's
-	// GetMeetingTokens RPC.
-	AdminAPIServiceGetMeetingTokensProcedure = "/emoine_r.v1.AdminAPIService/GetMeetingTokens"
+	// AdminAPIServiceGetTokensProcedure is the fully-qualified name of the AdminAPIService's GetTokens
+	// RPC.
+	AdminAPIServiceGetTokensProcedure = "/emoine_r.v1.AdminAPIService/GetTokens"
 	// AdminAPIServiceCreateTokenProcedure is the fully-qualified name of the AdminAPIService's
 	// CreateToken RPC.
 	AdminAPIServiceCreateTokenProcedure = "/emoine_r.v1.AdminAPIService/CreateToken"
@@ -63,10 +63,10 @@ type AdminAPIServiceClient interface {
 	// 集会を削除します
 	DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// 該当する集会のトークン一覧を取得します
-	GetMeetingTokens(context.Context, *connect_go.Request[v1.GetMeetingTokensRequest]) (*connect_go.Response[v1.GetMeetingTokensResponse], error)
-	// トークンを作成します
+	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
+	// 集会のトークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
-	// トークン情報を更新します
+	// 集会のトークン情報を更新します
 	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
@@ -95,9 +95,9 @@ func NewAdminAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+AdminAPIServiceDeleteMeetingProcedure,
 			opts...,
 		),
-		getMeetingTokens: connect_go.NewClient[v1.GetMeetingTokensRequest, v1.GetMeetingTokensResponse](
+		getTokens: connect_go.NewClient[v1.GetTokensRequest, v1.GetTokensResponse](
 			httpClient,
-			baseURL+AdminAPIServiceGetMeetingTokensProcedure,
+			baseURL+AdminAPIServiceGetTokensProcedure,
 			opts...,
 		),
 		createToken: connect_go.NewClient[v1.CreateTokenRequest, v1.CreateTokenResponse](
@@ -115,12 +115,12 @@ func NewAdminAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 
 // adminAPIServiceClient implements AdminAPIServiceClient.
 type adminAPIServiceClient struct {
-	createMeeting    *connect_go.Client[v1.CreateMeetingRequest, v1.CreateMeetingResponse]
-	updateMeeting    *connect_go.Client[v1.UpdateMeetingRequest, emptypb.Empty]
-	deleteMeeting    *connect_go.Client[v1.DeleteMeetingRequest, emptypb.Empty]
-	getMeetingTokens *connect_go.Client[v1.GetMeetingTokensRequest, v1.GetMeetingTokensResponse]
-	createToken      *connect_go.Client[v1.CreateTokenRequest, v1.CreateTokenResponse]
-	updateToken      *connect_go.Client[v1.UpdateTokenRequest, emptypb.Empty]
+	createMeeting *connect_go.Client[v1.CreateMeetingRequest, v1.CreateMeetingResponse]
+	updateMeeting *connect_go.Client[v1.UpdateMeetingRequest, emptypb.Empty]
+	deleteMeeting *connect_go.Client[v1.DeleteMeetingRequest, emptypb.Empty]
+	getTokens     *connect_go.Client[v1.GetTokensRequest, v1.GetTokensResponse]
+	createToken   *connect_go.Client[v1.CreateTokenRequest, v1.CreateTokenResponse]
+	updateToken   *connect_go.Client[v1.UpdateTokenRequest, emptypb.Empty]
 }
 
 // CreateMeeting calls emoine_r.v1.AdminAPIService.CreateMeeting.
@@ -138,9 +138,9 @@ func (c *adminAPIServiceClient) DeleteMeeting(ctx context.Context, req *connect_
 	return c.deleteMeeting.CallUnary(ctx, req)
 }
 
-// GetMeetingTokens calls emoine_r.v1.AdminAPIService.GetMeetingTokens.
-func (c *adminAPIServiceClient) GetMeetingTokens(ctx context.Context, req *connect_go.Request[v1.GetMeetingTokensRequest]) (*connect_go.Response[v1.GetMeetingTokensResponse], error) {
-	return c.getMeetingTokens.CallUnary(ctx, req)
+// GetTokens calls emoine_r.v1.AdminAPIService.GetTokens.
+func (c *adminAPIServiceClient) GetTokens(ctx context.Context, req *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error) {
+	return c.getTokens.CallUnary(ctx, req)
 }
 
 // CreateToken calls emoine_r.v1.AdminAPIService.CreateToken.
@@ -162,10 +162,10 @@ type AdminAPIServiceHandler interface {
 	// 集会を削除します
 	DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
 	// 該当する集会のトークン一覧を取得します
-	GetMeetingTokens(context.Context, *connect_go.Request[v1.GetMeetingTokensRequest]) (*connect_go.Response[v1.GetMeetingTokensResponse], error)
-	// トークンを作成します
+	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
+	// 集会のトークンを作成します
 	CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error)
-	// トークン情報を更新します
+	// 集会のトークン情報を更新します
 	UpdateToken(context.Context, *connect_go.Request[v1.UpdateTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
@@ -190,9 +190,9 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect_go.Ha
 		svc.DeleteMeeting,
 		opts...,
 	)
-	adminAPIServiceGetMeetingTokensHandler := connect_go.NewUnaryHandler(
-		AdminAPIServiceGetMeetingTokensProcedure,
-		svc.GetMeetingTokens,
+	adminAPIServiceGetTokensHandler := connect_go.NewUnaryHandler(
+		AdminAPIServiceGetTokensProcedure,
+		svc.GetTokens,
 		opts...,
 	)
 	adminAPIServiceCreateTokenHandler := connect_go.NewUnaryHandler(
@@ -213,8 +213,8 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect_go.Ha
 			adminAPIServiceUpdateMeetingHandler.ServeHTTP(w, r)
 		case AdminAPIServiceDeleteMeetingProcedure:
 			adminAPIServiceDeleteMeetingHandler.ServeHTTP(w, r)
-		case AdminAPIServiceGetMeetingTokensProcedure:
-			adminAPIServiceGetMeetingTokensHandler.ServeHTTP(w, r)
+		case AdminAPIServiceGetTokensProcedure:
+			adminAPIServiceGetTokensHandler.ServeHTTP(w, r)
 		case AdminAPIServiceCreateTokenProcedure:
 			adminAPIServiceCreateTokenHandler.ServeHTTP(w, r)
 		case AdminAPIServiceUpdateTokenProcedure:
@@ -240,8 +240,8 @@ func (UnimplementedAdminAPIServiceHandler) DeleteMeeting(context.Context, *conne
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.DeleteMeeting is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) GetMeetingTokens(context.Context, *connect_go.Request[v1.GetMeetingTokensRequest]) (*connect_go.Response[v1.GetMeetingTokensResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.GetMeetingTokens is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.GetTokens is not implemented"))
 }
 
 func (UnimplementedAdminAPIServiceHandler) CreateToken(context.Context, *connect_go.Request[v1.CreateTokenRequest]) (*connect_go.Response[v1.CreateTokenResponse], error) {

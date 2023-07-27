@@ -15,8 +15,8 @@
     - [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest)
     - [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse)
     - [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest)
-    - [GetMeetingTokensRequest](#emoine_r-v1-GetMeetingTokensRequest)
-    - [GetMeetingTokensResponse](#emoine_r-v1-GetMeetingTokensResponse)
+    - [GetTokensRequest](#emoine_r-v1-GetTokensRequest)
+    - [GetTokensResponse](#emoine_r-v1-GetTokensResponse)
     - [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest)
     - [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest)
   
@@ -228,9 +228,9 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingTokensRequest"></a>
+<a name="emoine_r-v1-GetTokensRequest"></a>
 
-### GetMeetingTokensRequest
+### GetTokensRequest
 
 
 
@@ -243,9 +243,9 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingTokensResponse"></a>
+<a name="emoine_r-v1-GetTokensResponse"></a>
 
-### GetMeetingTokensResponse
+### GetTokensResponse
 
 
 
@@ -308,9 +308,9 @@
 | CreateMeeting | [CreateMeetingRequest](#emoine_r-v1-CreateMeetingRequest) | [CreateMeetingResponse](#emoine_r-v1-CreateMeetingResponse) | 集会を作成します |
 | UpdateMeeting | [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会情報を更新します |
 | DeleteMeeting | [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会を削除します |
-| GetMeetingTokens | [GetMeetingTokensRequest](#emoine_r-v1-GetMeetingTokensRequest) | [GetMeetingTokensResponse](#emoine_r-v1-GetMeetingTokensResponse) | 該当する集会のトークン一覧を取得します |
-| CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | トークンを作成します |
-| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | トークン情報を更新します |
+| GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当する集会のトークン一覧を取得します |
+| CreateToken | [CreateTokenRequest](#emoine_r-v1-CreateTokenRequest) | [CreateTokenResponse](#emoine_r-v1-CreateTokenResponse) | 集会のトークンを作成します |
+| UpdateToken | [UpdateTokenRequest](#emoine_r-v1-UpdateTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会のトークン情報を更新します |
 
  
 
