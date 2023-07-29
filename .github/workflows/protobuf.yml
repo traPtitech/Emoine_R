@@ -1,0 +1,48 @@
+name: protobuf CI
+
+env:
+  PROTO_PATH: "api/proto"
+
+on:
+  pull_request:
+    paths:
+      - "${{ env.PROTO_PATH }}/**"
+
+jobs:
+  buf-lint:
+    name: Buf Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+      - uses: bufbuild/buf-lint-action@v1
+        with:
+          input: "${{ env.PROTO_PATH }}"
+
+  buf-format:
+    name: Buf Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+      - run: buf format --exit-code --diff
+
+  buf-breaking:
+    name: Buf Breaking
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+      - uses: bufbuild/buf-breaking-action@v1
+        with:
+          input: "${{ env.PROTO_PATH }}"
+          against: "${{ github.server_url }}/${{ github.repository }}.git#branch=${{ github.base_ref }}"
+
+  buf-diff:
+    name: Buf Diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bufbuild/buf-setup-action@v1
+      - run: buf generate --path ${{ env.PROTO_PATH }}
+      - run: git diff --exit-code
