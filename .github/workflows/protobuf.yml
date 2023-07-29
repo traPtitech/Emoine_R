@@ -4,6 +4,11 @@ env:
   PROTO_PATH: "api/proto"
 
 on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "${{ env.PROTO_PATH }}/**"
   pull_request:
     paths:
       - "${{ env.PROTO_PATH }}/**"
