@@ -46,5 +46,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bufbuild/buf-setup-action@v1
-      - run: cd api/proto && buf generate
+      - run: buf generate
+        working-directory: api/proto
       - run: git diff --exit-code
