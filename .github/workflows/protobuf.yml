@@ -45,8 +45,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: "api/proto"
       - uses: bufbuild/buf-setup-action@v1
-      - run: buf generate
+      - run: cd api/proto && buf generate
       - run: git diff --exit-code
