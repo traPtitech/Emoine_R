@@ -3,6 +3,7 @@ module github.com/traPtitech/Emoine_R
 go 1.20
 
 require (
+	github.com/bufbuild/connect-go v1.9.0
 	github.com/deepmap/oapi-codegen v1.12.4
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/google/uuid v1.3.0
@@ -11,6 +12,7 @@ require (
 	github.com/labstack/echo-contrib v0.13.0
 	github.com/labstack/echo/v4 v4.9.1
 	google.golang.org/api v0.116.0
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
@@ -38,5 +40,4 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230331144136-dcfb400f0633 // indirect
 	google.golang.org/grpc v1.54.0 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
 )

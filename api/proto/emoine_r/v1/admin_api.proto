@@ -1,0 +1,65 @@
+syntax = "proto3";
+package emoine_r.v1;
+
+import "emoine_r/v1/schema.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// 管理者権限が必要なAPIを提供します
+service AdminAPIService {
+  // 集会を作成します
+  rpc CreateMeeting(CreateMeetingRequest) returns (CreateMeetingResponse);
+  // 集会情報を更新します
+  rpc UpdateMeeting(UpdateMeetingRequest) returns (google.protobuf.Empty);
+  // 集会を削除します
+  rpc DeleteMeeting(DeleteMeetingRequest) returns (google.protobuf.Empty);
+  // 該当する集会のトークン一覧を取得します
+  rpc GetTokens(GetTokensRequest) returns (GetTokensResponse);
+  // 集会用のトークンを生成します
+  rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse);
+  // 集会用のトークンを無効化します
+  rpc RevokeToken(RevokeTokenRequest) returns (google.protobuf.Empty);
+}
+
+message CreateMeetingRequest {
+  string video_id = 1;
+  string description = 2;
+}
+
+message CreateMeetingResponse {
+  Meeting meeting = 1;
+}
+
+message UpdateMeetingRequest {
+  string meeting_id = 1;
+  optional string video_id = 2;
+  optional string description = 3;
+}
+
+message DeleteMeetingRequest {
+  string meeting_id = 1;
+}
+
+message GetTokensRequest {
+  string meeting_id = 1;
+}
+
+message GetTokensResponse {
+  repeated Token tokens = 1;
+}
+
+message GenerateTokenRequest {
+  string meeting_id = 1;
+  string username = 2;
+  string description = 3;
+  google.protobuf.Timestamp expire_at = 4;
+}
+
+message GenerateTokenResponse {
+  Token token = 1;
+}
+
+message RevokeTokenRequest {
+  string token_id = 1;
+  string meeting_id = 2;
+}
