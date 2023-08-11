@@ -92,6 +92,10 @@ func (h *AdminAPIHandler) UpdateMeeting(ctx context.Context, req *connect.Reques
 	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
+func (h *AdminAPIHandler) DeleteMeeting(ctx context.Context, req *connect.Request[emoine_rv1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
 func CreateMeeting(c echo.Context) error {
 	req := new(schema.CreateMeetingJSONRequestBody)
 	if err := c.Bind(req); err != nil {
