@@ -16,6 +16,10 @@ func (h *AdminAPIHandler) GetTokens(ctx context.Context, req *connect.Request[em
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
+func (h *AdminAPIHandler) GenerateToken(ctx context.Context, req *connect.Request[emoine_rv1.GenerateTokenRequest]) (*connect.Response[emoine_rv1.GenerateTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
 func GetTokens(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
