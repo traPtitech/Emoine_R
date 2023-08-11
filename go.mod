@@ -1,6 +1,6 @@
 module github.com/traPtitech/Emoine_R
 
-go 1.21.0
+go 1.21
 
 require (
 	github.com/bufbuild/connect-go v1.9.0
