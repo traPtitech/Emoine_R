@@ -16,6 +16,7 @@ import (
 	"github.com/traPtitech/Emoine_R/model/dbschema"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/youtube"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -66,6 +67,29 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 	})
 
 	return res, nil
+}
+
+func (h *AdminAPIHandler) UpdateMeeting(ctx context.Context, req *connect.Request[emoine_rv1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
+	mid, err := uuid.Parse(req.Msg.MeetingId)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
+	}
+
+	m, err := dbschema.MeetingByID(ctx, model.DB, mid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
+	}
+
+	if req.Msg.Description != nil {
+		m.Description.String = *req.Msg.Description
+		m.Description.Valid = true
+	}
+
+	if err := m.Update(ctx, model.DB); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの更新に失敗しました"))
+	}
+
+	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
 func CreateMeeting(c echo.Context) error {
