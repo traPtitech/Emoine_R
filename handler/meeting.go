@@ -1,18 +1,72 @@
 package handler
 
 import (
+	"context"
 	"database/sql"
 	"errors"
+	"log/slog"
 	"net/http"
 	"time"
 
+	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/traPtitech/Emoine_R/handler/schema"
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
+	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/youtube"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Request[emoine_rv1.CreateMeetingRequest]) (*connect.Response[emoine_rv1.CreateMeetingResponse], error) {
+	h.logger.Info("Video Info", slog.String("video_id", req.Msg.VideoId), slog.String("description", req.Msg.Description))
+	video, err := youtube.GetVideo(ctx, req.Msg.VideoId)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("動画の取得に失敗しました"))
+	}
+
+	startedAt, endedAt, err := getVideoStreamingDates(video)
+	if err != nil {
+		msg := "動画の開始時刻または終了時刻の取得に失敗しました"
+		if errors.Is(err, errIsNotLiveStreaming) {
+			msg += ": ライブ配信のIDを指定してください"
+		}
+
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(msg))
+	}
+
+	var description sql.NullString
+	if req.Msg.Description != "" {
+		description.String = req.Msg.Description
+		description.Valid = true
+	}
+
+	m := dbschema.Meeting{
+		ID:          uuid.New(),
+		VideoID:     req.Msg.VideoId,
+		Title:       video.Snippet.Title,
+		Description: description,
+		StartedAt:   startedAt,
+		EndedAt:     endedAt,
+	}
+	if err := m.Insert(ctx, model.DB); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの作成に失敗しました"))
+	}
+
+	res := connect.NewResponse(&emoine_rv1.CreateMeetingResponse{
+		Meeting: &emoine_rv1.Meeting{
+			Id:          m.ID.String(),
+			VideoId:     m.VideoID,
+			Title:       m.Title,
+			Description: m.Description.String,
+			StartedAt:   &timestamppb.Timestamp{Seconds: m.StartedAt.Unix()},
+			EndedAt:     &timestamppb.Timestamp{Seconds: m.EndedAt.Time.Unix()},
+		},
+	})
+
+	return res, nil
+}
 
 func CreateMeeting(c echo.Context) error {
 	req := new(schema.CreateMeetingJSONRequestBody)
