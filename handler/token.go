@@ -25,14 +25,6 @@ func (h *AdminAPIHandler) RevokeToken(ctx context.Context, req *connect.Request[
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func GetTokens(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
-func CreateToken(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
-}
-
 // stringなキーのtokenから構造体のtokenを得る。
 func GetToken(c echo.Context) error {
 	token_string := c.Param("token")
@@ -41,8 +33,4 @@ func GetToken(c echo.Context) error {
 		return c.String(http.StatusNotFound, "tokenが見つかりませんでした: "+err.Error())
 	}
 	return c.JSON(http.StatusOK, token_struct)
-}
-
-func UpdateToken(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
 }
