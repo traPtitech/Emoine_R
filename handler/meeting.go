@@ -171,6 +171,10 @@ func (h *GeneralAPIHandler) SendComment(ctx context.Context, req *connect.Reques
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
+func (h *GeneralAPIHandler) SendReaction(ctx context.Context, req *connect.Request[emoine_rv1.SendReactionRequest]) (*connect.Response[emoine_rv1.SendReactionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
 func GetMeetingTokens(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
