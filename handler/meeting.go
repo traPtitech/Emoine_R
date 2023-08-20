@@ -125,8 +125,30 @@ func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Reques
 	return res, nil
 }
 
-func GetMeeting(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingRequest]) (*connect.Response[emoine_rv1.GetMeetingResponse], error) {
+	mid, err := uuid.Parse(req.Msg.Id)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
+	}
+
+	m, err := dbschema.MeetingByID(ctx, model.DB, mid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
+	}
+
+	res := connect.NewResponse(&emoine_rv1.GetMeetingResponse{
+		Meeting: &emoine_rv1.Meeting{
+			Id:          m.ID.String(),
+			VideoId:     m.VideoID,
+			Title:       m.Title,
+			Thumbnail:   m.Thumbnail,
+			Description: m.Description.String,
+			StartedAt:   timestamppb.New(m.StartedAt),
+			EndedAt:     lo.Ternary(m.EndedAt.Valid, timestamppb.New(m.EndedAt.Time), nil),
+		},
+	})
+
+	return res, nil
 }
 
 func GetMeetingComments(c echo.Context) error {
