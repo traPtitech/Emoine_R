@@ -11,6 +11,8 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo-contrib v0.13.0
 	github.com/labstack/echo/v4 v4.9.1
+	github.com/samber/lo v1.38.1
+	golang.org/x/net v0.8.0
 	google.golang.org/api v0.116.0
 	google.golang.org/protobuf v1.31.0
 )
@@ -32,7 +34,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/net v0.8.0 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/oauth2 v0.6.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect

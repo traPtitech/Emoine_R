@@ -11,6 +11,7 @@ import (
 	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/samber/lo"
 	"github.com/traPtitech/Emoine_R/handler/schema"
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
@@ -61,8 +62,8 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 			VideoId:     m.VideoID,
 			Title:       m.Title,
 			Description: m.Description.String,
-			StartedAt:   &timestamppb.Timestamp{Seconds: m.StartedAt.Unix()},
-			EndedAt:     &timestamppb.Timestamp{Seconds: m.EndedAt.Time.Unix()},
+			StartedAt:   timestamppb.New(m.StartedAt),
+			EndedAt:     lo.Ternary(m.EndedAt.Valid, timestamppb.New(m.EndedAt.Time), nil),
 		},
 	})
 
