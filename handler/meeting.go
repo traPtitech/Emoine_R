@@ -6,13 +6,11 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
-	"time"
 
 	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
-	"github.com/traPtitech/Emoine_R/handler/schema"
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
@@ -99,47 +97,32 @@ func (h *AdminAPIHandler) DeleteMeeting(ctx context.Context, req *connect.Reques
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func GetMeetings(c echo.Context) error {
-	req := new(schema.GetMeetingsParams)
-	if err := c.Bind(req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "リクエストのパースに失敗しました").SetInternal(err)
-	}
-	if req.Limit == nil {
-		limit := 0
-		req.Limit = &limit
-	}
-	if req.Offset == nil {
-		offset := 0
-		req.Offset = &offset
-	}
-	m, err := dbschema.Meetings(c.Request().Context(), model.DB, *req.Limit, *req.Offset)
+func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingsRequest]) (*connect.Response[emoine_rv1.GetMeetingsResponse], error) {
+	m, err := dbschema.Meetings(ctx, model.DB, int(req.Msg.Limit), int(req.Msg.Offset))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
+		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
-	cnt, err := dbschema.MeetingCount(c.Request().Context(), model.DB)
+	cnt, err := dbschema.MeetingCount(ctx, model.DB)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, "ミーティングの取得に失敗しました").SetInternal(err)
+		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 
-	return c.JSON(http.StatusOK, schema.MeetingsWithTotal{
-		Total: cnt,
-		Meetings: func() []schema.Meeting {
-			ms := make([]schema.Meeting, len(m))
-			for i, v := range m {
-				ms[i] = schema.Meeting{
-					Id:          v.ID,
-					VideoId:     v.VideoID,
-					Title:       v.Title,
-					Thumbnail:   v.Thumbnail,
-					Description: mustValue[string](v.Description),
-					StartedAt:   v.StartedAt,
-					EndedAt:     mustValue[time.Time](v.EndedAt),
-				}
+	res := connect.NewResponse(&emoine_rv1.GetMeetingsResponse{
+		Total: int32(cnt),
+		Meetings: lo.Map(m, func(v dbschema.Meeting, _ int) *emoine_rv1.Meeting {
+			return &emoine_rv1.Meeting{
+				Id:          v.ID.String(),
+				VideoId:     v.VideoID,
+				Title:       v.Title,
+				Thumbnail:   v.Thumbnail,
+				Description: v.Description.String,
+				StartedAt:   timestamppb.New(v.StartedAt),
+				EndedAt:     lo.Ternary(v.EndedAt.Valid, timestamppb.New(v.EndedAt.Time), nil),
 			}
-
-			return ms
-		}(),
+		}),
 	})
+
+	return res, nil
 }
 
 func GetMeeting(c echo.Context) error {
