@@ -17,12 +17,15 @@ import (
 )
 
 func main() {
+	// TODO: Interceptor
 	mux := http.NewServeMux()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
 	adminAPIHandler := handler.NewAdminAPIHandler(logger)
+	generalAPIHandler := handler.NewGeneralAPIHandler(logger)
 
 	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(adminAPIHandler))
+	mux.Handle(emoine_rv1connect.NewGeneralAPIServiceHandler(generalAPIHandler))
 
 	fmt.Println("Server started")
 	http.ListenAndServe(
@@ -58,11 +61,6 @@ func main() {
 
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
-
-	withLogin.GET("/meeting", handler.GetMeetings)
-	withLogin.GET("/meeting/:meetingId", handler.GetMeeting)
-	withLogin.GET("/meeting/:meetingId/comments", handler.GetMeetingComments)
-	withLogin.GET("/meeting/:meetingId/reactions", handler.GetMeetingReactions)
 
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
