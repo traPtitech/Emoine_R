@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
@@ -17,7 +19,9 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	adminAPIHandler := handler.NewAdminAPIHandler()
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
+	adminAPIHandler := handler.NewAdminAPIHandler(logger)
+
 	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(adminAPIHandler))
 
 	fmt.Println("Server started")
