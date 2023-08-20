@@ -151,8 +151,8 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	return res, nil
 }
 
-func GetMeetingComments(c echo.Context) error {
-	return c.String(http.StatusNotImplemented, "未実装です")
+func (h *GeneralAPIHandler) GetMeetingComments(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingCommentsRequest]) (*connect.Response[emoine_rv1.GetMeetingCommentsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
 func GetMeetingReactions(c echo.Context) error {
