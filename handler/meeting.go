@@ -159,6 +159,14 @@ func (h *GeneralAPIHandler) GetMeetingReactions(ctx context.Context, req *connec
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
+func (h *GeneralAPIHandler) ConnectToMeetingStream(
+	ctx context.Context,
+	req *connect.Request[emoine_rv1.ConnectToMeetingStreamRequest],
+	stream *connect.ServerStream[emoine_rv1.ConnectToMeetingStreamResponse],
+) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
 func GetMeetingTokens(c echo.Context) error {
 	return c.String(http.StatusNotImplemented, "未実装です")
 }
