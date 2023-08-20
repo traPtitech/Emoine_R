@@ -17,8 +17,8 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	adminAPIHadnler := handler.NewAdminAPIHandler()
-	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(adminAPIHadnler))
+	adminAPIHandler := handler.NewAdminAPIHandler()
+	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(adminAPIHandler))
 
 	fmt.Println("Server started")
 	http.ListenAndServe(
