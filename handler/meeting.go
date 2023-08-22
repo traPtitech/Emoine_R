@@ -98,7 +98,15 @@ func (h *AdminAPIHandler) DeleteMeeting(ctx context.Context, req *connect.Reques
 }
 
 func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingsRequest]) (*connect.Response[emoine_rv1.GetMeetingsResponse], error) {
-	m, err := dbschema.Meetings(ctx, model.DB, int(req.Msg.Limit), int(req.Msg.Offset))
+	if req.Msg.Limit == nil {
+		limit := int32(0)
+		req.Msg.Limit = &limit
+	}
+	if req.Msg.Offset == nil {
+		offset := int32(0)
+		req.Msg.Offset = &offset
+	}
+	m, err := dbschema.Meetings(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
