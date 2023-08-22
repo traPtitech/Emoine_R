@@ -2,26 +2,10 @@ package handler
 
 import (
 	"database/sql"
-	"database/sql/driver"
 	"time"
 
 	"google.golang.org/api/youtube/v3"
 )
-
-func mustValue[T any](v driver.Valuer) (value T) {
-	if v == nil {
-		return
-	}
-
-	vv, err := v.Value()
-	if err != nil {
-		return
-	}
-
-	value, _ = vv.(T)
-
-	return value
-}
 
 func getVideoStreamingDates(video *youtube.Video) (time.Time, sql.NullTime, error) {
 	videoLiveStreamingDetails := video.LiveStreamingDetails

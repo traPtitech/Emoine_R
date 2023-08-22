@@ -13,10 +13,10 @@ import (
 	"github.com/samber/lo"
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
+	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/youtube"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Request[emoine_rv1.CreateMeetingRequest]) (*connect.Response[emoine_rv1.CreateMeetingResponse], error) {
@@ -56,15 +56,7 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 	}
 
 	res := connect.NewResponse(&emoine_rv1.CreateMeetingResponse{
-		Meeting: &emoine_rv1.Meeting{
-			Id:          m.ID.String(),
-			VideoId:     m.VideoID,
-			Title:       m.Title,
-			Thumbnail:   m.Thumbnail,
-			Description: m.Description.String,
-			StartedAt:   timestamppb.New(m.StartedAt),
-			EndedAt:     lo.Ternary(m.EndedAt.Valid, timestamppb.New(m.EndedAt.Time), nil),
-		},
+		Meeting: pbconv.ToPBMeeting(m),
 	})
 
 	return res, nil
@@ -118,15 +110,7 @@ func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Reques
 	res := connect.NewResponse(&emoine_rv1.GetMeetingsResponse{
 		Total: int32(cnt),
 		Meetings: lo.Map(m, func(v dbschema.Meeting, _ int) *emoine_rv1.Meeting {
-			return &emoine_rv1.Meeting{
-				Id:          v.ID.String(),
-				VideoId:     v.VideoID,
-				Title:       v.Title,
-				Thumbnail:   v.Thumbnail,
-				Description: v.Description.String,
-				StartedAt:   timestamppb.New(v.StartedAt),
-				EndedAt:     lo.Ternary(v.EndedAt.Valid, timestamppb.New(v.EndedAt.Time), nil),
-			}
+			return pbconv.ToPBMeeting(v)
 		}),
 	})
 
@@ -145,15 +129,7 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	}
 
 	res := connect.NewResponse(&emoine_rv1.GetMeetingResponse{
-		Meeting: &emoine_rv1.Meeting{
-			Id:          m.ID.String(),
-			VideoId:     m.VideoID,
-			Title:       m.Title,
-			Thumbnail:   m.Thumbnail,
-			Description: m.Description.String,
-			StartedAt:   timestamppb.New(m.StartedAt),
-			EndedAt:     lo.Ternary(m.EndedAt.Valid, timestamppb.New(m.EndedAt.Time), nil),
-		},
+		Meeting: pbconv.ToPBMeeting(*m),
 	})
 
 	return res, nil
