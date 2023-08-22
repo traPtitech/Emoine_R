@@ -25,13 +25,11 @@ func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Reques
 	m, err := dbschema.Meetings(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
 		h.logger.Error("Meetings", "err", err)
-
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 	cnt, err := dbschema.MeetingCount(ctx, model.DB)
 	if err != nil {
 		h.logger.Error("MeetingCount", "err", err)
-
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 
@@ -49,14 +47,12 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	mid, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
-
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
 	}
 
 	m, err := dbschema.MeetingByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("MeetingByID", "err", err)
-
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 

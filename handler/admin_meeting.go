@@ -19,7 +19,6 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 	video, err := youtube.GetVideo(ctx, req.Msg.VideoId)
 	if err != nil {
 		h.logger.Error("GetVideo", "err", err)
-
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("動画の取得に失敗しました"))
 	}
 
@@ -29,8 +28,8 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 		if errors.Is(err, errIsNotLiveStreaming) {
 			msg += ": ライブ配信のIDを指定してください"
 		}
-		h.logger.Error("GetVideoStreamingDates", "err", err)
 
+		h.logger.Error("GetVideoStreamingDates", "err", err)
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(msg))
 	}
 
@@ -51,7 +50,6 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 	}
 	if err := m.Insert(ctx, model.DB); err != nil {
 		h.logger.Error("Insert", "err", err)
-
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの作成に失敗しました"))
 	}
 
@@ -66,14 +64,12 @@ func (h *AdminAPIHandler) UpdateMeeting(ctx context.Context, req *connect.Reques
 	mid, err := uuid.Parse(req.Msg.MeetingId)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
-
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
 	}
 
 	m, err := dbschema.MeetingByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("MeetingByID", "err", err)
-
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 
@@ -84,7 +80,6 @@ func (h *AdminAPIHandler) UpdateMeeting(ctx context.Context, req *connect.Reques
 
 	if err := m.Update(ctx, model.DB); err != nil {
 		h.logger.Error("Update", "err", err)
-
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの更新に失敗しました"))
 	}
 
