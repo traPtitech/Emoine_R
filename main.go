@@ -2,16 +2,37 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/traPtitech/Emoine_R/handler"
+	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 )
 
 func main() {
+	// TODO: Interceptor
+	mux := http.NewServeMux()
+
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
+	adminAPIHandler := handler.NewAdminAPIHandler(logger)
+	generalAPIHandler := handler.NewGeneralAPIHandler(logger)
+
+	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(adminAPIHandler))
+	mux.Handle(emoine_rv1connect.NewGeneralAPIServiceHandler(generalAPIHandler))
+
+	logger.Info("Server started")
+	http.ListenAndServe(
+		"localhost:8090",
+		h2c.NewHandler(mux, &http2.Server{}),
+	)
+
 	// TODO: 認証
 	e := echo.New()
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
@@ -41,22 +62,6 @@ func main() {
 	withLogin := e.Group("")
 	withLogin.Use(handler.CheckLogin)
 
-	withLogin.GET("/meeting", handler.GetMeetings)
-	withLogin.GET("/meeting/:meetingId", handler.GetMeeting)
-	withLogin.GET("/meeting/:meetingId/comments", handler.GetMeetingComments)
-	withLogin.GET("/meeting/:meetingId/reactions", handler.GetMeetingReactions)
-
 	withAdmin := withLogin.Group("")
 	withAdmin.Use(handler.CheckIsAdmin)
-
-	withAdmin.POST("/meeting", handler.CreateMeeting)
-	withAdmin.PATCH("/meeting/:meetingId", handler.UpdateMeeting)
-	withAdmin.DELETE("/meeting/:meetingId", handler.DeleteMeeting)
-	withAdmin.GET("/meeting/:meetingId/tokens", handler.GetMeetingTokens)
-	withAdmin.POST("/token", handler.CreateToken)
-	withAdmin.GET("/token", handler.GetTokens)
-	withAdmin.GET("/token/:token", handler.GetToken)
-	withAdmin.PATCH("/token/:token", handler.UpdateToken)
-
-	e.Logger.Fatal(e.Start(":8090"))
 }
