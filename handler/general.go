@@ -67,6 +67,10 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 		h.logger.Error("MeetingByID", "err", err)
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
+	if m == nil {
+		h.logger.Error("MeetingByID", "err", "not found")
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("ミーティングが見つかりませんでした"))
+	}
 
 	res := connect.NewResponse(&emoine_rv1.GetMeetingResponse{
 		Meeting: pbconv.FromDBMeeting(*m),

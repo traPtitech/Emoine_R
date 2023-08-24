@@ -13,7 +13,7 @@ func FromDBMeeting(m dbschema.Meeting) *emoine_rv1.Meeting {
 		VideoId:     m.VideoID,
 		Title:       m.Title,
 		Thumbnail:   m.Thumbnail,
-		Description: mustValue[string](m.Description),
+		Description: lo.Ternary(m.Description.Valid, m.Description.String, ""),
 		StartedAt:   timestamppb.New(m.StartedAt),
 		EndedAt:     lo.Ternary(m.EndedAt.Valid, timestamppb.New(m.EndedAt.Time), nil),
 	}

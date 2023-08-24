@@ -27,7 +27,7 @@ func main() {
 	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(adminAPIHandler))
 	mux.Handle(emoine_rv1connect.NewGeneralAPIServiceHandler(generalAPIHandler))
 
-	fmt.Println("Server started")
+	logger.Info("Server started")
 	http.ListenAndServe(
 		"localhost:8090",
 		h2c.NewHandler(mux, &http2.Server{}),
