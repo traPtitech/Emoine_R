@@ -36,7 +36,7 @@ func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Reques
 	res := connect.NewResponse(&emoine_rv1.GetMeetingsResponse{
 		Total: int32(cnt),
 		Meetings: lo.Map(m, func(v dbschema.Meeting, _ int) *emoine_rv1.Meeting {
-			return pbconv.ToPBMeeting(v)
+			return pbconv.FromDBMeeting(v)
 		}),
 	})
 
@@ -57,7 +57,7 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	}
 
 	res := connect.NewResponse(&emoine_rv1.GetMeetingResponse{
-		Meeting: pbconv.ToPBMeeting(*m),
+		Meeting: pbconv.FromDBMeeting(*m),
 	})
 
 	return res, nil

@@ -54,7 +54,7 @@ func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Reques
 	}
 
 	res := connect.NewResponse(&emoine_rv1.CreateMeetingResponse{
-		Meeting: pbconv.ToPBMeeting(m),
+		Meeting: pbconv.FromDBMeeting(m),
 	})
 
 	return res, nil
