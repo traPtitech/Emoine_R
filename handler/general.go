@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"log/slog"
 
 	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
@@ -11,7 +12,18 @@ import (
 	"github.com/traPtitech/Emoine_R/model/dbschema"
 	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
+	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
 )
+
+type GeneralAPIHandler struct {
+	logger *slog.Logger
+}
+
+func NewGeneralAPIHandler(logger *slog.Logger) emoine_rv1connect.GeneralAPIServiceHandler {
+	return &GeneralAPIHandler{
+		logger: logger,
+	}
+}
 
 func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingsRequest]) (*connect.Response[emoine_rv1.GetMeetingsResponse], error) {
 	if req.Msg.Limit == nil {
@@ -68,5 +80,21 @@ func (h *GeneralAPIHandler) GetMeetingComments(ctx context.Context, req *connect
 }
 
 func (h *GeneralAPIHandler) GetMeetingReactions(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingReactionsRequest]) (*connect.Response[emoine_rv1.GetMeetingReactionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
+func (h *GeneralAPIHandler) ConnectToMeetingStream(
+	ctx context.Context,
+	req *connect.Request[emoine_rv1.ConnectToMeetingStreamRequest],
+	stream *connect.ServerStream[emoine_rv1.ConnectToMeetingStreamResponse],
+) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
+func (h *GeneralAPIHandler) SendComment(ctx context.Context, req *connect.Request[emoine_rv1.SendCommentRequest]) (*connect.Response[emoine_rv1.SendCommentResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
+func (h *GeneralAPIHandler) SendReaction(ctx context.Context, req *connect.Request[emoine_rv1.SendReactionRequest]) (*connect.Response[emoine_rv1.SendReactionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"log/slog"
 
 	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
@@ -11,9 +12,20 @@ import (
 	"github.com/traPtitech/Emoine_R/model/dbschema"
 	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
+	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
 	"github.com/traPtitech/Emoine_R/pkg/youtube"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
+
+type AdminAPIHandler struct {
+	logger *slog.Logger
+}
+
+func NewAdminAPIHandler(logger *slog.Logger) emoine_rv1connect.AdminAPIServiceHandler {
+	return &AdminAPIHandler{
+		logger: logger,
+	}
+}
 
 func (h *AdminAPIHandler) CreateMeeting(ctx context.Context, req *connect.Request[emoine_rv1.CreateMeetingRequest]) (*connect.Response[emoine_rv1.CreateMeetingResponse], error) {
 	video, err := youtube.GetVideo(ctx, req.Msg.VideoId)
@@ -87,5 +99,17 @@ func (h *AdminAPIHandler) UpdateMeeting(ctx context.Context, req *connect.Reques
 }
 
 func (h *AdminAPIHandler) DeleteMeeting(ctx context.Context, req *connect.Request[emoine_rv1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
+func (h *AdminAPIHandler) GetTokens(ctx context.Context, req *connect.Request[emoine_rv1.GetTokensRequest]) (*connect.Response[emoine_rv1.GetTokensResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
+func (h *AdminAPIHandler) GenerateToken(ctx context.Context, req *connect.Request[emoine_rv1.GenerateTokenRequest]) (*connect.Response[emoine_rv1.GenerateTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+}
+
+func (h *AdminAPIHandler) RevokeToken(ctx context.Context, req *connect.Request[emoine_rv1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
