@@ -22,7 +22,9 @@ service GeneralAPIService {
 }
 
 message GetMeetingsRequest {
+  // default: 10
   optional int32 limit = 1;
+  // default: 0
   optional int32 offset = 2;
 }
 

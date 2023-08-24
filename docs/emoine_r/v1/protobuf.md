@@ -453,8 +453,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| limit | [int32](#int32) | optional |  |
-| offset | [int32](#int32) | optional |  |
+| limit | [int32](#int32) | optional | default: 10 |
+| offset | [int32](#int32) | optional | default: 0 |
 
 
 

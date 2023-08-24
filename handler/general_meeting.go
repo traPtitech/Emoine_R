@@ -15,7 +15,7 @@ import (
 
 func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingsRequest]) (*connect.Response[emoine_rv1.GetMeetingsResponse], error) {
 	if req.Msg.Limit == nil {
-		limit := int32(0)
+		limit := int32(10)
 		req.Msg.Limit = &limit
 	}
 	if req.Msg.Offset == nil {
