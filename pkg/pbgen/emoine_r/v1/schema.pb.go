@@ -26,19 +26,19 @@ type Event struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 集会ID (UUID)
+	// イベントID (UUID)
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// YouTubeの動画ID
 	VideoId string `protobuf:"bytes,2,opt,name=video_id,json=videoId,proto3" json:"video_id,omitempty"`
-	// 集会の説明
+	// イベントの説明
 	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	// 動画タイトル (YouTubeから取得)
 	Title string `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
 	// 動画サムネイル (YouTubeから取得)
 	Thumbnail string `protobuf:"bytes,5,opt,name=thumbnail,proto3" json:"thumbnail,omitempty"`
-	// 集会の開始日時 (YouTubeから取得)
+	// イベントの開始日時 (YouTubeから取得)
 	StartedAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
-	// 集会の終了日時 (YouTubeから取得)
+	// イベントの終了日時 (YouTubeから取得)
 	EndedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=ended_at,json=endedAt,proto3" json:"ended_at,omitempty"`
 }
 
@@ -134,7 +134,7 @@ type Token struct {
 	Raw string `protobuf:"bytes,2,opt,name=raw,proto3" json:"raw,omitempty"`
 	// トークンの所有者名
 	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	// トークンが有効な集会のID
+	// トークンが有効なイベントのID
 	EventId string `protobuf:"bytes,4,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
 	// トークン発行者のtraQID (traQと同期)
 	CreatorId string `protobuf:"bytes,5,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
@@ -241,7 +241,7 @@ type Comment struct {
 
 	// コメントのID (UUID)
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// コメントが送信された集会のID
+	// コメントが送信されたイベントのID
 	EventId string `protobuf:"bytes,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
 	// コメントの送信者名
 	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
@@ -343,7 +343,7 @@ type Reaction struct {
 
 	// リアクションのID (UUID)
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// リアクションが送信された集会のID
+	// リアクションが送信されたイベントのID
 	EventId string `protobuf:"bytes,2,opt,name=event_id,json=eventId,proto3" json:"event_id,omitempty"`
 	// リアクションの送信者名
 	Username string `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`

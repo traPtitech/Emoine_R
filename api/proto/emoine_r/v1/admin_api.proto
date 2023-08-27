@@ -7,17 +7,17 @@ import "google/protobuf/timestamp.proto";
 
 // 管理者権限が必要なAPIを提供します
 service AdminAPIService {
-  // 集会を作成します
+  // イベントを作成します
   rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
-  // 集会情報を更新します
+  // イベント情報を更新します
   rpc UpdateEvent(UpdateEventRequest) returns (google.protobuf.Empty);
-  // 集会を削除します
+  // イベントを削除します
   rpc DeleteEvent(DeleteEventRequest) returns (google.protobuf.Empty);
-  // 該当する集会のトークン一覧を取得します
+  // 該当するイベントのトークン一覧を取得します
   rpc GetTokens(GetTokensRequest) returns (GetTokensResponse);
-  // 集会用のトークンを生成します
+  // イベント用のトークンを生成します
   rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse);
-  // 集会用のトークンを無効化します
+  // イベント用のトークンを無効化します
   rpc RevokeToken(RevokeTokenRequest) returns (google.protobuf.Empty);
 }
 

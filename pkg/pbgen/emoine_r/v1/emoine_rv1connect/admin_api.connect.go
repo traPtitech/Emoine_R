@@ -56,17 +56,17 @@ const (
 
 // AdminAPIServiceClient is a client for the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceClient interface {
-	// 集会を作成します
+	// イベントを作成します
 	CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error)
-	// 集会情報を更新します
+	// イベント情報を更新します
 	UpdateEvent(context.Context, *connect_go.Request[v1.UpdateEventRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// 集会を削除します
+	// イベントを削除します
 	DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// 該当する集会のトークン一覧を取得します
+	// 該当するイベントのトークン一覧を取得します
 	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
-	// 集会用のトークンを生成します
+	// イベント用のトークンを生成します
 	GenerateToken(context.Context, *connect_go.Request[v1.GenerateTokenRequest]) (*connect_go.Response[v1.GenerateTokenResponse], error)
-	// 集会用のトークンを無効化します
+	// イベント用のトークンを無効化します
 	RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 
@@ -155,17 +155,17 @@ func (c *adminAPIServiceClient) RevokeToken(ctx context.Context, req *connect_go
 
 // AdminAPIServiceHandler is an implementation of the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceHandler interface {
-	// 集会を作成します
+	// イベントを作成します
 	CreateEvent(context.Context, *connect_go.Request[v1.CreateEventRequest]) (*connect_go.Response[v1.CreateEventResponse], error)
-	// 集会情報を更新します
+	// イベント情報を更新します
 	UpdateEvent(context.Context, *connect_go.Request[v1.UpdateEventRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// 集会を削除します
+	// イベントを削除します
 	DeleteEvent(context.Context, *connect_go.Request[v1.DeleteEventRequest]) (*connect_go.Response[emptypb.Empty], error)
-	// 該当する集会のトークン一覧を取得します
+	// 該当するイベントのトークン一覧を取得します
 	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
-	// 集会用のトークンを生成します
+	// イベント用のトークンを生成します
 	GenerateToken(context.Context, *connect_go.Request[v1.GenerateTokenRequest]) (*connect_go.Response[v1.GenerateTokenResponse], error)
-	// 集会用のトークンを無効化します
+	// イベント用のトークンを無効化します
 	RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
 }
 

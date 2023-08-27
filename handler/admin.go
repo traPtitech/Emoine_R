@@ -62,7 +62,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 	}
 	if err := m.Insert(ctx, model.DB); err != nil {
 		h.logger.Error("Insert", "err", err)
-		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの作成に失敗しました"))
+		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの作成に失敗しました"))
 	}
 
 	res := connect.NewResponse(&emoine_rv1.CreateEventResponse{
@@ -82,7 +82,7 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 	m, err := dbschema.EventByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("EventByID", "err", err)
-		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
+		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 
 	if req.Msg.Description != nil {
@@ -92,7 +92,7 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 
 	if err := m.Update(ctx, model.DB); err != nil {
 		h.logger.Error("Update", "err", err)
-		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの更新に失敗しました"))
+		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの更新に失敗しました"))
 	}
 
 	return connect.NewResponse(&emptypb.Empty{}), nil

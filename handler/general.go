@@ -37,12 +37,12 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 	m, err := dbschema.Events(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
 		h.logger.Error("Events", "err", err)
-		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
+		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 	cnt, err := dbschema.EventCount(ctx, model.DB)
 	if err != nil {
 		h.logger.Error("EventCount", "err", err)
-		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
+		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 
 	res := connect.NewResponse(&emoine_rv1.GetEventsResponse{
@@ -65,11 +65,11 @@ func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[e
 	m, err := dbschema.EventByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("EventByID", "err", err)
-		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
+		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 	if m == nil {
 		h.logger.Error("EventByID", "err", "not found")
-		return nil, connect.NewError(connect.CodeNotFound, errors.New("ミーティングが見つかりませんでした"))
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("イベントが見つかりませんでした"))
 	}
 
 	res := connect.NewResponse(&emoine_rv1.GetEventResponse{

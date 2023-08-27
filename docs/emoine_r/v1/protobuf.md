@@ -60,7 +60,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | コメントのID (UUID) |
-| event_id | [string](#string) |  | コメントが送信された集会のID |
+| event_id | [string](#string) |  | コメントが送信されたイベントのID |
 | username | [string](#string) |  | コメントの送信者名 |
 | text | [string](#string) |  | コメントの本文 |
 | is_anonymous | [bool](#bool) |  | コメントが匿名かどうか |
@@ -80,13 +80,13 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [string](#string) |  | 集会ID (UUID) |
+| id | [string](#string) |  | イベントID (UUID) |
 | video_id | [string](#string) |  | YouTubeの動画ID |
-| description | [string](#string) |  | 集会の説明 |
+| description | [string](#string) |  | イベントの説明 |
 | title | [string](#string) |  | 動画タイトル (YouTubeから取得) |
 | thumbnail | [string](#string) |  | 動画サムネイル (YouTubeから取得) |
-| started_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | 集会の開始日時 (YouTubeから取得) |
-| ended_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | 集会の終了日時 (YouTubeから取得) |
+| started_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | イベントの開始日時 (YouTubeから取得) |
+| ended_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | イベントの終了日時 (YouTubeから取得) |
 
 
 
@@ -102,7 +102,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | リアクションのID (UUID) |
-| event_id | [string](#string) |  | リアクションが送信された集会のID |
+| event_id | [string](#string) |  | リアクションが送信されたイベントのID |
 | username | [string](#string) |  | リアクションの送信者名 |
 | stamp_id | [string](#string) |  | 送信されたリアクションのスタンプID (UUID, traQと同期) |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | リアクションの作成日時 |
@@ -123,7 +123,7 @@
 | id | [string](#string) |  | トークンのID (UUID) |
 | raw | [string](#string) |  | トークン文字列 |
 | username | [string](#string) |  | トークンの所有者名 |
-| event_id | [string](#string) |  | トークンが有効な集会のID |
+| event_id | [string](#string) |  | トークンが有効なイベントのID |
 | creator_id | [string](#string) |  | トークン発行者のtraQID (traQと同期) |
 | description | [string](#string) |  | トークンの説明 |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | トークンの作成日時 |
@@ -305,12 +305,12 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| CreateEvent | [CreateEventRequest](#emoine_r-v1-CreateEventRequest) | [CreateEventResponse](#emoine_r-v1-CreateEventResponse) | 集会を作成します |
-| UpdateEvent | [UpdateEventRequest](#emoine_r-v1-UpdateEventRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会情報を更新します |
-| DeleteEvent | [DeleteEventRequest](#emoine_r-v1-DeleteEventRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会を削除します |
-| GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当する集会のトークン一覧を取得します |
-| GenerateToken | [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest) | [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse) | 集会用のトークンを生成します |
-| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会用のトークンを無効化します |
+| CreateEvent | [CreateEventRequest](#emoine_r-v1-CreateEventRequest) | [CreateEventResponse](#emoine_r-v1-CreateEventResponse) | イベントを作成します |
+| UpdateEvent | [UpdateEventRequest](#emoine_r-v1-UpdateEventRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | イベント情報を更新します |
+| DeleteEvent | [DeleteEventRequest](#emoine_r-v1-DeleteEventRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | イベントを削除します |
+| GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当するイベントのトークン一覧を取得します |
+| GenerateToken | [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest) | [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse) | イベント用のトークンを生成します |
+| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | イベント用のトークンを無効化します |
 
  
 
@@ -554,13 +554,13 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetEvents | [GetEventsRequest](#emoine_r-v1-GetEventsRequest) | [GetEventsResponse](#emoine_r-v1-GetEventsResponse) | 集会一覧を取得します |
-| GetEvent | [GetEventRequest](#emoine_r-v1-GetEventRequest) | [GetEventResponse](#emoine_r-v1-GetEventResponse) | 該当する集会を取得します |
-| GetEventComments | [GetEventCommentsRequest](#emoine_r-v1-GetEventCommentsRequest) | [GetEventCommentsResponse](#emoine_r-v1-GetEventCommentsResponse) | 該当する集会のコメント一覧を取得します |
-| GetEventReactions | [GetEventReactionsRequest](#emoine_r-v1-GetEventReactionsRequest) | [GetEventReactionsResponse](#emoine_r-v1-GetEventReactionsResponse) | 該当する集会のリアクション一覧を取得します |
-| ConnectToEventStream | [ConnectToEventStreamRequest](#emoine_r-v1-ConnectToEventStreamRequest) | [ConnectToEventStreamResponse](#emoine_r-v1-ConnectToEventStreamResponse) stream | 集会のストリームに接続します |
-| SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | (コメントは集会のストリームに反映されます) |
-| SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | (リアクションは集会のストリームに反映されます) |
+| GetEvents | [GetEventsRequest](#emoine_r-v1-GetEventsRequest) | [GetEventsResponse](#emoine_r-v1-GetEventsResponse) | イベント一覧を取得します |
+| GetEvent | [GetEventRequest](#emoine_r-v1-GetEventRequest) | [GetEventResponse](#emoine_r-v1-GetEventResponse) | 該当するイベントを取得します |
+| GetEventComments | [GetEventCommentsRequest](#emoine_r-v1-GetEventCommentsRequest) | [GetEventCommentsResponse](#emoine_r-v1-GetEventCommentsResponse) | 該当するイベントのコメント一覧を取得します |
+| GetEventReactions | [GetEventReactionsRequest](#emoine_r-v1-GetEventReactionsRequest) | [GetEventReactionsResponse](#emoine_r-v1-GetEventReactionsResponse) | 該当するイベントのリアクション一覧を取得します |
+| ConnectToEventStream | [ConnectToEventStreamRequest](#emoine_r-v1-ConnectToEventStreamRequest) | [ConnectToEventStreamResponse](#emoine_r-v1-ConnectToEventStreamResponse) stream | イベントのストリームに接続します |
+| SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | (コメントはイベントのストリームに反映されます) |
+| SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | (リアクションはイベントのストリームに反映されます) |
 
  
 

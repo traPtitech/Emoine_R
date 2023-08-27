@@ -5,19 +5,19 @@ import "emoine_r/v1/schema.proto";
 
 // 権限が必要ないAPIを提供します
 service GeneralAPIService {
-  // 集会一覧を取得します
+  // イベント一覧を取得します
   rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
-  // 該当する集会を取得します
+  // 該当するイベントを取得します
   rpc GetEvent(GetEventRequest) returns (GetEventResponse);
-  // 該当する集会のコメント一覧を取得します
+  // 該当するイベントのコメント一覧を取得します
   rpc GetEventComments(GetEventCommentsRequest) returns (GetEventCommentsResponse);
-  // 該当する集会のリアクション一覧を取得します
+  // 該当するイベントのリアクション一覧を取得します
   rpc GetEventReactions(GetEventReactionsRequest) returns (GetEventReactionsResponse);
-  // 集会のストリームに接続します
+  // イベントのストリームに接続します
   rpc ConnectToEventStream(ConnectToEventStreamRequest) returns (stream ConnectToEventStreamResponse);
-  // (コメントは集会のストリームに反映されます)
+  // (コメントはイベントのストリームに反映されます)
   rpc SendComment(SendCommentRequest) returns (SendCommentResponse);
-  // (リアクションは集会のストリームに反映されます)
+  // (リアクションはイベントのストリームに反映されます)
   rpc SendReaction(SendReactionRequest) returns (SendReactionResponse);
 }
 

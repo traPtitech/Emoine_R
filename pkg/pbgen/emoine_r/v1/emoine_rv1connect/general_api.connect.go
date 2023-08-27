@@ -58,19 +58,19 @@ const (
 
 // GeneralAPIServiceClient is a client for the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceClient interface {
-	// 集会一覧を取得します
+	// イベント一覧を取得します
 	GetEvents(context.Context, *connect_go.Request[v1.GetEventsRequest]) (*connect_go.Response[v1.GetEventsResponse], error)
-	// 該当する集会を取得します
+	// 該当するイベントを取得します
 	GetEvent(context.Context, *connect_go.Request[v1.GetEventRequest]) (*connect_go.Response[v1.GetEventResponse], error)
-	// 該当する集会のコメント一覧を取得します
+	// 該当するイベントのコメント一覧を取得します
 	GetEventComments(context.Context, *connect_go.Request[v1.GetEventCommentsRequest]) (*connect_go.Response[v1.GetEventCommentsResponse], error)
-	// 該当する集会のリアクション一覧を取得します
+	// 該当するイベントのリアクション一覧を取得します
 	GetEventReactions(context.Context, *connect_go.Request[v1.GetEventReactionsRequest]) (*connect_go.Response[v1.GetEventReactionsResponse], error)
-	// 集会のストリームに接続します
+	// イベントのストリームに接続します
 	ConnectToEventStream(context.Context, *connect_go.Request[v1.ConnectToEventStreamRequest]) (*connect_go.ServerStreamForClient[v1.ConnectToEventStreamResponse], error)
-	// (コメントは集会のストリームに反映されます)
+	// (コメントはイベントのストリームに反映されます)
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
-	// (リアクションは集会のストリームに反映されます)
+	// (リアクションはイベントのストリームに反映されます)
 	SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error)
 }
 
@@ -170,19 +170,19 @@ func (c *generalAPIServiceClient) SendReaction(ctx context.Context, req *connect
 
 // GeneralAPIServiceHandler is an implementation of the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceHandler interface {
-	// 集会一覧を取得します
+	// イベント一覧を取得します
 	GetEvents(context.Context, *connect_go.Request[v1.GetEventsRequest]) (*connect_go.Response[v1.GetEventsResponse], error)
-	// 該当する集会を取得します
+	// 該当するイベントを取得します
 	GetEvent(context.Context, *connect_go.Request[v1.GetEventRequest]) (*connect_go.Response[v1.GetEventResponse], error)
-	// 該当する集会のコメント一覧を取得します
+	// 該当するイベントのコメント一覧を取得します
 	GetEventComments(context.Context, *connect_go.Request[v1.GetEventCommentsRequest]) (*connect_go.Response[v1.GetEventCommentsResponse], error)
-	// 該当する集会のリアクション一覧を取得します
+	// 該当するイベントのリアクション一覧を取得します
 	GetEventReactions(context.Context, *connect_go.Request[v1.GetEventReactionsRequest]) (*connect_go.Response[v1.GetEventReactionsResponse], error)
-	// 集会のストリームに接続します
+	// イベントのストリームに接続します
 	ConnectToEventStream(context.Context, *connect_go.Request[v1.ConnectToEventStreamRequest], *connect_go.ServerStream[v1.ConnectToEventStreamResponse]) error
-	// (コメントは集会のストリームに反映されます)
+	// (コメントはイベントのストリームに反映されます)
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
-	// (リアクションは集会のストリームに反映されます)
+	// (リアクションはイベントのストリームに反映されます)
 	SendReaction(context.Context, *connect_go.Request[v1.SendReactionRequest]) (*connect_go.Response[v1.SendReactionResponse], error)
 }
 
