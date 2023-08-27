@@ -11,14 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
+      - uses: actions/setup-go@v4
         with:
           go-version-file: ./go.mod
-
-      - name: Build
-        run: go build main.go
+      - run: go build -v ./...
 
   golangci:
     name: lint
