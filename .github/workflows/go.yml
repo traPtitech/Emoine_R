@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: go version
       - uses: golangci/golangci-lint-action@v3
         with:
           version: latest
           install-mode: goinstall
-      - run: go version
 
   test:
     name: test
