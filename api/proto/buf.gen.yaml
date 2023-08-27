@@ -26,4 +26,4 @@ plugins:
       - run
       - github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc@latest
     out: ../../docs
-    opt: markdown,protobuf.md,source_relative
+    opt: markdown,protobuf.md
