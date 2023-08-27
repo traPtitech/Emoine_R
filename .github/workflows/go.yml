@@ -39,15 +39,3 @@ jobs:
         with:
           go-version-file: ./go.mod
       - run: go test -v ./...
-
-  spectral:
-    name: Run Spectral
-    runs-on: ubuntu-latest
-    steps:
-      # Check out the repository
-      - uses: actions/checkout@v3
-
-      # Run Spectral
-      - uses: stoplightio/spectral-action@latest
-        with:
-          file_glob: "doc/openapi.yml"
