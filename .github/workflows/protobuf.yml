@@ -39,7 +39,7 @@ jobs:
       - uses: bufbuild/buf-breaking-action@v1
         with:
           input: "api/proto"
-          against: "${{ github.server_url }}/${{ github.repository }}.git#branch=${{ github.base_ref }}"
+          against: "${{ github.server_url }}/${{ github.repository }}.git#branch=${{ github.base_ref }}#subdir=api/proto"
 
   buf-diff:
     name: Buf Diff
