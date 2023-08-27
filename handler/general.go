@@ -37,11 +37,13 @@ func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Reques
 	m, err := dbschema.Meetings(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
 		h.logger.Error("Meetings", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 	cnt, err := dbschema.MeetingCount(ctx, model.DB)
 	if err != nil {
 		h.logger.Error("MeetingCount", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 
@@ -59,16 +61,19 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	mid, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
+
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
 	}
 
 	m, err := dbschema.MeetingByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("MeetingByID", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 	if m == nil {
 		h.logger.Error("MeetingByID", "err", "not found")
+
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("ミーティングが見つかりませんでした"))
 	}
 
@@ -79,26 +84,26 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	return res, nil
 }
 
-func (h *GeneralAPIHandler) GetMeetingComments(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingCommentsRequest]) (*connect.Response[emoine_rv1.GetMeetingCommentsResponse], error) {
+func (h *GeneralAPIHandler) GetMeetingComments(_ context.Context, _ *connect.Request[emoine_rv1.GetMeetingCommentsRequest]) (*connect.Response[emoine_rv1.GetMeetingCommentsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) GetMeetingReactions(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingReactionsRequest]) (*connect.Response[emoine_rv1.GetMeetingReactionsResponse], error) {
+func (h *GeneralAPIHandler) GetMeetingReactions(_ context.Context, _ *connect.Request[emoine_rv1.GetMeetingReactionsRequest]) (*connect.Response[emoine_rv1.GetMeetingReactionsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
 func (h *GeneralAPIHandler) ConnectToMeetingStream(
-	ctx context.Context,
-	req *connect.Request[emoine_rv1.ConnectToMeetingStreamRequest],
-	stream *connect.ServerStream[emoine_rv1.ConnectToMeetingStreamResponse],
+	_ context.Context,
+	_ *connect.Request[emoine_rv1.ConnectToMeetingStreamRequest],
+	_ *connect.ServerStream[emoine_rv1.ConnectToMeetingStreamResponse],
 ) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) SendComment(ctx context.Context, req *connect.Request[emoine_rv1.SendCommentRequest]) (*connect.Response[emoine_rv1.SendCommentResponse], error) {
+func (h *GeneralAPIHandler) SendComment(_ context.Context, _ *connect.Request[emoine_rv1.SendCommentRequest]) (*connect.Response[emoine_rv1.SendCommentResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) SendReaction(ctx context.Context, req *connect.Request[emoine_rv1.SendReactionRequest]) (*connect.Response[emoine_rv1.SendReactionResponse], error) {
+func (h *GeneralAPIHandler) SendReaction(_ context.Context, _ *connect.Request[emoine_rv1.SendReactionRequest]) (*connect.Response[emoine_rv1.SendReactionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
