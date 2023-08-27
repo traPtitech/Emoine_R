@@ -28,10 +28,13 @@ func main() {
 	mux.Handle(emoine_rv1connect.NewGeneralAPIServiceHandler(generalAPIHandler))
 
 	logger.Info("Server started")
-	http.ListenAndServe(
+	err := http.ListenAndServe(
 		"localhost:8090",
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
+	if err != nil {
+		panic(err)
+	}
 
 	// TODO: 認証
 	e := echo.New()
