@@ -13,7 +13,7 @@ import (
 type Comment struct {
 	ID          UUID           `json:"id"`           // id
 	UserID      string         `json:"user_id"`      // user_id
-	MeetingID   UUID           `json:"meeting_id"`   // meeting_id
+	EventID     UUID           `json:"event_id"`     // event_id
 	Text        string         `json:"text"`         // text
 	CreatedAt   time.Time      `json:"created_at"`   // created_at
 	IsAnonymous bool           `json:"is_anonymous"` // is_anonymous
@@ -43,13 +43,13 @@ func (c *Comment) Insert(ctx context.Context, db DB) error {
 	}
 	// insert (manual)
 	const sqlstr = `INSERT INTO emoine.comment (` +
-		`id, user_id, meeting_id, text, created_at, is_anonymous, color` +
+		`id, user_id, event_id, text, created_at, is_anonymous, color` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?, ?, ?` +
 		`)`
 	// run
-	logf(sqlstr, c.ID, c.UserID, c.MeetingID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color)
-	if _, err := db.ExecContext(ctx, sqlstr, c.ID, c.UserID, c.MeetingID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color); err != nil {
+	logf(sqlstr, c.ID, c.UserID, c.EventID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color)
+	if _, err := db.ExecContext(ctx, sqlstr, c.ID, c.UserID, c.EventID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color); err != nil {
 		return logerror(err)
 	}
 	// set exists
@@ -67,11 +67,11 @@ func (c *Comment) Update(ctx context.Context, db DB) error {
 	}
 	// update with primary key
 	const sqlstr = `UPDATE emoine.comment SET ` +
-		`user_id = ?, meeting_id = ?, text = ?, created_at = ?, is_anonymous = ?, color = ? ` +
+		`user_id = ?, event_id = ?, text = ?, created_at = ?, is_anonymous = ?, color = ? ` +
 		`WHERE id = ?`
 	// run
-	logf(sqlstr, c.UserID, c.MeetingID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color, c.ID)
-	if _, err := db.ExecContext(ctx, sqlstr, c.UserID, c.MeetingID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color, c.ID); err != nil {
+	logf(sqlstr, c.UserID, c.EventID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color, c.ID)
+	if _, err := db.ExecContext(ctx, sqlstr, c.UserID, c.EventID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color, c.ID); err != nil {
 		return logerror(err)
 	}
 	return nil
@@ -93,15 +93,15 @@ func (c *Comment) Upsert(ctx context.Context, db DB) error {
 	}
 	// upsert
 	const sqlstr = `INSERT INTO emoine.comment (` +
-		`id, user_id, meeting_id, text, created_at, is_anonymous, color` +
+		`id, user_id, event_id, text, created_at, is_anonymous, color` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?, ?, ?` +
 		`)` +
 		` ON DUPLICATE KEY UPDATE ` +
-		`id = VALUES(id), user_id = VALUES(user_id), meeting_id = VALUES(meeting_id), text = VALUES(text), created_at = VALUES(created_at), is_anonymous = VALUES(is_anonymous), color = VALUES(color)`
+		`id = VALUES(id), user_id = VALUES(user_id), event_id = VALUES(event_id), text = VALUES(text), created_at = VALUES(created_at), is_anonymous = VALUES(is_anonymous), color = VALUES(color)`
 	// run
-	logf(sqlstr, c.ID, c.UserID, c.MeetingID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color)
-	if _, err := db.ExecContext(ctx, sqlstr, c.ID, c.UserID, c.MeetingID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color); err != nil {
+	logf(sqlstr, c.ID, c.UserID, c.EventID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color)
+	if _, err := db.ExecContext(ctx, sqlstr, c.ID, c.UserID, c.EventID, c.Text, c.CreatedAt, c.IsAnonymous, c.Color); err != nil {
 		return logerror(err)
 	}
 	// set exists
@@ -134,7 +134,7 @@ func (c *Comment) Delete(ctx context.Context, db DB) error {
 func Comments(ctx context.Context, db DB, limit, offset int) ([]Comment, error) {
 	// query
 	const sqlstr = `SELECT ` +
-		`id, user_id, meeting_id, text, created_at, is_anonymous, color ` +
+		`id, user_id, event_id, text, created_at, is_anonymous, color ` +
 		`FROM emoine.comment ` +
 		`LIMIT ? OFFSET ?`
 	// run
@@ -152,7 +152,7 @@ func Comments(ctx context.Context, db DB, limit, offset int) ([]Comment, error) 
 			_exists: true,
 		}
 		// scan
-		if err := rows.Scan(&c.ID, &c.UserID, &c.MeetingID, &c.Text, &c.CreatedAt, &c.IsAnonymous, &c.Color); err != nil {
+		if err := rows.Scan(&c.ID, &c.UserID, &c.EventID, &c.Text, &c.CreatedAt, &c.IsAnonymous, &c.Color); err != nil {
 			return nil, logerror(err)
 		}
 		res = append(res, c)
@@ -183,7 +183,7 @@ func CommentCount(ctx context.Context, db DB) (int, error) {
 func CommentByID(ctx context.Context, db DB, id UUID) (*Comment, error) {
 	// query
 	const sqlstr = `SELECT ` +
-		`id, user_id, meeting_id, text, created_at, is_anonymous, color ` +
+		`id, user_id, event_id, text, created_at, is_anonymous, color ` +
 		`FROM emoine.comment ` +
 		`WHERE id = ?`
 	// run
@@ -191,7 +191,7 @@ func CommentByID(ctx context.Context, db DB, id UUID) (*Comment, error) {
 	c := Comment{
 		_exists: true,
 	}
-	if err := db.QueryRowContext(ctx, sqlstr, id).Scan(&c.ID, &c.UserID, &c.MeetingID, &c.Text, &c.CreatedAt, &c.IsAnonymous, &c.Color); err != nil {
+	if err := db.QueryRowContext(ctx, sqlstr, id).Scan(&c.ID, &c.UserID, &c.EventID, &c.Text, &c.CreatedAt, &c.IsAnonymous, &c.Color); err != nil {
 		return nil, logerror(err)
 	}
 	return &c, nil

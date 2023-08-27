@@ -25,7 +25,7 @@ func NewGeneralAPIHandler(logger *slog.Logger) emoine_rv1connect.GeneralAPIServi
 	}
 }
 
-func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingsRequest]) (*connect.Response[emoine_rv1.GetMeetingsResponse], error) {
+func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[emoine_rv1.GetEventsRequest]) (*connect.Response[emoine_rv1.GetEventsResponse], error) {
 	if req.Msg.Limit == nil {
 		limit := int32(10)
 		req.Msg.Limit = &limit
@@ -34,63 +34,63 @@ func (h *GeneralAPIHandler) GetMeetings(ctx context.Context, req *connect.Reques
 		offset := int32(0)
 		req.Msg.Offset = &offset
 	}
-	m, err := dbschema.Meetings(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
+	m, err := dbschema.Events(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
-		h.logger.Error("Meetings", "err", err)
+		h.logger.Error("Events", "err", err)
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
-	cnt, err := dbschema.MeetingCount(ctx, model.DB)
+	cnt, err := dbschema.EventCount(ctx, model.DB)
 	if err != nil {
-		h.logger.Error("MeetingCount", "err", err)
+		h.logger.Error("EventCount", "err", err)
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 
-	res := connect.NewResponse(&emoine_rv1.GetMeetingsResponse{
+	res := connect.NewResponse(&emoine_rv1.GetEventsResponse{
 		Total: int32(cnt),
-		Meetings: lo.Map(m, func(v dbschema.Meeting, _ int) *emoine_rv1.Meeting {
-			return pbconv.FromDBMeeting(v)
+		Events: lo.Map(m, func(v dbschema.Event, _ int) *emoine_rv1.Event {
+			return pbconv.FromDBEvent(v)
 		}),
 	})
 
 	return res, nil
 }
 
-func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingRequest]) (*connect.Response[emoine_rv1.GetMeetingResponse], error) {
+func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[emoine_rv1.GetEventRequest]) (*connect.Response[emoine_rv1.GetEventResponse], error) {
 	mid, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
-	m, err := dbschema.MeetingByID(ctx, model.DB, mid)
+	m, err := dbschema.EventByID(ctx, model.DB, mid)
 	if err != nil {
-		h.logger.Error("MeetingByID", "err", err)
+		h.logger.Error("EventByID", "err", err)
 		return nil, connect.NewError(connect.CodeInternal, errors.New("ミーティングの取得に失敗しました"))
 	}
 	if m == nil {
-		h.logger.Error("MeetingByID", "err", "not found")
+		h.logger.Error("EventByID", "err", "not found")
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("ミーティングが見つかりませんでした"))
 	}
 
-	res := connect.NewResponse(&emoine_rv1.GetMeetingResponse{
-		Meeting: pbconv.FromDBMeeting(*m),
+	res := connect.NewResponse(&emoine_rv1.GetEventResponse{
+		Event: pbconv.FromDBEvent(*m),
 	})
 
 	return res, nil
 }
 
-func (h *GeneralAPIHandler) GetMeetingComments(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingCommentsRequest]) (*connect.Response[emoine_rv1.GetMeetingCommentsResponse], error) {
+func (h *GeneralAPIHandler) GetEventComments(ctx context.Context, req *connect.Request[emoine_rv1.GetEventCommentsRequest]) (*connect.Response[emoine_rv1.GetEventCommentsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) GetMeetingReactions(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingReactionsRequest]) (*connect.Response[emoine_rv1.GetMeetingReactionsResponse], error) {
+func (h *GeneralAPIHandler) GetEventReactions(ctx context.Context, req *connect.Request[emoine_rv1.GetEventReactionsRequest]) (*connect.Response[emoine_rv1.GetEventReactionsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) ConnectToMeetingStream(
+func (h *GeneralAPIHandler) ConnectToEventStream(
 	ctx context.Context,
-	req *connect.Request[emoine_rv1.ConnectToMeetingStreamRequest],
-	stream *connect.ServerStream[emoine_rv1.ConnectToMeetingStreamResponse],
+	req *connect.Request[emoine_rv1.ConnectToEventStreamRequest],
+	stream *connect.ServerStream[emoine_rv1.ConnectToEventStreamResponse],
 ) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }

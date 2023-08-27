@@ -11,7 +11,7 @@ import (
 type Reaction struct {
 	ID        UUID      `json:"id"`         // id
 	UserID    string    `json:"user_id"`    // user_id
-	MeetingID UUID      `json:"meeting_id"` // meeting_id
+	EventID   UUID      `json:"event_id"`   // event_id
 	StampID   UUID      `json:"stamp_id"`   // stamp_id
 	CreatedAt time.Time `json:"created_at"` // created_at
 	// xo fields
@@ -39,13 +39,13 @@ func (r *Reaction) Insert(ctx context.Context, db DB) error {
 	}
 	// insert (manual)
 	const sqlstr = `INSERT INTO emoine.reaction (` +
-		`id, user_id, meeting_id, stamp_id, created_at` +
+		`id, user_id, event_id, stamp_id, created_at` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?` +
 		`)`
 	// run
-	logf(sqlstr, r.ID, r.UserID, r.MeetingID, r.StampID, r.CreatedAt)
-	if _, err := db.ExecContext(ctx, sqlstr, r.ID, r.UserID, r.MeetingID, r.StampID, r.CreatedAt); err != nil {
+	logf(sqlstr, r.ID, r.UserID, r.EventID, r.StampID, r.CreatedAt)
+	if _, err := db.ExecContext(ctx, sqlstr, r.ID, r.UserID, r.EventID, r.StampID, r.CreatedAt); err != nil {
 		return logerror(err)
 	}
 	// set exists
@@ -63,11 +63,11 @@ func (r *Reaction) Update(ctx context.Context, db DB) error {
 	}
 	// update with primary key
 	const sqlstr = `UPDATE emoine.reaction SET ` +
-		`user_id = ?, meeting_id = ?, stamp_id = ?, created_at = ? ` +
+		`user_id = ?, event_id = ?, stamp_id = ?, created_at = ? ` +
 		`WHERE id = ?`
 	// run
-	logf(sqlstr, r.UserID, r.MeetingID, r.StampID, r.CreatedAt, r.ID)
-	if _, err := db.ExecContext(ctx, sqlstr, r.UserID, r.MeetingID, r.StampID, r.CreatedAt, r.ID); err != nil {
+	logf(sqlstr, r.UserID, r.EventID, r.StampID, r.CreatedAt, r.ID)
+	if _, err := db.ExecContext(ctx, sqlstr, r.UserID, r.EventID, r.StampID, r.CreatedAt, r.ID); err != nil {
 		return logerror(err)
 	}
 	return nil
@@ -89,15 +89,15 @@ func (r *Reaction) Upsert(ctx context.Context, db DB) error {
 	}
 	// upsert
 	const sqlstr = `INSERT INTO emoine.reaction (` +
-		`id, user_id, meeting_id, stamp_id, created_at` +
+		`id, user_id, event_id, stamp_id, created_at` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?` +
 		`)` +
 		` ON DUPLICATE KEY UPDATE ` +
-		`id = VALUES(id), user_id = VALUES(user_id), meeting_id = VALUES(meeting_id), stamp_id = VALUES(stamp_id), created_at = VALUES(created_at)`
+		`id = VALUES(id), user_id = VALUES(user_id), event_id = VALUES(event_id), stamp_id = VALUES(stamp_id), created_at = VALUES(created_at)`
 	// run
-	logf(sqlstr, r.ID, r.UserID, r.MeetingID, r.StampID, r.CreatedAt)
-	if _, err := db.ExecContext(ctx, sqlstr, r.ID, r.UserID, r.MeetingID, r.StampID, r.CreatedAt); err != nil {
+	logf(sqlstr, r.ID, r.UserID, r.EventID, r.StampID, r.CreatedAt)
+	if _, err := db.ExecContext(ctx, sqlstr, r.ID, r.UserID, r.EventID, r.StampID, r.CreatedAt); err != nil {
 		return logerror(err)
 	}
 	// set exists
@@ -130,7 +130,7 @@ func (r *Reaction) Delete(ctx context.Context, db DB) error {
 func Reactions(ctx context.Context, db DB, limit, offset int) ([]Reaction, error) {
 	// query
 	const sqlstr = `SELECT ` +
-		`id, user_id, meeting_id, stamp_id, created_at ` +
+		`id, user_id, event_id, stamp_id, created_at ` +
 		`FROM emoine.reaction ` +
 		`LIMIT ? OFFSET ?`
 	// run
@@ -148,7 +148,7 @@ func Reactions(ctx context.Context, db DB, limit, offset int) ([]Reaction, error
 			_exists: true,
 		}
 		// scan
-		if err := rows.Scan(&r.ID, &r.UserID, &r.MeetingID, &r.StampID, &r.CreatedAt); err != nil {
+		if err := rows.Scan(&r.ID, &r.UserID, &r.EventID, &r.StampID, &r.CreatedAt); err != nil {
 			return nil, logerror(err)
 		}
 		res = append(res, r)
@@ -179,7 +179,7 @@ func ReactionCount(ctx context.Context, db DB) (int, error) {
 func ReactionByID(ctx context.Context, db DB, id UUID) (*Reaction, error) {
 	// query
 	const sqlstr = `SELECT ` +
-		`id, user_id, meeting_id, stamp_id, created_at ` +
+		`id, user_id, event_id, stamp_id, created_at ` +
 		`FROM emoine.reaction ` +
 		`WHERE id = ?`
 	// run
@@ -187,7 +187,7 @@ func ReactionByID(ctx context.Context, db DB, id UUID) (*Reaction, error) {
 	r := Reaction{
 		_exists: true,
 	}
-	if err := db.QueryRowContext(ctx, sqlstr, id).Scan(&r.ID, &r.UserID, &r.MeetingID, &r.StampID, &r.CreatedAt); err != nil {
+	if err := db.QueryRowContext(ctx, sqlstr, id).Scan(&r.ID, &r.UserID, &r.EventID, &r.StampID, &r.CreatedAt); err != nil {
 		return nil, logerror(err)
 	}
 	return &r, nil

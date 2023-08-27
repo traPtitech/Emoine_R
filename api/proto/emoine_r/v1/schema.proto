@@ -3,7 +3,7 @@ package emoine_r.v1;
 
 import "google/protobuf/timestamp.proto";
 
-message Meeting {
+message Event {
   // 集会ID (UUID)
   string id = 1;
   // YouTubeの動画ID
@@ -28,7 +28,7 @@ message Token {
   // トークンの所有者名
   string username = 3;
   // トークンが有効な集会のID
-  string meeting_id = 4;
+  string event_id = 4;
   // トークン発行者のtraQID (traQと同期)
   string creator_id = 5;
   // トークンの説明
@@ -43,7 +43,7 @@ message Comment {
   // コメントのID (UUID)
   string id = 1;
   // コメントが送信された集会のID
-  string meeting_id = 2;
+  string event_id = 2;
   // コメントの送信者名
   string username = 3;
   // コメントの本文
@@ -60,7 +60,7 @@ message Reaction {
   // リアクションのID (UUID)
   string id = 1;
   // リアクションが送信された集会のID
-  string meeting_id = 2;
+  string event_id = 2;
   // リアクションの送信者名
   string username = 3;
   // 送信されたリアクションのスタンプID (UUID, traQと同期)

@@ -33,21 +33,21 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// GeneralAPIServiceGetMeetingsProcedure is the fully-qualified name of the GeneralAPIService's
-	// GetMeetings RPC.
-	GeneralAPIServiceGetMeetingsProcedure = "/emoine_r.v1.GeneralAPIService/GetMeetings"
-	// GeneralAPIServiceGetMeetingProcedure is the fully-qualified name of the GeneralAPIService's
-	// GetMeeting RPC.
-	GeneralAPIServiceGetMeetingProcedure = "/emoine_r.v1.GeneralAPIService/GetMeeting"
-	// GeneralAPIServiceGetMeetingCommentsProcedure is the fully-qualified name of the
-	// GeneralAPIService's GetMeetingComments RPC.
-	GeneralAPIServiceGetMeetingCommentsProcedure = "/emoine_r.v1.GeneralAPIService/GetMeetingComments"
-	// GeneralAPIServiceGetMeetingReactionsProcedure is the fully-qualified name of the
-	// GeneralAPIService's GetMeetingReactions RPC.
-	GeneralAPIServiceGetMeetingReactionsProcedure = "/emoine_r.v1.GeneralAPIService/GetMeetingReactions"
-	// GeneralAPIServiceConnectToMeetingStreamProcedure is the fully-qualified name of the
-	// GeneralAPIService's ConnectToMeetingStream RPC.
-	GeneralAPIServiceConnectToMeetingStreamProcedure = "/emoine_r.v1.GeneralAPIService/ConnectToMeetingStream"
+	// GeneralAPIServiceGetEventsProcedure is the fully-qualified name of the GeneralAPIService's
+	// GetEvents RPC.
+	GeneralAPIServiceGetEventsProcedure = "/emoine_r.v1.GeneralAPIService/GetEvents"
+	// GeneralAPIServiceGetEventProcedure is the fully-qualified name of the GeneralAPIService's
+	// GetEvent RPC.
+	GeneralAPIServiceGetEventProcedure = "/emoine_r.v1.GeneralAPIService/GetEvent"
+	// GeneralAPIServiceGetEventCommentsProcedure is the fully-qualified name of the GeneralAPIService's
+	// GetEventComments RPC.
+	GeneralAPIServiceGetEventCommentsProcedure = "/emoine_r.v1.GeneralAPIService/GetEventComments"
+	// GeneralAPIServiceGetEventReactionsProcedure is the fully-qualified name of the
+	// GeneralAPIService's GetEventReactions RPC.
+	GeneralAPIServiceGetEventReactionsProcedure = "/emoine_r.v1.GeneralAPIService/GetEventReactions"
+	// GeneralAPIServiceConnectToEventStreamProcedure is the fully-qualified name of the
+	// GeneralAPIService's ConnectToEventStream RPC.
+	GeneralAPIServiceConnectToEventStreamProcedure = "/emoine_r.v1.GeneralAPIService/ConnectToEventStream"
 	// GeneralAPIServiceSendCommentProcedure is the fully-qualified name of the GeneralAPIService's
 	// SendComment RPC.
 	GeneralAPIServiceSendCommentProcedure = "/emoine_r.v1.GeneralAPIService/SendComment"
@@ -59,15 +59,15 @@ const (
 // GeneralAPIServiceClient is a client for the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceClient interface {
 	// 集会一覧を取得します
-	GetMeetings(context.Context, *connect_go.Request[v1.GetMeetingsRequest]) (*connect_go.Response[v1.GetMeetingsResponse], error)
+	GetEvents(context.Context, *connect_go.Request[v1.GetEventsRequest]) (*connect_go.Response[v1.GetEventsResponse], error)
 	// 該当する集会を取得します
-	GetMeeting(context.Context, *connect_go.Request[v1.GetMeetingRequest]) (*connect_go.Response[v1.GetMeetingResponse], error)
+	GetEvent(context.Context, *connect_go.Request[v1.GetEventRequest]) (*connect_go.Response[v1.GetEventResponse], error)
 	// 該当する集会のコメント一覧を取得します
-	GetMeetingComments(context.Context, *connect_go.Request[v1.GetMeetingCommentsRequest]) (*connect_go.Response[v1.GetMeetingCommentsResponse], error)
+	GetEventComments(context.Context, *connect_go.Request[v1.GetEventCommentsRequest]) (*connect_go.Response[v1.GetEventCommentsResponse], error)
 	// 該当する集会のリアクション一覧を取得します
-	GetMeetingReactions(context.Context, *connect_go.Request[v1.GetMeetingReactionsRequest]) (*connect_go.Response[v1.GetMeetingReactionsResponse], error)
+	GetEventReactions(context.Context, *connect_go.Request[v1.GetEventReactionsRequest]) (*connect_go.Response[v1.GetEventReactionsResponse], error)
 	// 集会のストリームに接続します
-	ConnectToMeetingStream(context.Context, *connect_go.Request[v1.ConnectToMeetingStreamRequest]) (*connect_go.ServerStreamForClient[v1.ConnectToMeetingStreamResponse], error)
+	ConnectToEventStream(context.Context, *connect_go.Request[v1.ConnectToEventStreamRequest]) (*connect_go.ServerStreamForClient[v1.ConnectToEventStreamResponse], error)
 	// (コメントは集会のストリームに反映されます)
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
 	// (リアクションは集会のストリームに反映されます)
@@ -84,29 +84,29 @@ type GeneralAPIServiceClient interface {
 func NewGeneralAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) GeneralAPIServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &generalAPIServiceClient{
-		getMeetings: connect_go.NewClient[v1.GetMeetingsRequest, v1.GetMeetingsResponse](
+		getEvents: connect_go.NewClient[v1.GetEventsRequest, v1.GetEventsResponse](
 			httpClient,
-			baseURL+GeneralAPIServiceGetMeetingsProcedure,
+			baseURL+GeneralAPIServiceGetEventsProcedure,
 			opts...,
 		),
-		getMeeting: connect_go.NewClient[v1.GetMeetingRequest, v1.GetMeetingResponse](
+		getEvent: connect_go.NewClient[v1.GetEventRequest, v1.GetEventResponse](
 			httpClient,
-			baseURL+GeneralAPIServiceGetMeetingProcedure,
+			baseURL+GeneralAPIServiceGetEventProcedure,
 			opts...,
 		),
-		getMeetingComments: connect_go.NewClient[v1.GetMeetingCommentsRequest, v1.GetMeetingCommentsResponse](
+		getEventComments: connect_go.NewClient[v1.GetEventCommentsRequest, v1.GetEventCommentsResponse](
 			httpClient,
-			baseURL+GeneralAPIServiceGetMeetingCommentsProcedure,
+			baseURL+GeneralAPIServiceGetEventCommentsProcedure,
 			opts...,
 		),
-		getMeetingReactions: connect_go.NewClient[v1.GetMeetingReactionsRequest, v1.GetMeetingReactionsResponse](
+		getEventReactions: connect_go.NewClient[v1.GetEventReactionsRequest, v1.GetEventReactionsResponse](
 			httpClient,
-			baseURL+GeneralAPIServiceGetMeetingReactionsProcedure,
+			baseURL+GeneralAPIServiceGetEventReactionsProcedure,
 			opts...,
 		),
-		connectToMeetingStream: connect_go.NewClient[v1.ConnectToMeetingStreamRequest, v1.ConnectToMeetingStreamResponse](
+		connectToEventStream: connect_go.NewClient[v1.ConnectToEventStreamRequest, v1.ConnectToEventStreamResponse](
 			httpClient,
-			baseURL+GeneralAPIServiceConnectToMeetingStreamProcedure,
+			baseURL+GeneralAPIServiceConnectToEventStreamProcedure,
 			opts...,
 		),
 		sendComment: connect_go.NewClient[v1.SendCommentRequest, v1.SendCommentResponse](
@@ -124,38 +124,38 @@ func NewGeneralAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string
 
 // generalAPIServiceClient implements GeneralAPIServiceClient.
 type generalAPIServiceClient struct {
-	getMeetings            *connect_go.Client[v1.GetMeetingsRequest, v1.GetMeetingsResponse]
-	getMeeting             *connect_go.Client[v1.GetMeetingRequest, v1.GetMeetingResponse]
-	getMeetingComments     *connect_go.Client[v1.GetMeetingCommentsRequest, v1.GetMeetingCommentsResponse]
-	getMeetingReactions    *connect_go.Client[v1.GetMeetingReactionsRequest, v1.GetMeetingReactionsResponse]
-	connectToMeetingStream *connect_go.Client[v1.ConnectToMeetingStreamRequest, v1.ConnectToMeetingStreamResponse]
-	sendComment            *connect_go.Client[v1.SendCommentRequest, v1.SendCommentResponse]
-	sendReaction           *connect_go.Client[v1.SendReactionRequest, v1.SendReactionResponse]
+	getEvents            *connect_go.Client[v1.GetEventsRequest, v1.GetEventsResponse]
+	getEvent             *connect_go.Client[v1.GetEventRequest, v1.GetEventResponse]
+	getEventComments     *connect_go.Client[v1.GetEventCommentsRequest, v1.GetEventCommentsResponse]
+	getEventReactions    *connect_go.Client[v1.GetEventReactionsRequest, v1.GetEventReactionsResponse]
+	connectToEventStream *connect_go.Client[v1.ConnectToEventStreamRequest, v1.ConnectToEventStreamResponse]
+	sendComment          *connect_go.Client[v1.SendCommentRequest, v1.SendCommentResponse]
+	sendReaction         *connect_go.Client[v1.SendReactionRequest, v1.SendReactionResponse]
 }
 
-// GetMeetings calls emoine_r.v1.GeneralAPIService.GetMeetings.
-func (c *generalAPIServiceClient) GetMeetings(ctx context.Context, req *connect_go.Request[v1.GetMeetingsRequest]) (*connect_go.Response[v1.GetMeetingsResponse], error) {
-	return c.getMeetings.CallUnary(ctx, req)
+// GetEvents calls emoine_r.v1.GeneralAPIService.GetEvents.
+func (c *generalAPIServiceClient) GetEvents(ctx context.Context, req *connect_go.Request[v1.GetEventsRequest]) (*connect_go.Response[v1.GetEventsResponse], error) {
+	return c.getEvents.CallUnary(ctx, req)
 }
 
-// GetMeeting calls emoine_r.v1.GeneralAPIService.GetMeeting.
-func (c *generalAPIServiceClient) GetMeeting(ctx context.Context, req *connect_go.Request[v1.GetMeetingRequest]) (*connect_go.Response[v1.GetMeetingResponse], error) {
-	return c.getMeeting.CallUnary(ctx, req)
+// GetEvent calls emoine_r.v1.GeneralAPIService.GetEvent.
+func (c *generalAPIServiceClient) GetEvent(ctx context.Context, req *connect_go.Request[v1.GetEventRequest]) (*connect_go.Response[v1.GetEventResponse], error) {
+	return c.getEvent.CallUnary(ctx, req)
 }
 
-// GetMeetingComments calls emoine_r.v1.GeneralAPIService.GetMeetingComments.
-func (c *generalAPIServiceClient) GetMeetingComments(ctx context.Context, req *connect_go.Request[v1.GetMeetingCommentsRequest]) (*connect_go.Response[v1.GetMeetingCommentsResponse], error) {
-	return c.getMeetingComments.CallUnary(ctx, req)
+// GetEventComments calls emoine_r.v1.GeneralAPIService.GetEventComments.
+func (c *generalAPIServiceClient) GetEventComments(ctx context.Context, req *connect_go.Request[v1.GetEventCommentsRequest]) (*connect_go.Response[v1.GetEventCommentsResponse], error) {
+	return c.getEventComments.CallUnary(ctx, req)
 }
 
-// GetMeetingReactions calls emoine_r.v1.GeneralAPIService.GetMeetingReactions.
-func (c *generalAPIServiceClient) GetMeetingReactions(ctx context.Context, req *connect_go.Request[v1.GetMeetingReactionsRequest]) (*connect_go.Response[v1.GetMeetingReactionsResponse], error) {
-	return c.getMeetingReactions.CallUnary(ctx, req)
+// GetEventReactions calls emoine_r.v1.GeneralAPIService.GetEventReactions.
+func (c *generalAPIServiceClient) GetEventReactions(ctx context.Context, req *connect_go.Request[v1.GetEventReactionsRequest]) (*connect_go.Response[v1.GetEventReactionsResponse], error) {
+	return c.getEventReactions.CallUnary(ctx, req)
 }
 
-// ConnectToMeetingStream calls emoine_r.v1.GeneralAPIService.ConnectToMeetingStream.
-func (c *generalAPIServiceClient) ConnectToMeetingStream(ctx context.Context, req *connect_go.Request[v1.ConnectToMeetingStreamRequest]) (*connect_go.ServerStreamForClient[v1.ConnectToMeetingStreamResponse], error) {
-	return c.connectToMeetingStream.CallServerStream(ctx, req)
+// ConnectToEventStream calls emoine_r.v1.GeneralAPIService.ConnectToEventStream.
+func (c *generalAPIServiceClient) ConnectToEventStream(ctx context.Context, req *connect_go.Request[v1.ConnectToEventStreamRequest]) (*connect_go.ServerStreamForClient[v1.ConnectToEventStreamResponse], error) {
+	return c.connectToEventStream.CallServerStream(ctx, req)
 }
 
 // SendComment calls emoine_r.v1.GeneralAPIService.SendComment.
@@ -171,15 +171,15 @@ func (c *generalAPIServiceClient) SendReaction(ctx context.Context, req *connect
 // GeneralAPIServiceHandler is an implementation of the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceHandler interface {
 	// 集会一覧を取得します
-	GetMeetings(context.Context, *connect_go.Request[v1.GetMeetingsRequest]) (*connect_go.Response[v1.GetMeetingsResponse], error)
+	GetEvents(context.Context, *connect_go.Request[v1.GetEventsRequest]) (*connect_go.Response[v1.GetEventsResponse], error)
 	// 該当する集会を取得します
-	GetMeeting(context.Context, *connect_go.Request[v1.GetMeetingRequest]) (*connect_go.Response[v1.GetMeetingResponse], error)
+	GetEvent(context.Context, *connect_go.Request[v1.GetEventRequest]) (*connect_go.Response[v1.GetEventResponse], error)
 	// 該当する集会のコメント一覧を取得します
-	GetMeetingComments(context.Context, *connect_go.Request[v1.GetMeetingCommentsRequest]) (*connect_go.Response[v1.GetMeetingCommentsResponse], error)
+	GetEventComments(context.Context, *connect_go.Request[v1.GetEventCommentsRequest]) (*connect_go.Response[v1.GetEventCommentsResponse], error)
 	// 該当する集会のリアクション一覧を取得します
-	GetMeetingReactions(context.Context, *connect_go.Request[v1.GetMeetingReactionsRequest]) (*connect_go.Response[v1.GetMeetingReactionsResponse], error)
+	GetEventReactions(context.Context, *connect_go.Request[v1.GetEventReactionsRequest]) (*connect_go.Response[v1.GetEventReactionsResponse], error)
 	// 集会のストリームに接続します
-	ConnectToMeetingStream(context.Context, *connect_go.Request[v1.ConnectToMeetingStreamRequest], *connect_go.ServerStream[v1.ConnectToMeetingStreamResponse]) error
+	ConnectToEventStream(context.Context, *connect_go.Request[v1.ConnectToEventStreamRequest], *connect_go.ServerStream[v1.ConnectToEventStreamResponse]) error
 	// (コメントは集会のストリームに反映されます)
 	SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error)
 	// (リアクションは集会のストリームに反映されます)
@@ -192,29 +192,29 @@ type GeneralAPIServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewGeneralAPIServiceHandler(svc GeneralAPIServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	generalAPIServiceGetMeetingsHandler := connect_go.NewUnaryHandler(
-		GeneralAPIServiceGetMeetingsProcedure,
-		svc.GetMeetings,
+	generalAPIServiceGetEventsHandler := connect_go.NewUnaryHandler(
+		GeneralAPIServiceGetEventsProcedure,
+		svc.GetEvents,
 		opts...,
 	)
-	generalAPIServiceGetMeetingHandler := connect_go.NewUnaryHandler(
-		GeneralAPIServiceGetMeetingProcedure,
-		svc.GetMeeting,
+	generalAPIServiceGetEventHandler := connect_go.NewUnaryHandler(
+		GeneralAPIServiceGetEventProcedure,
+		svc.GetEvent,
 		opts...,
 	)
-	generalAPIServiceGetMeetingCommentsHandler := connect_go.NewUnaryHandler(
-		GeneralAPIServiceGetMeetingCommentsProcedure,
-		svc.GetMeetingComments,
+	generalAPIServiceGetEventCommentsHandler := connect_go.NewUnaryHandler(
+		GeneralAPIServiceGetEventCommentsProcedure,
+		svc.GetEventComments,
 		opts...,
 	)
-	generalAPIServiceGetMeetingReactionsHandler := connect_go.NewUnaryHandler(
-		GeneralAPIServiceGetMeetingReactionsProcedure,
-		svc.GetMeetingReactions,
+	generalAPIServiceGetEventReactionsHandler := connect_go.NewUnaryHandler(
+		GeneralAPIServiceGetEventReactionsProcedure,
+		svc.GetEventReactions,
 		opts...,
 	)
-	generalAPIServiceConnectToMeetingStreamHandler := connect_go.NewServerStreamHandler(
-		GeneralAPIServiceConnectToMeetingStreamProcedure,
-		svc.ConnectToMeetingStream,
+	generalAPIServiceConnectToEventStreamHandler := connect_go.NewServerStreamHandler(
+		GeneralAPIServiceConnectToEventStreamProcedure,
+		svc.ConnectToEventStream,
 		opts...,
 	)
 	generalAPIServiceSendCommentHandler := connect_go.NewUnaryHandler(
@@ -229,16 +229,16 @@ func NewGeneralAPIServiceHandler(svc GeneralAPIServiceHandler, opts ...connect_g
 	)
 	return "/emoine_r.v1.GeneralAPIService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case GeneralAPIServiceGetMeetingsProcedure:
-			generalAPIServiceGetMeetingsHandler.ServeHTTP(w, r)
-		case GeneralAPIServiceGetMeetingProcedure:
-			generalAPIServiceGetMeetingHandler.ServeHTTP(w, r)
-		case GeneralAPIServiceGetMeetingCommentsProcedure:
-			generalAPIServiceGetMeetingCommentsHandler.ServeHTTP(w, r)
-		case GeneralAPIServiceGetMeetingReactionsProcedure:
-			generalAPIServiceGetMeetingReactionsHandler.ServeHTTP(w, r)
-		case GeneralAPIServiceConnectToMeetingStreamProcedure:
-			generalAPIServiceConnectToMeetingStreamHandler.ServeHTTP(w, r)
+		case GeneralAPIServiceGetEventsProcedure:
+			generalAPIServiceGetEventsHandler.ServeHTTP(w, r)
+		case GeneralAPIServiceGetEventProcedure:
+			generalAPIServiceGetEventHandler.ServeHTTP(w, r)
+		case GeneralAPIServiceGetEventCommentsProcedure:
+			generalAPIServiceGetEventCommentsHandler.ServeHTTP(w, r)
+		case GeneralAPIServiceGetEventReactionsProcedure:
+			generalAPIServiceGetEventReactionsHandler.ServeHTTP(w, r)
+		case GeneralAPIServiceConnectToEventStreamProcedure:
+			generalAPIServiceConnectToEventStreamHandler.ServeHTTP(w, r)
 		case GeneralAPIServiceSendCommentProcedure:
 			generalAPIServiceSendCommentHandler.ServeHTTP(w, r)
 		case GeneralAPIServiceSendReactionProcedure:
@@ -252,24 +252,24 @@ func NewGeneralAPIServiceHandler(svc GeneralAPIServiceHandler, opts ...connect_g
 // UnimplementedGeneralAPIServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedGeneralAPIServiceHandler struct{}
 
-func (UnimplementedGeneralAPIServiceHandler) GetMeetings(context.Context, *connect_go.Request[v1.GetMeetingsRequest]) (*connect_go.Response[v1.GetMeetingsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetMeetings is not implemented"))
+func (UnimplementedGeneralAPIServiceHandler) GetEvents(context.Context, *connect_go.Request[v1.GetEventsRequest]) (*connect_go.Response[v1.GetEventsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetEvents is not implemented"))
 }
 
-func (UnimplementedGeneralAPIServiceHandler) GetMeeting(context.Context, *connect_go.Request[v1.GetMeetingRequest]) (*connect_go.Response[v1.GetMeetingResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetMeeting is not implemented"))
+func (UnimplementedGeneralAPIServiceHandler) GetEvent(context.Context, *connect_go.Request[v1.GetEventRequest]) (*connect_go.Response[v1.GetEventResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetEvent is not implemented"))
 }
 
-func (UnimplementedGeneralAPIServiceHandler) GetMeetingComments(context.Context, *connect_go.Request[v1.GetMeetingCommentsRequest]) (*connect_go.Response[v1.GetMeetingCommentsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetMeetingComments is not implemented"))
+func (UnimplementedGeneralAPIServiceHandler) GetEventComments(context.Context, *connect_go.Request[v1.GetEventCommentsRequest]) (*connect_go.Response[v1.GetEventCommentsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetEventComments is not implemented"))
 }
 
-func (UnimplementedGeneralAPIServiceHandler) GetMeetingReactions(context.Context, *connect_go.Request[v1.GetMeetingReactionsRequest]) (*connect_go.Response[v1.GetMeetingReactionsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetMeetingReactions is not implemented"))
+func (UnimplementedGeneralAPIServiceHandler) GetEventReactions(context.Context, *connect_go.Request[v1.GetEventReactionsRequest]) (*connect_go.Response[v1.GetEventReactionsResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.GetEventReactions is not implemented"))
 }
 
-func (UnimplementedGeneralAPIServiceHandler) ConnectToMeetingStream(context.Context, *connect_go.Request[v1.ConnectToMeetingStreamRequest], *connect_go.ServerStream[v1.ConnectToMeetingStreamResponse]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.ConnectToMeetingStream is not implemented"))
+func (UnimplementedGeneralAPIServiceHandler) ConnectToEventStream(context.Context, *connect_go.Request[v1.ConnectToEventStreamRequest], *connect_go.ServerStream[v1.ConnectToEventStreamResponse]) error {
+	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.GeneralAPIService.ConnectToEventStream is not implemented"))
 }
 
 func (UnimplementedGeneralAPIServiceHandler) SendComment(context.Context, *connect_go.Request[v1.SendCommentRequest]) (*connect_go.Response[v1.SendCommentResponse], error) {

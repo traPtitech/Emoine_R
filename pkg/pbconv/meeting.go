@@ -7,8 +7,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func FromDBMeeting(m dbschema.Meeting) *emoine_rv1.Meeting {
-	return &emoine_rv1.Meeting{
+func FromDBEvent(m dbschema.Event) *emoine_rv1.Event {
+	return &emoine_rv1.Event{
 		Id:          m.ID.String(),
 		VideoId:     m.VideoID,
 		Title:       m.Title,
