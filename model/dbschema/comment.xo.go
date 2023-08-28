@@ -196,3 +196,30 @@ func CommentByID(ctx context.Context, db DB, id UUID) (*Comment, error) {
 	}
 	return &c, nil
 }
+
+// CommentsByMeetingID runs a custom query, returning results as [Comment].
+func CommentsByMeetingID(ctx context.Context, db DB, meetingID UUID) ([]*Comment, error) {
+	// query
+	const sqlstr = `SELECT * FROM comment WHERE meeting_id = ? ORDER BY created_at`
+	// run
+	logf(sqlstr, meetingID)
+	rows, err := db.QueryContext(ctx, sqlstr, meetingID)
+	if err != nil {
+		return nil, logerror(err)
+	}
+	defer rows.Close()
+	// load results
+	var res []*Comment
+	for rows.Next() {
+		var c Comment
+		// scan
+		if err := rows.Scan(&c.ID, &c.UserID, &c.MeetingID, &c.Text, &c.CreatedAt, &c.IsAnonymous, &c.Color); err != nil {
+			return nil, logerror(err)
+		}
+		res = append(res, &c)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, logerror(err)
+	}
+	return res, nil
+}
