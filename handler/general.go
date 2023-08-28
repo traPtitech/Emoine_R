@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log/slog"
+	"slices"
 
 	"github.com/bufbuild/connect-go"
 	"github.com/google/uuid"
@@ -84,8 +85,32 @@ func (h *GeneralAPIHandler) GetMeeting(ctx context.Context, req *connect.Request
 	return res, nil
 }
 
-func (h *GeneralAPIHandler) GetMeetingComments(_ context.Context, _ *connect.Request[emoine_rv1.GetMeetingCommentsRequest]) (*connect.Response[emoine_rv1.GetMeetingCommentsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+func (h *GeneralAPIHandler) GetMeetingComments(ctx context.Context, req *connect.Request[emoine_rv1.GetMeetingCommentsRequest]) (*connect.Response[emoine_rv1.GetMeetingCommentsResponse], error) {
+	mid, err := uuid.Parse(req.Msg.MeetingId)
+	if err != nil {
+		h.logger.Error("Parse", "err", err)
+
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("meetingIdのパースに失敗しました"))
+	}
+
+	c, err := dbschema.CommentsByMeetingID(ctx, model.DB, mid)
+	if err != nil {
+		h.logger.Error("CommentsByMeetingID", "err", err)
+
+		return nil, connect.NewError(connect.CodeInternal, errors.New("コメントの取得に失敗しました"))
+	}
+
+	c = slices.DeleteFunc(c, func(c *dbschema.Comment) bool {
+		return c == nil
+	})
+
+	res := connect.NewResponse(&emoine_rv1.GetMeetingCommentsResponse{
+		Comments: lo.Map(c, func(c *dbschema.Comment, _ int) *emoine_rv1.Comment {
+			return pbconv.FromDBComment(*c)
+		}),
+	})
+
+	return res, nil
 }
 
 func (h *GeneralAPIHandler) GetMeetingReactions(_ context.Context, _ *connect.Request[emoine_rv1.GetMeetingReactionsRequest]) (*connect.Response[emoine_rv1.GetMeetingReactionsResponse], error) {
