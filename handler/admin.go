@@ -64,6 +64,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 	}
 	if err := m.Insert(ctx, model.DB); err != nil {
 		h.logger.Error("Insert", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの作成に失敗しました"))
 	}
 
@@ -78,12 +79,14 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 	mid, err := uuid.Parse(req.Msg.EventId)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
+
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
 	m, err := dbschema.EventByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("EventByID", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 
