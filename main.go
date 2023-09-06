@@ -29,8 +29,11 @@ func main() {
 	))
 
 	logger.Info("Server started")
-	http.ListenAndServe(
+	err := http.ListenAndServe(
 		"localhost:8090",
 		h2c.NewHandler(mux, &http2.Server{}),
 	)
+	if err != nil {
+		panic(err)
+	}
 }

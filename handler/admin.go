@@ -31,6 +31,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 	video, err := youtube.GetVideo(ctx, req.Msg.VideoId)
 	if err != nil {
 		h.logger.Error("GetVideo", "err", err)
+
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("動画の取得に失敗しました"))
 	}
 
@@ -42,6 +43,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		}
 
 		h.logger.Error("GetVideoStreamingDates", "err", err)
+
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(msg))
 	}
 
@@ -98,18 +100,18 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 	return connect.NewResponse(&emptypb.Empty{}), nil
 }
 
-func (h *AdminAPIHandler) DeleteEvent(ctx context.Context, req *connect.Request[emoine_rv1.DeleteEventRequest]) (*connect.Response[emptypb.Empty], error) {
+func (h *AdminAPIHandler) DeleteEvent(_ context.Context, _ *connect.Request[emoine_rv1.DeleteEventRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *AdminAPIHandler) GetTokens(ctx context.Context, req *connect.Request[emoine_rv1.GetTokensRequest]) (*connect.Response[emoine_rv1.GetTokensResponse], error) {
+func (h *AdminAPIHandler) GetTokens(_ context.Context, _ *connect.Request[emoine_rv1.GetTokensRequest]) (*connect.Response[emoine_rv1.GetTokensResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *AdminAPIHandler) GenerateToken(ctx context.Context, req *connect.Request[emoine_rv1.GenerateTokenRequest]) (*connect.Response[emoine_rv1.GenerateTokenResponse], error) {
+func (h *AdminAPIHandler) GenerateToken(_ context.Context, _ *connect.Request[emoine_rv1.GenerateTokenRequest]) (*connect.Response[emoine_rv1.GenerateTokenResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *AdminAPIHandler) RevokeToken(ctx context.Context, req *connect.Request[emoine_rv1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error) {
+func (h *AdminAPIHandler) RevokeToken(_ context.Context, _ *connect.Request[emoine_rv1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }

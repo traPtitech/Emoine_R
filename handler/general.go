@@ -37,11 +37,13 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 	m, err := dbschema.Events(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
 		h.logger.Error("Events", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 	cnt, err := dbschema.EventCount(ctx, model.DB)
 	if err != nil {
 		h.logger.Error("EventCount", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 
@@ -59,16 +61,19 @@ func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[e
 	mid, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
+
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
 	m, err := dbschema.EventByID(ctx, model.DB, mid)
 	if err != nil {
 		h.logger.Error("EventByID", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 	if m == nil {
 		h.logger.Error("EventByID", "err", "not found")
+
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("イベントが見つかりませんでした"))
 	}
 
@@ -79,26 +84,26 @@ func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[e
 	return res, nil
 }
 
-func (h *GeneralAPIHandler) GetEventComments(ctx context.Context, req *connect.Request[emoine_rv1.GetEventCommentsRequest]) (*connect.Response[emoine_rv1.GetEventCommentsResponse], error) {
+func (h *GeneralAPIHandler) GetEventComments(_ context.Context, _ *connect.Request[emoine_rv1.GetEventCommentsRequest]) (*connect.Response[emoine_rv1.GetEventCommentsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) GetEventReactions(ctx context.Context, req *connect.Request[emoine_rv1.GetEventReactionsRequest]) (*connect.Response[emoine_rv1.GetEventReactionsResponse], error) {
+func (h *GeneralAPIHandler) GetEventReactions(_ context.Context, _ *connect.Request[emoine_rv1.GetEventReactionsRequest]) (*connect.Response[emoine_rv1.GetEventReactionsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
 func (h *GeneralAPIHandler) ConnectToEventStream(
-	ctx context.Context,
-	req *connect.Request[emoine_rv1.ConnectToEventStreamRequest],
-	stream *connect.ServerStream[emoine_rv1.ConnectToEventStreamResponse],
+	_ context.Context,
+	_ *connect.Request[emoine_rv1.ConnectToEventStreamRequest],
+	_ *connect.ServerStream[emoine_rv1.ConnectToEventStreamResponse],
 ) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) SendComment(ctx context.Context, req *connect.Request[emoine_rv1.SendCommentRequest]) (*connect.Response[emoine_rv1.SendCommentResponse], error) {
+func (h *GeneralAPIHandler) SendComment(_ context.Context, _ *connect.Request[emoine_rv1.SendCommentRequest]) (*connect.Response[emoine_rv1.SendCommentResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) SendReaction(ctx context.Context, req *connect.Request[emoine_rv1.SendReactionRequest]) (*connect.Response[emoine_rv1.SendReactionResponse], error) {
+func (h *GeneralAPIHandler) SendReaction(_ context.Context, _ *connect.Request[emoine_rv1.SendReactionRequest]) (*connect.Response[emoine_rv1.SendReactionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
