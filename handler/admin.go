@@ -97,6 +97,7 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 
 	if err := m.Update(ctx, model.DB); err != nil {
 		h.logger.Error("Update", "err", err)
+
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの更新に失敗しました"))
 	}
 
