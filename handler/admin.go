@@ -6,7 +6,7 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/bufbuild/connect-go"
+	"connectrpc.com/connect"
 	"github.com/google/uuid"
 	"github.com/traPtitech/Emoine_R/model"
 	"github.com/traPtitech/Emoine_R/model/dbschema"
