@@ -34,7 +34,7 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 		offset := int32(0)
 		req.Msg.Offset = &offset
 	}
-	m, err := dbschema.Events(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
+	e, err := dbschema.Events(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
 		h.logger.Error("Events", "err", err)
 
@@ -49,7 +49,7 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 
 	res := connect.NewResponse(&emoine_rv1.GetEventsResponse{
 		Total: int32(cnt),
-		Events: lo.Map(m, func(v dbschema.Event, _ int) *emoine_rv1.Event {
+		Events: lo.Map(e, func(v dbschema.Event, _ int) *emoine_rv1.Event {
 			return pbconv.FromDBEvent(v)
 		}),
 	})
@@ -58,27 +58,27 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 }
 
 func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[emoine_rv1.GetEventRequest]) (*connect.Response[emoine_rv1.GetEventResponse], error) {
-	mid, err := uuid.Parse(req.Msg.Id)
+	eid, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
 
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
-	m, err := dbschema.EventByID(ctx, model.DB, mid)
+	e, err := dbschema.EventByID(ctx, model.DB, eid)
 	if err != nil {
 		h.logger.Error("EventByID", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
-	if m == nil {
+	if e == nil {
 		h.logger.Error("EventByID", "err", "not found")
 
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("イベントが見つかりませんでした"))
 	}
 
 	res := connect.NewResponse(&emoine_rv1.GetEventResponse{
-		Event: pbconv.FromDBEvent(*m),
+		Event: pbconv.FromDBEvent(*e),
 	})
 
 	return res, nil

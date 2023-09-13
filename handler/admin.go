@@ -53,7 +53,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		description.Valid = true
 	}
 
-	m := dbschema.Event{
+	e := dbschema.Event{
 		ID:          uuid.New(),
 		VideoID:     req.Msg.VideoId,
 		Title:       video.Snippet.Title,
@@ -62,28 +62,28 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		StartedAt:   startedAt,
 		EndedAt:     endedAt,
 	}
-	if err := m.Insert(ctx, model.DB); err != nil {
+	if err := e.Insert(ctx, model.DB); err != nil {
 		h.logger.Error("Insert", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの作成に失敗しました"))
 	}
 
 	res := connect.NewResponse(&emoine_rv1.CreateEventResponse{
-		Event: pbconv.FromDBEvent(m),
+		Event: pbconv.FromDBEvent(e),
 	})
 
 	return res, nil
 }
 
 func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[emoine_rv1.UpdateEventRequest]) (*connect.Response[emptypb.Empty], error) {
-	mid, err := uuid.Parse(req.Msg.EventId)
+	eid, err := uuid.Parse(req.Msg.EventId)
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
 
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
-	m, err := dbschema.EventByID(ctx, model.DB, mid)
+	e, err := dbschema.EventByID(ctx, model.DB, eid)
 	if err != nil {
 		h.logger.Error("EventByID", "err", err)
 
@@ -91,11 +91,11 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 	}
 
 	if req.Msg.Description != nil {
-		m.Description.String = *req.Msg.Description
-		m.Description.Valid = true
+		e.Description.String = *req.Msg.Description
+		e.Description.Valid = true
 	}
 
-	if err := m.Update(ctx, model.DB); err != nil {
+	if err := e.Update(ctx, model.DB); err != nil {
 		h.logger.Error("Update", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの更新に失敗しました"))

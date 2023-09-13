@@ -7,14 +7,14 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func FromDBEvent(m dbschema.Event) *emoine_rv1.Event {
+func FromDBEvent(e dbschema.Event) *emoine_rv1.Event {
 	return &emoine_rv1.Event{
-		Id:          m.ID.String(),
-		VideoId:     m.VideoID,
-		Title:       m.Title,
-		Thumbnail:   m.Thumbnail,
-		Description: lo.Ternary(m.Description.Valid, m.Description.String, ""),
-		StartedAt:   timestamppb.New(m.StartedAt),
-		EndedAt:     lo.Ternary(m.EndedAt.Valid, timestamppb.New(m.EndedAt.Time), nil),
+		Id:          e.ID.String(),
+		VideoId:     e.VideoID,
+		Title:       e.Title,
+		Thumbnail:   e.Thumbnail,
+		Description: lo.Ternary(e.Description.Valid, e.Description.String, ""),
+		StartedAt:   timestamppb.New(e.StartedAt),
+		EndedAt:     lo.Ternary(e.EndedAt.Valid, timestamppb.New(e.EndedAt.Time), nil),
 	}
 }
