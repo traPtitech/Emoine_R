@@ -5,9 +5,9 @@
 package emoine_rv1connect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	v1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
@@ -19,7 +19,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// AdminAPIServiceName is the fully-qualified name of the AdminAPIService service.
@@ -57,17 +57,17 @@ const (
 // AdminAPIServiceClient is a client for the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceClient interface {
 	// 集会を作成します
-	CreateMeeting(context.Context, *connect_go.Request[v1.CreateMeetingRequest]) (*connect_go.Response[v1.CreateMeetingResponse], error)
+	CreateMeeting(context.Context, *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error)
 	// 集会情報を更新します
-	UpdateMeeting(context.Context, *connect_go.Request[v1.UpdateMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
+	UpdateMeeting(context.Context, *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error)
 	// 集会を削除します
-	DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
+	DeleteMeeting(context.Context, *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error)
 	// 該当する集会のトークン一覧を取得します
-	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
+	GetTokens(context.Context, *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error)
 	// 集会用のトークンを生成します
-	GenerateToken(context.Context, *connect_go.Request[v1.GenerateTokenRequest]) (*connect_go.Response[v1.GenerateTokenResponse], error)
+	GenerateToken(context.Context, *connect.Request[v1.GenerateTokenRequest]) (*connect.Response[v1.GenerateTokenResponse], error)
 	// 集会用のトークンを無効化します
-	RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
+	RevokeToken(context.Context, *connect.Request[v1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewAdminAPIServiceClient constructs a client for the emoine_r.v1.AdminAPIService service. By
@@ -77,35 +77,35 @@ type AdminAPIServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewAdminAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) AdminAPIServiceClient {
+func NewAdminAPIServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) AdminAPIServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &adminAPIServiceClient{
-		createMeeting: connect_go.NewClient[v1.CreateMeetingRequest, v1.CreateMeetingResponse](
+		createMeeting: connect.NewClient[v1.CreateMeetingRequest, v1.CreateMeetingResponse](
 			httpClient,
 			baseURL+AdminAPIServiceCreateMeetingProcedure,
 			opts...,
 		),
-		updateMeeting: connect_go.NewClient[v1.UpdateMeetingRequest, emptypb.Empty](
+		updateMeeting: connect.NewClient[v1.UpdateMeetingRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceUpdateMeetingProcedure,
 			opts...,
 		),
-		deleteMeeting: connect_go.NewClient[v1.DeleteMeetingRequest, emptypb.Empty](
+		deleteMeeting: connect.NewClient[v1.DeleteMeetingRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceDeleteMeetingProcedure,
 			opts...,
 		),
-		getTokens: connect_go.NewClient[v1.GetTokensRequest, v1.GetTokensResponse](
+		getTokens: connect.NewClient[v1.GetTokensRequest, v1.GetTokensResponse](
 			httpClient,
 			baseURL+AdminAPIServiceGetTokensProcedure,
 			opts...,
 		),
-		generateToken: connect_go.NewClient[v1.GenerateTokenRequest, v1.GenerateTokenResponse](
+		generateToken: connect.NewClient[v1.GenerateTokenRequest, v1.GenerateTokenResponse](
 			httpClient,
 			baseURL+AdminAPIServiceGenerateTokenProcedure,
 			opts...,
 		),
-		revokeToken: connect_go.NewClient[v1.RevokeTokenRequest, emptypb.Empty](
+		revokeToken: connect.NewClient[v1.RevokeTokenRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceRevokeTokenProcedure,
 			opts...,
@@ -115,58 +115,58 @@ func NewAdminAPIServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 
 // adminAPIServiceClient implements AdminAPIServiceClient.
 type adminAPIServiceClient struct {
-	createMeeting *connect_go.Client[v1.CreateMeetingRequest, v1.CreateMeetingResponse]
-	updateMeeting *connect_go.Client[v1.UpdateMeetingRequest, emptypb.Empty]
-	deleteMeeting *connect_go.Client[v1.DeleteMeetingRequest, emptypb.Empty]
-	getTokens     *connect_go.Client[v1.GetTokensRequest, v1.GetTokensResponse]
-	generateToken *connect_go.Client[v1.GenerateTokenRequest, v1.GenerateTokenResponse]
-	revokeToken   *connect_go.Client[v1.RevokeTokenRequest, emptypb.Empty]
+	createMeeting *connect.Client[v1.CreateMeetingRequest, v1.CreateMeetingResponse]
+	updateMeeting *connect.Client[v1.UpdateMeetingRequest, emptypb.Empty]
+	deleteMeeting *connect.Client[v1.DeleteMeetingRequest, emptypb.Empty]
+	getTokens     *connect.Client[v1.GetTokensRequest, v1.GetTokensResponse]
+	generateToken *connect.Client[v1.GenerateTokenRequest, v1.GenerateTokenResponse]
+	revokeToken   *connect.Client[v1.RevokeTokenRequest, emptypb.Empty]
 }
 
 // CreateMeeting calls emoine_r.v1.AdminAPIService.CreateMeeting.
-func (c *adminAPIServiceClient) CreateMeeting(ctx context.Context, req *connect_go.Request[v1.CreateMeetingRequest]) (*connect_go.Response[v1.CreateMeetingResponse], error) {
+func (c *adminAPIServiceClient) CreateMeeting(ctx context.Context, req *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error) {
 	return c.createMeeting.CallUnary(ctx, req)
 }
 
 // UpdateMeeting calls emoine_r.v1.AdminAPIService.UpdateMeeting.
-func (c *adminAPIServiceClient) UpdateMeeting(ctx context.Context, req *connect_go.Request[v1.UpdateMeetingRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (c *adminAPIServiceClient) UpdateMeeting(ctx context.Context, req *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
 	return c.updateMeeting.CallUnary(ctx, req)
 }
 
 // DeleteMeeting calls emoine_r.v1.AdminAPIService.DeleteMeeting.
-func (c *adminAPIServiceClient) DeleteMeeting(ctx context.Context, req *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (c *adminAPIServiceClient) DeleteMeeting(ctx context.Context, req *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
 	return c.deleteMeeting.CallUnary(ctx, req)
 }
 
 // GetTokens calls emoine_r.v1.AdminAPIService.GetTokens.
-func (c *adminAPIServiceClient) GetTokens(ctx context.Context, req *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error) {
+func (c *adminAPIServiceClient) GetTokens(ctx context.Context, req *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error) {
 	return c.getTokens.CallUnary(ctx, req)
 }
 
 // GenerateToken calls emoine_r.v1.AdminAPIService.GenerateToken.
-func (c *adminAPIServiceClient) GenerateToken(ctx context.Context, req *connect_go.Request[v1.GenerateTokenRequest]) (*connect_go.Response[v1.GenerateTokenResponse], error) {
+func (c *adminAPIServiceClient) GenerateToken(ctx context.Context, req *connect.Request[v1.GenerateTokenRequest]) (*connect.Response[v1.GenerateTokenResponse], error) {
 	return c.generateToken.CallUnary(ctx, req)
 }
 
 // RevokeToken calls emoine_r.v1.AdminAPIService.RevokeToken.
-func (c *adminAPIServiceClient) RevokeToken(ctx context.Context, req *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
+func (c *adminAPIServiceClient) RevokeToken(ctx context.Context, req *connect.Request[v1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error) {
 	return c.revokeToken.CallUnary(ctx, req)
 }
 
 // AdminAPIServiceHandler is an implementation of the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceHandler interface {
 	// 集会を作成します
-	CreateMeeting(context.Context, *connect_go.Request[v1.CreateMeetingRequest]) (*connect_go.Response[v1.CreateMeetingResponse], error)
+	CreateMeeting(context.Context, *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error)
 	// 集会情報を更新します
-	UpdateMeeting(context.Context, *connect_go.Request[v1.UpdateMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
+	UpdateMeeting(context.Context, *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error)
 	// 集会を削除します
-	DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error)
+	DeleteMeeting(context.Context, *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error)
 	// 該当する集会のトークン一覧を取得します
-	GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error)
+	GetTokens(context.Context, *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error)
 	// 集会用のトークンを生成します
-	GenerateToken(context.Context, *connect_go.Request[v1.GenerateTokenRequest]) (*connect_go.Response[v1.GenerateTokenResponse], error)
+	GenerateToken(context.Context, *connect.Request[v1.GenerateTokenRequest]) (*connect.Response[v1.GenerateTokenResponse], error)
 	// 集会用のトークンを無効化します
-	RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error)
+	RevokeToken(context.Context, *connect.Request[v1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewAdminAPIServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -174,33 +174,33 @@ type AdminAPIServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	adminAPIServiceCreateMeetingHandler := connect_go.NewUnaryHandler(
+func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	adminAPIServiceCreateMeetingHandler := connect.NewUnaryHandler(
 		AdminAPIServiceCreateMeetingProcedure,
 		svc.CreateMeeting,
 		opts...,
 	)
-	adminAPIServiceUpdateMeetingHandler := connect_go.NewUnaryHandler(
+	adminAPIServiceUpdateMeetingHandler := connect.NewUnaryHandler(
 		AdminAPIServiceUpdateMeetingProcedure,
 		svc.UpdateMeeting,
 		opts...,
 	)
-	adminAPIServiceDeleteMeetingHandler := connect_go.NewUnaryHandler(
+	adminAPIServiceDeleteMeetingHandler := connect.NewUnaryHandler(
 		AdminAPIServiceDeleteMeetingProcedure,
 		svc.DeleteMeeting,
 		opts...,
 	)
-	adminAPIServiceGetTokensHandler := connect_go.NewUnaryHandler(
+	adminAPIServiceGetTokensHandler := connect.NewUnaryHandler(
 		AdminAPIServiceGetTokensProcedure,
 		svc.GetTokens,
 		opts...,
 	)
-	adminAPIServiceGenerateTokenHandler := connect_go.NewUnaryHandler(
+	adminAPIServiceGenerateTokenHandler := connect.NewUnaryHandler(
 		AdminAPIServiceGenerateTokenProcedure,
 		svc.GenerateToken,
 		opts...,
 	)
-	adminAPIServiceRevokeTokenHandler := connect_go.NewUnaryHandler(
+	adminAPIServiceRevokeTokenHandler := connect.NewUnaryHandler(
 		AdminAPIServiceRevokeTokenProcedure,
 		svc.RevokeToken,
 		opts...,
@@ -228,26 +228,26 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect_go.Ha
 // UnimplementedAdminAPIServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAdminAPIServiceHandler struct{}
 
-func (UnimplementedAdminAPIServiceHandler) CreateMeeting(context.Context, *connect_go.Request[v1.CreateMeetingRequest]) (*connect_go.Response[v1.CreateMeetingResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.CreateMeeting is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) CreateMeeting(context.Context, *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.CreateMeeting is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) UpdateMeeting(context.Context, *connect_go.Request[v1.UpdateMeetingRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.UpdateMeeting is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) UpdateMeeting(context.Context, *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.UpdateMeeting is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) DeleteMeeting(context.Context, *connect_go.Request[v1.DeleteMeetingRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.DeleteMeeting is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) DeleteMeeting(context.Context, *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.DeleteMeeting is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) GetTokens(context.Context, *connect_go.Request[v1.GetTokensRequest]) (*connect_go.Response[v1.GetTokensResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.GetTokens is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) GetTokens(context.Context, *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.GetTokens is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) GenerateToken(context.Context, *connect_go.Request[v1.GenerateTokenRequest]) (*connect_go.Response[v1.GenerateTokenResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.GenerateToken is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) GenerateToken(context.Context, *connect.Request[v1.GenerateTokenRequest]) (*connect.Response[v1.GenerateTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.GenerateToken is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) RevokeToken(context.Context, *connect_go.Request[v1.RevokeTokenRequest]) (*connect_go.Response[emptypb.Empty], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.RevokeToken is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) RevokeToken(context.Context, *connect.Request[v1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.RevokeToken is not implemented"))
 }

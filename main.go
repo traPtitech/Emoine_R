@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/bufbuild/connect-go"
+	"connectrpc.com/connect"
 	"github.com/traPtitech/Emoine_R/handler"
 	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
 	"golang.org/x/net/http2"
