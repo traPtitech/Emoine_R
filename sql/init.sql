@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS comment
 (
     id           UUID        NOT NULL DEFAULT UUID(),
     user_id      varchar(32) NOT NULL,
-    meeting_id   UUID        NOT NULL,
+    event_id   UUID        NOT NULL,
     text         TEXT        NOT NULL,
     created_at   DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_anonymous BOOLEAN     NOT NULL,
@@ -27,13 +27,13 @@ CREATE TABLE IF NOT EXISTS reaction
 (
     id         UUID        NOT NULL DEFAULT UUID(),
     user_id    varchar(32) NOT NULL,
-    meeting_id UUID        NOT NULL,
+    event_id UUID        NOT NULL,
     stamp_id   UUID        NOT NULL,
     created_at DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE IF NOT EXISTS meeting
+CREATE TABLE IF NOT EXISTS event
 (
     id          UUID         NOT NULL DEFAULT UUID(),
     video_id    varchar(11)  NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS token
     creator_id  VARCHAR(32) NOT NULL,
     user_id     VARCHAR(32) NOT NULL,
     created_at  DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    meeting_id	UUID        NOT NULL,
+    event_id	UUID        NOT NULL,
     exprie_at   DATETIME    DEFAULT CURRENT_TIMESTAMP,
     description TEXT,
     PRIMARY KEY (`token`)

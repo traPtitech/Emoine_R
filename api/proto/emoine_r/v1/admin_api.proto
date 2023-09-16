@@ -7,41 +7,41 @@ import "google/protobuf/timestamp.proto";
 
 // 管理者権限が必要なAPIを提供します
 service AdminAPIService {
-  // 集会を作成します
-  rpc CreateMeeting(CreateMeetingRequest) returns (CreateMeetingResponse);
-  // 集会情報を更新します
-  rpc UpdateMeeting(UpdateMeetingRequest) returns (google.protobuf.Empty);
-  // 集会を削除します
-  rpc DeleteMeeting(DeleteMeetingRequest) returns (google.protobuf.Empty);
-  // 該当する集会のトークン一覧を取得します
+  // イベントを作成します
+  rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
+  // イベント情報を更新します
+  rpc UpdateEvent(UpdateEventRequest) returns (google.protobuf.Empty);
+  // イベントを削除します
+  rpc DeleteEvent(DeleteEventRequest) returns (google.protobuf.Empty);
+  // 該当するイベントのトークン一覧を取得します
   rpc GetTokens(GetTokensRequest) returns (GetTokensResponse);
-  // 集会用のトークンを生成します
+  // イベント用のトークンを生成します
   rpc GenerateToken(GenerateTokenRequest) returns (GenerateTokenResponse);
-  // 集会用のトークンを無効化します
+  // イベント用のトークンを無効化します
   rpc RevokeToken(RevokeTokenRequest) returns (google.protobuf.Empty);
 }
 
-message CreateMeetingRequest {
+message CreateEventRequest {
   string video_id = 1;
   string description = 2;
 }
 
-message CreateMeetingResponse {
-  Meeting meeting = 1;
+message CreateEventResponse {
+  Event event = 1;
 }
 
-message UpdateMeetingRequest {
-  string meeting_id = 1;
+message UpdateEventRequest {
+  string event_id = 1;
   optional string video_id = 2;
   optional string description = 3;
 }
 
-message DeleteMeetingRequest {
-  string meeting_id = 1;
+message DeleteEventRequest {
+  string event_id = 1;
 }
 
 message GetTokensRequest {
-  string meeting_id = 1;
+  string event_id = 1;
 }
 
 message GetTokensResponse {
@@ -49,7 +49,7 @@ message GetTokensResponse {
 }
 
 message GenerateTokenRequest {
-  string meeting_id = 1;
+  string event_id = 1;
   string username = 2;
   string description = 3;
   google.protobuf.Timestamp expire_at = 4;
@@ -61,5 +61,5 @@ message GenerateTokenResponse {
 
 message RevokeTokenRequest {
   string token_id = 1;
-  string meeting_id = 2;
+  string event_id = 2;
 }

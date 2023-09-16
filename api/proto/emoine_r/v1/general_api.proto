@@ -5,72 +5,72 @@ import "emoine_r/v1/schema.proto";
 
 // 権限が必要ないAPIを提供します
 service GeneralAPIService {
-  // 集会一覧を取得します
-  rpc GetMeetings(GetMeetingsRequest) returns (GetMeetingsResponse);
-  // 該当する集会を取得します
-  rpc GetMeeting(GetMeetingRequest) returns (GetMeetingResponse);
-  // 該当する集会のコメント一覧を取得します
-  rpc GetMeetingComments(GetMeetingCommentsRequest) returns (GetMeetingCommentsResponse);
-  // 該当する集会のリアクション一覧を取得します
-  rpc GetMeetingReactions(GetMeetingReactionsRequest) returns (GetMeetingReactionsResponse);
-  // 集会のストリームに接続します
-  rpc ConnectToMeetingStream(ConnectToMeetingStreamRequest) returns (stream ConnectToMeetingStreamResponse);
-  // (コメントは集会のストリームに反映されます)
+  // イベント一覧を取得します
+  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
+  // 該当するイベントを取得します
+  rpc GetEvent(GetEventRequest) returns (GetEventResponse);
+  // 該当するイベントのコメント一覧を取得します
+  rpc GetEventComments(GetEventCommentsRequest) returns (GetEventCommentsResponse);
+  // 該当するイベントのリアクション一覧を取得します
+  rpc GetEventReactions(GetEventReactionsRequest) returns (GetEventReactionsResponse);
+  // イベントのストリームに接続します
+  rpc ConnectToEventStream(ConnectToEventStreamRequest) returns (stream ConnectToEventStreamResponse);
+  // (コメントはイベントのストリームに反映されます)
   rpc SendComment(SendCommentRequest) returns (SendCommentResponse);
-  // (リアクションは集会のストリームに反映されます)
+  // (リアクションはイベントのストリームに反映されます)
   rpc SendReaction(SendReactionRequest) returns (SendReactionResponse);
 }
 
-message GetMeetingsRequest {
+message GetEventsRequest {
   // default: 10
   optional int32 limit = 1;
   // default: 0
   optional int32 offset = 2;
 }
 
-message GetMeetingsResponse {
+message GetEventsResponse {
   int32 total = 1;
-  repeated Meeting meetings = 2;
+  repeated Event events = 2;
 }
 
-message GetMeetingRequest {
+message GetEventRequest {
   string id = 1;
 }
 
-message GetMeetingResponse {
-  Meeting meeting = 1;
+message GetEventResponse {
+  Event event = 1;
 }
 
-message GetMeetingCommentsRequest {
-  string meeting_id = 1;
+message GetEventCommentsRequest {
+  string event_id = 1;
 }
 
-message GetMeetingCommentsResponse {
+message GetEventCommentsResponse {
   repeated Comment comments = 1;
 }
 
-message GetMeetingReactionsRequest {
-  string meeting_id = 1;
+message GetEventReactionsRequest {
+  string event_id = 1;
 }
 
-message GetMeetingReactionsResponse {
+message GetEventReactionsResponse {
   repeated Reaction reactions = 1;
 }
 
-message ConnectToMeetingStreamRequest {
-  string meeting_id = 1;
+message ConnectToEventStreamRequest {
+  string event_id = 1;
 }
 
-message ConnectToMeetingStreamResponse {
-  oneof event {
-    Meeting meeting = 1;
+message ConnectToEventStreamResponse {
+  oneof stream_event {
+    Event event = 1;
     Comment comment = 2;
     Reaction reaction = 3;
   }
 }
 
 message SendCommentRequest {
-  string meeting_id = 1;
+  string event_id = 1;
   string text = 2;
   bool is_anonymous = 3;
   string color = 4;
@@ -81,7 +81,7 @@ message SendCommentResponse {
 }
 
 message SendReactionRequest {
-  string meeting_id = 1;
+  string event_id = 1;
   string stamp_id = 2;
 }
 

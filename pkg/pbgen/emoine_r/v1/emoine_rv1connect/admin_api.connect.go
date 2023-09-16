@@ -34,15 +34,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// AdminAPIServiceCreateMeetingProcedure is the fully-qualified name of the AdminAPIService's
-	// CreateMeeting RPC.
-	AdminAPIServiceCreateMeetingProcedure = "/emoine_r.v1.AdminAPIService/CreateMeeting"
-	// AdminAPIServiceUpdateMeetingProcedure is the fully-qualified name of the AdminAPIService's
-	// UpdateMeeting RPC.
-	AdminAPIServiceUpdateMeetingProcedure = "/emoine_r.v1.AdminAPIService/UpdateMeeting"
-	// AdminAPIServiceDeleteMeetingProcedure is the fully-qualified name of the AdminAPIService's
-	// DeleteMeeting RPC.
-	AdminAPIServiceDeleteMeetingProcedure = "/emoine_r.v1.AdminAPIService/DeleteMeeting"
+	// AdminAPIServiceCreateEventProcedure is the fully-qualified name of the AdminAPIService's
+	// CreateEvent RPC.
+	AdminAPIServiceCreateEventProcedure = "/emoine_r.v1.AdminAPIService/CreateEvent"
+	// AdminAPIServiceUpdateEventProcedure is the fully-qualified name of the AdminAPIService's
+	// UpdateEvent RPC.
+	AdminAPIServiceUpdateEventProcedure = "/emoine_r.v1.AdminAPIService/UpdateEvent"
+	// AdminAPIServiceDeleteEventProcedure is the fully-qualified name of the AdminAPIService's
+	// DeleteEvent RPC.
+	AdminAPIServiceDeleteEventProcedure = "/emoine_r.v1.AdminAPIService/DeleteEvent"
 	// AdminAPIServiceGetTokensProcedure is the fully-qualified name of the AdminAPIService's GetTokens
 	// RPC.
 	AdminAPIServiceGetTokensProcedure = "/emoine_r.v1.AdminAPIService/GetTokens"
@@ -56,17 +56,17 @@ const (
 
 // AdminAPIServiceClient is a client for the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceClient interface {
-	// 集会を作成します
-	CreateMeeting(context.Context, *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error)
-	// 集会情報を更新します
-	UpdateMeeting(context.Context, *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error)
-	// 集会を削除します
-	DeleteMeeting(context.Context, *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error)
-	// 該当する集会のトークン一覧を取得します
+	// イベントを作成します
+	CreateEvent(context.Context, *connect.Request[v1.CreateEventRequest]) (*connect.Response[v1.CreateEventResponse], error)
+	// イベント情報を更新します
+	UpdateEvent(context.Context, *connect.Request[v1.UpdateEventRequest]) (*connect.Response[emptypb.Empty], error)
+	// イベントを削除します
+	DeleteEvent(context.Context, *connect.Request[v1.DeleteEventRequest]) (*connect.Response[emptypb.Empty], error)
+	// 該当するイベントのトークン一覧を取得します
 	GetTokens(context.Context, *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error)
-	// 集会用のトークンを生成します
+	// イベント用のトークンを生成します
 	GenerateToken(context.Context, *connect.Request[v1.GenerateTokenRequest]) (*connect.Response[v1.GenerateTokenResponse], error)
-	// 集会用のトークンを無効化します
+	// イベント用のトークンを無効化します
 	RevokeToken(context.Context, *connect.Request[v1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
@@ -80,19 +80,19 @@ type AdminAPIServiceClient interface {
 func NewAdminAPIServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) AdminAPIServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &adminAPIServiceClient{
-		createMeeting: connect.NewClient[v1.CreateMeetingRequest, v1.CreateMeetingResponse](
+		createEvent: connect.NewClient[v1.CreateEventRequest, v1.CreateEventResponse](
 			httpClient,
-			baseURL+AdminAPIServiceCreateMeetingProcedure,
+			baseURL+AdminAPIServiceCreateEventProcedure,
 			opts...,
 		),
-		updateMeeting: connect.NewClient[v1.UpdateMeetingRequest, emptypb.Empty](
+		updateEvent: connect.NewClient[v1.UpdateEventRequest, emptypb.Empty](
 			httpClient,
-			baseURL+AdminAPIServiceUpdateMeetingProcedure,
+			baseURL+AdminAPIServiceUpdateEventProcedure,
 			opts...,
 		),
-		deleteMeeting: connect.NewClient[v1.DeleteMeetingRequest, emptypb.Empty](
+		deleteEvent: connect.NewClient[v1.DeleteEventRequest, emptypb.Empty](
 			httpClient,
-			baseURL+AdminAPIServiceDeleteMeetingProcedure,
+			baseURL+AdminAPIServiceDeleteEventProcedure,
 			opts...,
 		),
 		getTokens: connect.NewClient[v1.GetTokensRequest, v1.GetTokensResponse](
@@ -115,27 +115,27 @@ func NewAdminAPIServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 
 // adminAPIServiceClient implements AdminAPIServiceClient.
 type adminAPIServiceClient struct {
-	createMeeting *connect.Client[v1.CreateMeetingRequest, v1.CreateMeetingResponse]
-	updateMeeting *connect.Client[v1.UpdateMeetingRequest, emptypb.Empty]
-	deleteMeeting *connect.Client[v1.DeleteMeetingRequest, emptypb.Empty]
+	createEvent   *connect.Client[v1.CreateEventRequest, v1.CreateEventResponse]
+	updateEvent   *connect.Client[v1.UpdateEventRequest, emptypb.Empty]
+	deleteEvent   *connect.Client[v1.DeleteEventRequest, emptypb.Empty]
 	getTokens     *connect.Client[v1.GetTokensRequest, v1.GetTokensResponse]
 	generateToken *connect.Client[v1.GenerateTokenRequest, v1.GenerateTokenResponse]
 	revokeToken   *connect.Client[v1.RevokeTokenRequest, emptypb.Empty]
 }
 
-// CreateMeeting calls emoine_r.v1.AdminAPIService.CreateMeeting.
-func (c *adminAPIServiceClient) CreateMeeting(ctx context.Context, req *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error) {
-	return c.createMeeting.CallUnary(ctx, req)
+// CreateEvent calls emoine_r.v1.AdminAPIService.CreateEvent.
+func (c *adminAPIServiceClient) CreateEvent(ctx context.Context, req *connect.Request[v1.CreateEventRequest]) (*connect.Response[v1.CreateEventResponse], error) {
+	return c.createEvent.CallUnary(ctx, req)
 }
 
-// UpdateMeeting calls emoine_r.v1.AdminAPIService.UpdateMeeting.
-func (c *adminAPIServiceClient) UpdateMeeting(ctx context.Context, req *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
-	return c.updateMeeting.CallUnary(ctx, req)
+// UpdateEvent calls emoine_r.v1.AdminAPIService.UpdateEvent.
+func (c *adminAPIServiceClient) UpdateEvent(ctx context.Context, req *connect.Request[v1.UpdateEventRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.updateEvent.CallUnary(ctx, req)
 }
 
-// DeleteMeeting calls emoine_r.v1.AdminAPIService.DeleteMeeting.
-func (c *adminAPIServiceClient) DeleteMeeting(ctx context.Context, req *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
-	return c.deleteMeeting.CallUnary(ctx, req)
+// DeleteEvent calls emoine_r.v1.AdminAPIService.DeleteEvent.
+func (c *adminAPIServiceClient) DeleteEvent(ctx context.Context, req *connect.Request[v1.DeleteEventRequest]) (*connect.Response[emptypb.Empty], error) {
+	return c.deleteEvent.CallUnary(ctx, req)
 }
 
 // GetTokens calls emoine_r.v1.AdminAPIService.GetTokens.
@@ -155,17 +155,17 @@ func (c *adminAPIServiceClient) RevokeToken(ctx context.Context, req *connect.Re
 
 // AdminAPIServiceHandler is an implementation of the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceHandler interface {
-	// 集会を作成します
-	CreateMeeting(context.Context, *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error)
-	// 集会情報を更新します
-	UpdateMeeting(context.Context, *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error)
-	// 集会を削除します
-	DeleteMeeting(context.Context, *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error)
-	// 該当する集会のトークン一覧を取得します
+	// イベントを作成します
+	CreateEvent(context.Context, *connect.Request[v1.CreateEventRequest]) (*connect.Response[v1.CreateEventResponse], error)
+	// イベント情報を更新します
+	UpdateEvent(context.Context, *connect.Request[v1.UpdateEventRequest]) (*connect.Response[emptypb.Empty], error)
+	// イベントを削除します
+	DeleteEvent(context.Context, *connect.Request[v1.DeleteEventRequest]) (*connect.Response[emptypb.Empty], error)
+	// 該当するイベントのトークン一覧を取得します
 	GetTokens(context.Context, *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error)
-	// 集会用のトークンを生成します
+	// イベント用のトークンを生成します
 	GenerateToken(context.Context, *connect.Request[v1.GenerateTokenRequest]) (*connect.Response[v1.GenerateTokenResponse], error)
-	// 集会用のトークンを無効化します
+	// イベント用のトークンを無効化します
 	RevokeToken(context.Context, *connect.Request[v1.RevokeTokenRequest]) (*connect.Response[emptypb.Empty], error)
 }
 
@@ -175,19 +175,19 @@ type AdminAPIServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	adminAPIServiceCreateMeetingHandler := connect.NewUnaryHandler(
-		AdminAPIServiceCreateMeetingProcedure,
-		svc.CreateMeeting,
+	adminAPIServiceCreateEventHandler := connect.NewUnaryHandler(
+		AdminAPIServiceCreateEventProcedure,
+		svc.CreateEvent,
 		opts...,
 	)
-	adminAPIServiceUpdateMeetingHandler := connect.NewUnaryHandler(
-		AdminAPIServiceUpdateMeetingProcedure,
-		svc.UpdateMeeting,
+	adminAPIServiceUpdateEventHandler := connect.NewUnaryHandler(
+		AdminAPIServiceUpdateEventProcedure,
+		svc.UpdateEvent,
 		opts...,
 	)
-	adminAPIServiceDeleteMeetingHandler := connect.NewUnaryHandler(
-		AdminAPIServiceDeleteMeetingProcedure,
-		svc.DeleteMeeting,
+	adminAPIServiceDeleteEventHandler := connect.NewUnaryHandler(
+		AdminAPIServiceDeleteEventProcedure,
+		svc.DeleteEvent,
 		opts...,
 	)
 	adminAPIServiceGetTokensHandler := connect.NewUnaryHandler(
@@ -207,12 +207,12 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect.Handl
 	)
 	return "/emoine_r.v1.AdminAPIService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case AdminAPIServiceCreateMeetingProcedure:
-			adminAPIServiceCreateMeetingHandler.ServeHTTP(w, r)
-		case AdminAPIServiceUpdateMeetingProcedure:
-			adminAPIServiceUpdateMeetingHandler.ServeHTTP(w, r)
-		case AdminAPIServiceDeleteMeetingProcedure:
-			adminAPIServiceDeleteMeetingHandler.ServeHTTP(w, r)
+		case AdminAPIServiceCreateEventProcedure:
+			adminAPIServiceCreateEventHandler.ServeHTTP(w, r)
+		case AdminAPIServiceUpdateEventProcedure:
+			adminAPIServiceUpdateEventHandler.ServeHTTP(w, r)
+		case AdminAPIServiceDeleteEventProcedure:
+			adminAPIServiceDeleteEventHandler.ServeHTTP(w, r)
 		case AdminAPIServiceGetTokensProcedure:
 			adminAPIServiceGetTokensHandler.ServeHTTP(w, r)
 		case AdminAPIServiceGenerateTokenProcedure:
@@ -228,16 +228,16 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect.Handl
 // UnimplementedAdminAPIServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAdminAPIServiceHandler struct{}
 
-func (UnimplementedAdminAPIServiceHandler) CreateMeeting(context.Context, *connect.Request[v1.CreateMeetingRequest]) (*connect.Response[v1.CreateMeetingResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.CreateMeeting is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) CreateEvent(context.Context, *connect.Request[v1.CreateEventRequest]) (*connect.Response[v1.CreateEventResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.CreateEvent is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) UpdateMeeting(context.Context, *connect.Request[v1.UpdateMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.UpdateMeeting is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) UpdateEvent(context.Context, *connect.Request[v1.UpdateEventRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.UpdateEvent is not implemented"))
 }
 
-func (UnimplementedAdminAPIServiceHandler) DeleteMeeting(context.Context, *connect.Request[v1.DeleteMeetingRequest]) (*connect.Response[emptypb.Empty], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.DeleteMeeting is not implemented"))
+func (UnimplementedAdminAPIServiceHandler) DeleteEvent(context.Context, *connect.Request[v1.DeleteEventRequest]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("emoine_r.v1.AdminAPIService.DeleteEvent is not implemented"))
 }
 
 func (UnimplementedAdminAPIServiceHandler) GetTokens(context.Context, *connect.Request[v1.GetTokensRequest]) (*connect.Response[v1.GetTokensResponse], error) {

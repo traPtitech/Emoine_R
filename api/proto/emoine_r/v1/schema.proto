@@ -3,20 +3,20 @@ package emoine_r.v1;
 
 import "google/protobuf/timestamp.proto";
 
-message Meeting {
-  // 集会ID (UUID)
+message Event {
+  // イベントID (UUID)
   string id = 1;
   // YouTubeの動画ID
   string video_id = 2;
-  // 集会の説明
+  // イベントの説明
   string description = 3;
   // 動画タイトル (YouTubeから取得)
   string title = 4;
   // 動画サムネイル (YouTubeから取得)
   string thumbnail = 5;
-  // 集会の開始日時 (YouTubeから取得)
+  // イベントの開始日時 (YouTubeから取得)
   google.protobuf.Timestamp started_at = 6;
-  // 集会の終了日時 (YouTubeから取得)
+  // イベントの終了日時 (YouTubeから取得)
   google.protobuf.Timestamp ended_at = 7;
 }
 
@@ -27,8 +27,8 @@ message Token {
   string raw = 2;
   // トークンの所有者名
   string username = 3;
-  // トークンが有効な集会のID
-  string meeting_id = 4;
+  // トークンが有効なイベントのID
+  string event_id = 4;
   // トークン発行者のtraQID (traQと同期)
   string creator_id = 5;
   // トークンの説明
@@ -42,8 +42,8 @@ message Token {
 message Comment {
   // コメントのID (UUID)
   string id = 1;
-  // コメントが送信された集会のID
-  string meeting_id = 2;
+  // コメントが送信されたイベントのID
+  string event_id = 2;
   // コメントの送信者名
   string username = 3;
   // コメントの本文
@@ -59,8 +59,8 @@ message Comment {
 message Reaction {
   // リアクションのID (UUID)
   string id = 1;
-  // リアクションが送信された集会のID
-  string meeting_id = 2;
+  // リアクションが送信されたイベントのID
+  string event_id = 2;
   // リアクションの送信者名
   string username = 3;
   // 送信されたリアクションのスタンプID (UUID, traQと同期)

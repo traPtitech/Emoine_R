@@ -5,34 +5,34 @@
 
 - [emoine_r/v1/schema.proto](#emoine_r_v1_schema-proto)
     - [Comment](#emoine_r-v1-Comment)
-    - [Meeting](#emoine_r-v1-Meeting)
+    - [Event](#emoine_r-v1-Event)
     - [Reaction](#emoine_r-v1-Reaction)
     - [Token](#emoine_r-v1-Token)
   
 - [emoine_r/v1/admin_api.proto](#emoine_r_v1_admin_api-proto)
-    - [CreateMeetingRequest](#emoine_r-v1-CreateMeetingRequest)
-    - [CreateMeetingResponse](#emoine_r-v1-CreateMeetingResponse)
-    - [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest)
+    - [CreateEventRequest](#emoine_r-v1-CreateEventRequest)
+    - [CreateEventResponse](#emoine_r-v1-CreateEventResponse)
+    - [DeleteEventRequest](#emoine_r-v1-DeleteEventRequest)
     - [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest)
     - [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse)
     - [GetTokensRequest](#emoine_r-v1-GetTokensRequest)
     - [GetTokensResponse](#emoine_r-v1-GetTokensResponse)
     - [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest)
-    - [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest)
+    - [UpdateEventRequest](#emoine_r-v1-UpdateEventRequest)
   
     - [AdminAPIService](#emoine_r-v1-AdminAPIService)
   
 - [emoine_r/v1/general_api.proto](#emoine_r_v1_general_api-proto)
-    - [ConnectToMeetingStreamRequest](#emoine_r-v1-ConnectToMeetingStreamRequest)
-    - [ConnectToMeetingStreamResponse](#emoine_r-v1-ConnectToMeetingStreamResponse)
-    - [GetMeetingCommentsRequest](#emoine_r-v1-GetMeetingCommentsRequest)
-    - [GetMeetingCommentsResponse](#emoine_r-v1-GetMeetingCommentsResponse)
-    - [GetMeetingReactionsRequest](#emoine_r-v1-GetMeetingReactionsRequest)
-    - [GetMeetingReactionsResponse](#emoine_r-v1-GetMeetingReactionsResponse)
-    - [GetMeetingRequest](#emoine_r-v1-GetMeetingRequest)
-    - [GetMeetingResponse](#emoine_r-v1-GetMeetingResponse)
-    - [GetMeetingsRequest](#emoine_r-v1-GetMeetingsRequest)
-    - [GetMeetingsResponse](#emoine_r-v1-GetMeetingsResponse)
+    - [ConnectToEventStreamRequest](#emoine_r-v1-ConnectToEventStreamRequest)
+    - [ConnectToEventStreamResponse](#emoine_r-v1-ConnectToEventStreamResponse)
+    - [GetEventCommentsRequest](#emoine_r-v1-GetEventCommentsRequest)
+    - [GetEventCommentsResponse](#emoine_r-v1-GetEventCommentsResponse)
+    - [GetEventReactionsRequest](#emoine_r-v1-GetEventReactionsRequest)
+    - [GetEventReactionsResponse](#emoine_r-v1-GetEventReactionsResponse)
+    - [GetEventRequest](#emoine_r-v1-GetEventRequest)
+    - [GetEventResponse](#emoine_r-v1-GetEventResponse)
+    - [GetEventsRequest](#emoine_r-v1-GetEventsRequest)
+    - [GetEventsResponse](#emoine_r-v1-GetEventsResponse)
     - [SendCommentRequest](#emoine_r-v1-SendCommentRequest)
     - [SendCommentResponse](#emoine_r-v1-SendCommentResponse)
     - [SendReactionRequest](#emoine_r-v1-SendReactionRequest)
@@ -60,7 +60,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | コメントのID (UUID) |
-| meeting_id | [string](#string) |  | コメントが送信された集会のID |
+| event_id | [string](#string) |  | コメントが送信されたイベントのID |
 | username | [string](#string) |  | コメントの送信者名 |
 | text | [string](#string) |  | コメントの本文 |
 | is_anonymous | [bool](#bool) |  | コメントが匿名かどうか |
@@ -72,21 +72,21 @@
 
 
 
-<a name="emoine_r-v1-Meeting"></a>
+<a name="emoine_r-v1-Event"></a>
 
-### Meeting
+### Event
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| id | [string](#string) |  | 集会ID (UUID) |
+| id | [string](#string) |  | イベントID (UUID) |
 | video_id | [string](#string) |  | YouTubeの動画ID |
-| description | [string](#string) |  | 集会の説明 |
+| description | [string](#string) |  | イベントの説明 |
 | title | [string](#string) |  | 動画タイトル (YouTubeから取得) |
 | thumbnail | [string](#string) |  | 動画サムネイル (YouTubeから取得) |
-| started_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | 集会の開始日時 (YouTubeから取得) |
-| ended_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | 集会の終了日時 (YouTubeから取得) |
+| started_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | イベントの開始日時 (YouTubeから取得) |
+| ended_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | イベントの終了日時 (YouTubeから取得) |
 
 
 
@@ -102,7 +102,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | リアクションのID (UUID) |
-| meeting_id | [string](#string) |  | リアクションが送信された集会のID |
+| event_id | [string](#string) |  | リアクションが送信されたイベントのID |
 | username | [string](#string) |  | リアクションの送信者名 |
 | stamp_id | [string](#string) |  | 送信されたリアクションのスタンプID (UUID, traQと同期) |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | リアクションの作成日時 |
@@ -123,7 +123,7 @@
 | id | [string](#string) |  | トークンのID (UUID) |
 | raw | [string](#string) |  | トークン文字列 |
 | username | [string](#string) |  | トークンの所有者名 |
-| meeting_id | [string](#string) |  | トークンが有効な集会のID |
+| event_id | [string](#string) |  | トークンが有効なイベントのID |
 | creator_id | [string](#string) |  | トークン発行者のtraQID (traQと同期) |
 | description | [string](#string) |  | トークンの説明 |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | トークンの作成日時 |
@@ -150,9 +150,9 @@
 
 
 
-<a name="emoine_r-v1-CreateMeetingRequest"></a>
+<a name="emoine_r-v1-CreateEventRequest"></a>
 
-### CreateMeetingRequest
+### CreateEventRequest
 
 
 
@@ -166,30 +166,30 @@
 
 
 
-<a name="emoine_r-v1-CreateMeetingResponse"></a>
+<a name="emoine_r-v1-CreateEventResponse"></a>
 
-### CreateMeetingResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| meeting | [Meeting](#emoine_r-v1-Meeting) |  |  |
-
-
-
-
-
-
-<a name="emoine_r-v1-DeleteMeetingRequest"></a>
-
-### DeleteMeetingRequest
+### CreateEventResponse
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event | [Event](#emoine_r-v1-Event) |  |  |
+
+
+
+
+
+
+<a name="emoine_r-v1-DeleteEventRequest"></a>
+
+### DeleteEventRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| event_id | [string](#string) |  |  |
 
 
 
@@ -204,7 +204,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 | username | [string](#string) |  |  |
 | description | [string](#string) |  |  |
 | expire_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
@@ -237,7 +237,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 
 
 
@@ -268,22 +268,22 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | token_id | [string](#string) |  |  |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="emoine_r-v1-UpdateMeetingRequest"></a>
+<a name="emoine_r-v1-UpdateEventRequest"></a>
 
-### UpdateMeetingRequest
+### UpdateEventRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 | video_id | [string](#string) | optional |  |
 | description | [string](#string) | optional |  |
 
@@ -305,12 +305,12 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| CreateMeeting | [CreateMeetingRequest](#emoine_r-v1-CreateMeetingRequest) | [CreateMeetingResponse](#emoine_r-v1-CreateMeetingResponse) | 集会を作成します |
-| UpdateMeeting | [UpdateMeetingRequest](#emoine_r-v1-UpdateMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会情報を更新します |
-| DeleteMeeting | [DeleteMeetingRequest](#emoine_r-v1-DeleteMeetingRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会を削除します |
-| GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当する集会のトークン一覧を取得します |
-| GenerateToken | [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest) | [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse) | 集会用のトークンを生成します |
-| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | 集会用のトークンを無効化します |
+| CreateEvent | [CreateEventRequest](#emoine_r-v1-CreateEventRequest) | [CreateEventResponse](#emoine_r-v1-CreateEventResponse) | イベントを作成します |
+| UpdateEvent | [UpdateEventRequest](#emoine_r-v1-UpdateEventRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | イベント情報を更新します |
+| DeleteEvent | [DeleteEventRequest](#emoine_r-v1-DeleteEventRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | イベントを削除します |
+| GetTokens | [GetTokensRequest](#emoine_r-v1-GetTokensRequest) | [GetTokensResponse](#emoine_r-v1-GetTokensResponse) | 該当するイベントのトークン一覧を取得します |
+| GenerateToken | [GenerateTokenRequest](#emoine_r-v1-GenerateTokenRequest) | [GenerateTokenResponse](#emoine_r-v1-GenerateTokenResponse) | イベント用のトークンを生成します |
+| RevokeToken | [RevokeTokenRequest](#emoine_r-v1-RevokeTokenRequest) | [.google.protobuf.Empty](#google-protobuf-Empty) | イベント用のトークンを無効化します |
 
  
 
@@ -323,30 +323,30 @@
 
 
 
-<a name="emoine_r-v1-ConnectToMeetingStreamRequest"></a>
+<a name="emoine_r-v1-ConnectToEventStreamRequest"></a>
 
-### ConnectToMeetingStreamRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="emoine_r-v1-ConnectToMeetingStreamResponse"></a>
-
-### ConnectToMeetingStreamResponse
+### ConnectToEventStreamRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting | [Meeting](#emoine_r-v1-Meeting) |  |  |
+| event_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="emoine_r-v1-ConnectToEventStreamResponse"></a>
+
+### ConnectToEventStreamResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| event | [Event](#emoine_r-v1-Event) |  |  |
 | comment | [Comment](#emoine_r-v1-Comment) |  |  |
 | reaction | [Reaction](#emoine_r-v1-Reaction) |  |  |
 
@@ -355,24 +355,24 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingCommentsRequest"></a>
+<a name="emoine_r-v1-GetEventCommentsRequest"></a>
 
-### GetMeetingCommentsRequest
+### GetEventCommentsRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="emoine_r-v1-GetMeetingCommentsResponse"></a>
+<a name="emoine_r-v1-GetEventCommentsResponse"></a>
 
-### GetMeetingCommentsResponse
+### GetEventCommentsResponse
 
 
 
@@ -385,24 +385,24 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingReactionsRequest"></a>
+<a name="emoine_r-v1-GetEventReactionsRequest"></a>
 
-### GetMeetingReactionsRequest
+### GetEventReactionsRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 
 
 
 
 
 
-<a name="emoine_r-v1-GetMeetingReactionsResponse"></a>
+<a name="emoine_r-v1-GetEventReactionsResponse"></a>
 
-### GetMeetingReactionsResponse
+### GetEventReactionsResponse
 
 
 
@@ -415,9 +415,9 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingRequest"></a>
+<a name="emoine_r-v1-GetEventRequest"></a>
 
-### GetMeetingRequest
+### GetEventRequest
 
 
 
@@ -430,24 +430,24 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingResponse"></a>
+<a name="emoine_r-v1-GetEventResponse"></a>
 
-### GetMeetingResponse
+### GetEventResponse
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting | [Meeting](#emoine_r-v1-Meeting) |  |  |
+| event | [Event](#emoine_r-v1-Event) |  |  |
 
 
 
 
 
 
-<a name="emoine_r-v1-GetMeetingsRequest"></a>
+<a name="emoine_r-v1-GetEventsRequest"></a>
 
-### GetMeetingsRequest
+### GetEventsRequest
 
 
 
@@ -461,16 +461,16 @@
 
 
 
-<a name="emoine_r-v1-GetMeetingsResponse"></a>
+<a name="emoine_r-v1-GetEventsResponse"></a>
 
-### GetMeetingsResponse
+### GetEventsResponse
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | total | [int32](#int32) |  |  |
-| meetings | [Meeting](#emoine_r-v1-Meeting) | repeated |  |
+| events | [Event](#emoine_r-v1-Event) | repeated |  |
 
 
 
@@ -485,7 +485,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 | text | [string](#string) |  |  |
 | is_anonymous | [bool](#bool) |  |  |
 | color | [string](#string) |  |  |
@@ -518,7 +518,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| meeting_id | [string](#string) |  |  |
+| event_id | [string](#string) |  |  |
 | stamp_id | [string](#string) |  |  |
 
 
@@ -554,13 +554,13 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| GetMeetings | [GetMeetingsRequest](#emoine_r-v1-GetMeetingsRequest) | [GetMeetingsResponse](#emoine_r-v1-GetMeetingsResponse) | 集会一覧を取得します |
-| GetMeeting | [GetMeetingRequest](#emoine_r-v1-GetMeetingRequest) | [GetMeetingResponse](#emoine_r-v1-GetMeetingResponse) | 該当する集会を取得します |
-| GetMeetingComments | [GetMeetingCommentsRequest](#emoine_r-v1-GetMeetingCommentsRequest) | [GetMeetingCommentsResponse](#emoine_r-v1-GetMeetingCommentsResponse) | 該当する集会のコメント一覧を取得します |
-| GetMeetingReactions | [GetMeetingReactionsRequest](#emoine_r-v1-GetMeetingReactionsRequest) | [GetMeetingReactionsResponse](#emoine_r-v1-GetMeetingReactionsResponse) | 該当する集会のリアクション一覧を取得します |
-| ConnectToMeetingStream | [ConnectToMeetingStreamRequest](#emoine_r-v1-ConnectToMeetingStreamRequest) | [ConnectToMeetingStreamResponse](#emoine_r-v1-ConnectToMeetingStreamResponse) stream | 集会のストリームに接続します |
-| SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | (コメントは集会のストリームに反映されます) |
-| SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | (リアクションは集会のストリームに反映されます) |
+| GetEvents | [GetEventsRequest](#emoine_r-v1-GetEventsRequest) | [GetEventsResponse](#emoine_r-v1-GetEventsResponse) | イベント一覧を取得します |
+| GetEvent | [GetEventRequest](#emoine_r-v1-GetEventRequest) | [GetEventResponse](#emoine_r-v1-GetEventResponse) | 該当するイベントを取得します |
+| GetEventComments | [GetEventCommentsRequest](#emoine_r-v1-GetEventCommentsRequest) | [GetEventCommentsResponse](#emoine_r-v1-GetEventCommentsResponse) | 該当するイベントのコメント一覧を取得します |
+| GetEventReactions | [GetEventReactionsRequest](#emoine_r-v1-GetEventReactionsRequest) | [GetEventReactionsResponse](#emoine_r-v1-GetEventReactionsResponse) | 該当するイベントのリアクション一覧を取得します |
+| ConnectToEventStream | [ConnectToEventStreamRequest](#emoine_r-v1-ConnectToEventStreamRequest) | [ConnectToEventStreamResponse](#emoine_r-v1-ConnectToEventStreamResponse) stream | イベントのストリームに接続します |
+| SendComment | [SendCommentRequest](#emoine_r-v1-SendCommentRequest) | [SendCommentResponse](#emoine_r-v1-SendCommentResponse) | (コメントはイベントのストリームに反映されます) |
+| SendReaction | [SendReactionRequest](#emoine_r-v1-SendReactionRequest) | [SendReactionResponse](#emoine_r-v1-SendReactionResponse) | (リアクションはイベントのストリームに反映されます) |
 
  
 

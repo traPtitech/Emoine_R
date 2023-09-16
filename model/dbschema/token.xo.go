@@ -14,7 +14,7 @@ type Token struct {
 	CreatorID   string         `json:"creator_id"`  // creator_id
 	UserID      string         `json:"user_id"`     // user_id
 	CreatedAt   time.Time      `json:"created_at"`  // created_at
-	MeetingID   UUID           `json:"meeting_id"`  // meeting_id
+	EventID     UUID           `json:"event_id"`    // event_id
 	ExprieAt    sql.NullTime   `json:"exprie_at"`   // exprie_at
 	Description sql.NullString `json:"description"` // description
 	// xo fields
@@ -42,13 +42,13 @@ func (t *Token) Insert(ctx context.Context, db DB) error {
 	}
 	// insert (manual)
 	const sqlstr = `INSERT INTO emoine.token (` +
-		`token, creator_id, user_id, created_at, meeting_id, exprie_at, description` +
+		`token, creator_id, user_id, created_at, event_id, exprie_at, description` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?, ?, ?` +
 		`)`
 	// run
-	logf(sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.MeetingID, t.ExprieAt, t.Description)
-	if _, err := db.ExecContext(ctx, sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.MeetingID, t.ExprieAt, t.Description); err != nil {
+	logf(sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.EventID, t.ExprieAt, t.Description)
+	if _, err := db.ExecContext(ctx, sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.EventID, t.ExprieAt, t.Description); err != nil {
 		return logerror(err)
 	}
 	// set exists
@@ -66,11 +66,11 @@ func (t *Token) Update(ctx context.Context, db DB) error {
 	}
 	// update with primary key
 	const sqlstr = `UPDATE emoine.token SET ` +
-		`creator_id = ?, user_id = ?, created_at = ?, meeting_id = ?, exprie_at = ?, description = ? ` +
+		`creator_id = ?, user_id = ?, created_at = ?, event_id = ?, exprie_at = ?, description = ? ` +
 		`WHERE token = ?`
 	// run
-	logf(sqlstr, t.CreatorID, t.UserID, t.CreatedAt, t.MeetingID, t.ExprieAt, t.Description, t.Token)
-	if _, err := db.ExecContext(ctx, sqlstr, t.CreatorID, t.UserID, t.CreatedAt, t.MeetingID, t.ExprieAt, t.Description, t.Token); err != nil {
+	logf(sqlstr, t.CreatorID, t.UserID, t.CreatedAt, t.EventID, t.ExprieAt, t.Description, t.Token)
+	if _, err := db.ExecContext(ctx, sqlstr, t.CreatorID, t.UserID, t.CreatedAt, t.EventID, t.ExprieAt, t.Description, t.Token); err != nil {
 		return logerror(err)
 	}
 	return nil
@@ -92,15 +92,15 @@ func (t *Token) Upsert(ctx context.Context, db DB) error {
 	}
 	// upsert
 	const sqlstr = `INSERT INTO emoine.token (` +
-		`token, creator_id, user_id, created_at, meeting_id, exprie_at, description` +
+		`token, creator_id, user_id, created_at, event_id, exprie_at, description` +
 		`) VALUES (` +
 		`?, ?, ?, ?, ?, ?, ?` +
 		`)` +
 		` ON DUPLICATE KEY UPDATE ` +
-		`token = VALUES(token), creator_id = VALUES(creator_id), user_id = VALUES(user_id), created_at = VALUES(created_at), meeting_id = VALUES(meeting_id), exprie_at = VALUES(exprie_at), description = VALUES(description)`
+		`token = VALUES(token), creator_id = VALUES(creator_id), user_id = VALUES(user_id), created_at = VALUES(created_at), event_id = VALUES(event_id), exprie_at = VALUES(exprie_at), description = VALUES(description)`
 	// run
-	logf(sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.MeetingID, t.ExprieAt, t.Description)
-	if _, err := db.ExecContext(ctx, sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.MeetingID, t.ExprieAt, t.Description); err != nil {
+	logf(sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.EventID, t.ExprieAt, t.Description)
+	if _, err := db.ExecContext(ctx, sqlstr, t.Token, t.CreatorID, t.UserID, t.CreatedAt, t.EventID, t.ExprieAt, t.Description); err != nil {
 		return logerror(err)
 	}
 	// set exists
@@ -133,7 +133,7 @@ func (t *Token) Delete(ctx context.Context, db DB) error {
 func Tokens(ctx context.Context, db DB, limit, offset int) ([]Token, error) {
 	// query
 	const sqlstr = `SELECT ` +
-		`token, creator_id, user_id, created_at, meeting_id, exprie_at, description ` +
+		`token, creator_id, user_id, created_at, event_id, exprie_at, description ` +
 		`FROM emoine.token ` +
 		`LIMIT ? OFFSET ?`
 	// run
@@ -151,7 +151,7 @@ func Tokens(ctx context.Context, db DB, limit, offset int) ([]Token, error) {
 			_exists: true,
 		}
 		// scan
-		if err := rows.Scan(&t.Token, &t.CreatorID, &t.UserID, &t.CreatedAt, &t.MeetingID, &t.ExprieAt, &t.Description); err != nil {
+		if err := rows.Scan(&t.Token, &t.CreatorID, &t.UserID, &t.CreatedAt, &t.EventID, &t.ExprieAt, &t.Description); err != nil {
 			return nil, logerror(err)
 		}
 		res = append(res, t)
@@ -182,7 +182,7 @@ func TokenCount(ctx context.Context, db DB) (int, error) {
 func TokenByToken(ctx context.Context, db DB, token string) (*Token, error) {
 	// query
 	const sqlstr = `SELECT ` +
-		`token, creator_id, user_id, created_at, meeting_id, exprie_at, description ` +
+		`token, creator_id, user_id, created_at, event_id, exprie_at, description ` +
 		`FROM emoine.token ` +
 		`WHERE token = ?`
 	// run
@@ -190,7 +190,7 @@ func TokenByToken(ctx context.Context, db DB, token string) (*Token, error) {
 	t := Token{
 		_exists: true,
 	}
-	if err := db.QueryRowContext(ctx, sqlstr, token).Scan(&t.Token, &t.CreatorID, &t.UserID, &t.CreatedAt, &t.MeetingID, &t.ExprieAt, &t.Description); err != nil {
+	if err := db.QueryRowContext(ctx, sqlstr, token).Scan(&t.Token, &t.CreatorID, &t.UserID, &t.CreatedAt, &t.EventID, &t.ExprieAt, &t.Description); err != nil {
 		return nil, logerror(err)
 	}
 	return &t, nil
