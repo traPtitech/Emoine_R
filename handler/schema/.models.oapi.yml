@@ -1,4 +1,0 @@
-package: schema
-generate:
-  models: true
-output: schema_gen.go
