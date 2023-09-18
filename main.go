@@ -16,6 +16,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{AddSource: true}))
+	slog.SetDefault(logger)
 	adminAPIHandler := handler.NewAdminAPIHandler(logger)
 	generalAPIHandler := handler.NewGeneralAPIHandler(logger)
 
@@ -25,7 +26,7 @@ func main() {
 	))
 	mux.Handle(emoine_rv1connect.NewGeneralAPIServiceHandler(
 		generalAPIHandler,
-		connect.WithInterceptors(), // TODO: 部員or招待者認証
+		connect.WithInterceptors(handler.NewInterceptor()), // TODO: 部員or招待者認証
 	))
 
 	logger.Info("Server started")

@@ -60,9 +60,7 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[emoine_rv1.GetEventRequest]) (*connect.Response[emoine_rv1.GetEventResponse], error) {
 	eid, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
-		h.logger.Error("Parse", "err", err)
-
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
+		return nil, withErrInfo(connect.CodeInvalidArgument, err, "eventIdのパースに失敗しました")
 	}
 
 	e, err := dbschema.EventByID(ctx, model.DB, eid)
