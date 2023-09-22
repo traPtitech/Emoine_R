@@ -23,6 +23,8 @@ type Event struct {
 	Comments []*Comment `bun:"rel:has-many,join:id=event_id"`
 	// event has many reactions
 	Reactions []*Reaction `bun:"rel:has-many,join:id=event_id"`
+	// event has many tokens
+	Tokens []*Token `bun:"rel:has-many,join:id=event_id"`
 }
 
 type Comment struct {
@@ -45,4 +47,17 @@ type Reaction struct {
 	EventID   uuid.UUID `bun:",notnull,type:uuid"`
 	StampID   uuid.UUID `bun:",notnull,type:uuid"`
 	CreatedAt time.Time `bun:",notnull,default:CURRENT_TIMESTAMP"`
+}
+
+type Token struct {
+	bun.BaseModel `bun:"table:token"`
+
+	ID          uuid.UUID      `bun:",pk,notnull,type:uuid,default:UUID()"`
+	Value       string         `bun:",notnull"`
+	UserID      string         `bun:",notnull"`
+	CreatorID   string         `bun:",notnull"`
+	EventID     uuid.UUID      `bun:",notnull,type:uuid"`
+	Description sql.NullString `bun:""`
+	CreatedAt   time.Time      `bun:",notnull,default:CURRENT_TIMESTAMP"`
+	ExpireAt    sql.NullTime   `bun:""`
 }
