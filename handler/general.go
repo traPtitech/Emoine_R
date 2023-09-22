@@ -20,8 +20,9 @@ type GeneralAPIHandler struct {
 	logger *slog.Logger
 }
 
-func NewGeneralAPIHandler(logger *slog.Logger) emoine_rv1connect.GeneralAPIServiceHandler {
+func NewGeneralAPIHandler(r *repository.Repository, logger *slog.Logger) emoine_rv1connect.GeneralAPIServiceHandler {
 	return &GeneralAPIHandler{
+		r:      r,
 		logger: logger,
 	}
 }

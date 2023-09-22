@@ -24,8 +24,9 @@ type AdminAPIHandler struct {
 	logger *slog.Logger
 }
 
-func NewAdminAPIHandler(logger *slog.Logger) emoine_rv1connect.AdminAPIServiceHandler {
+func NewAdminAPIHandler(r *repository.Repository, logger *slog.Logger) emoine_rv1connect.AdminAPIServiceHandler {
 	return &AdminAPIHandler{
+		r:      r,
 		logger: logger,
 	}
 }
