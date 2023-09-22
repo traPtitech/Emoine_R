@@ -45,3 +45,15 @@ func (r *Repository) InsertEvent(ctx context.Context, event *dbmodel.Event) erro
 
 	return nil
 }
+
+func (r *Repository) UpdateEvent(ctx context.Context, event *dbmodel.Event) error {
+	_, err := r.DB.NewUpdate().
+		Model(event).
+		Where("? = ?", bun.Ident("id"), event.ID).
+		Exec(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

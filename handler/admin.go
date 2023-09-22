@@ -8,8 +8,6 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
-	"github.com/traPtitech/Emoine_R/model"
-	"github.com/traPtitech/Emoine_R/model/dbschema"
 	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
@@ -87,9 +85,9 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
-	e, err := dbschema.EventByID(ctx, model.DB, eid)
+	e, err := h.r.SelectEvent(ctx, eid)
 	if err != nil {
-		h.logger.Error("EventByID", "err", err)
+		h.logger.Error("SelectEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
@@ -99,8 +97,8 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 		e.Description.Valid = true
 	}
 
-	if err := e.Update(ctx, model.DB); err != nil {
-		h.logger.Error("Update", "err", err)
+	if err := h.r.UpdateEvent(ctx, e); err != nil {
+		h.logger.Error("UpdateEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの更新に失敗しました"))
 	}
