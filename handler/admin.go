@@ -14,10 +14,13 @@ import (
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
 	"github.com/traPtitech/Emoine_R/pkg/youtube"
+	"github.com/traPtitech/Emoine_R/repository"
+	"github.com/traPtitech/Emoine_R/repository/dbmodel"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type AdminAPIHandler struct {
+	r      *repository.Repository
 	logger *slog.Logger
 }
 
@@ -53,7 +56,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		description.Valid = true
 	}
 
-	e := dbschema.Event{
+	e := dbmodel.Event{
 		ID:          uuid.New(),
 		VideoID:     req.Msg.VideoId,
 		Title:       video.Snippet.Title,
@@ -62,8 +65,8 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		StartedAt:   startedAt,
 		EndedAt:     endedAt,
 	}
-	if err := e.Insert(ctx, model.DB); err != nil {
-		h.logger.Error("Insert", "err", err)
+	if err := h.r.InsertEvent(ctx, &e); err != nil {
+		h.logger.Error("InsertEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの作成に失敗しました"))
 	}
