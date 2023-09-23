@@ -14,8 +14,6 @@ import (
 )
 
 func main() {
-	mux := http.NewServeMux()
-
 	r, err := repository.SetupRepository()
 	if err != nil {
 		panic(err)
@@ -25,6 +23,7 @@ func main() {
 	adminAPIHandler := handler.NewAdminAPIHandler(r, logger)
 	generalAPIHandler := handler.NewGeneralAPIHandler(r, logger)
 
+	mux := http.NewServeMux()
 	mux.Handle(emoine_rv1connect.NewAdminAPIServiceHandler(
 		adminAPIHandler,
 		connect.WithInterceptors(), // TODO: 権限者認証
