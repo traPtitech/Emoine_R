@@ -8,6 +8,13 @@ import (
 	"github.com/uptrace/bun"
 )
 
+var AllModels = []any{
+	(*Event)(nil),
+	(*Comment)(nil),
+	(*Reaction)(nil),
+	(*Token)(nil),
+}
+
 type Event struct {
 	bun.BaseModel `bun:"table:events"`
 
