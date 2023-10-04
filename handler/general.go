@@ -59,7 +59,7 @@ func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[e
 	if err != nil {
 		h.logger.Error("Parse", "err", err)
 
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIDのパースに失敗しました"))
 	}
 
 	e, err := h.r.SelectEvent(ctx, eid)
