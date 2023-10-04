@@ -85,8 +85,28 @@ func (h *GeneralAPIHandler) GetEventComments(_ context.Context, _ *connect.Reque
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *GeneralAPIHandler) GetEventReactions(_ context.Context, _ *connect.Request[emoine_rv1.GetEventReactionsRequest]) (*connect.Response[emoine_rv1.GetEventReactionsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+func (h *GeneralAPIHandler) GetEventReactions(ctx context.Context, req *connect.Request[emoine_rv1.GetEventReactionsRequest]) (*connect.Response[emoine_rv1.GetEventReactionsResponse], error) {
+	eid, err := uuid.Parse(req.Msg.EventId)
+	if err != nil {
+		h.logger.Error("failed to parse event id", "err", err)
+
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIDのパースに失敗しました"))
+	}
+
+	reactions, err := h.r.SelectEventReactions(ctx, eid)
+	if err != nil {
+		h.logger.Error("failed to select event reactions", "err", err)
+
+		return nil, connect.NewError(connect.CodeInternal, errors.New("リアクションの取得に失敗しました"))
+	}
+
+	res := connect.NewResponse(&emoine_rv1.GetEventReactionsResponse{
+		Reactions: lo.Map(reactions, func(r dbmodel.Reaction, _ int) *emoine_rv1.Reaction {
+			return pbconv.FromDBReaction(r)
+		}),
+	})
+
+	return res, nil
 }
 
 func (h *GeneralAPIHandler) ConnectToEventStream(
