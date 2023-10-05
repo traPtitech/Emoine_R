@@ -46,6 +46,7 @@ message GetEventCommentsRequest {
 }
 
 message GetEventCommentsResponse {
+  // comments are sorted by created_at asc (oldest first)
   repeated Comment comments = 1;
 }
 

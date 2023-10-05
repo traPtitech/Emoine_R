@@ -278,6 +278,7 @@ type GetEventCommentsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// comments are sorted by created_at asc (oldest first)
 	Comments []*Comment `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
 }
 
