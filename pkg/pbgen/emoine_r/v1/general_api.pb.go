@@ -372,6 +372,7 @@ type GetEventReactionsResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// reactions are sorted by created_at asc (oldest first)
 	Reactions []*Reaction `protobuf:"bytes,1,rep,name=reactions,proto3" json:"reactions,omitempty"`
 }
 

@@ -408,7 +408,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| reactions | [Reaction](#emoine_r-v1-Reaction) | repeated |  |
+| reactions | [Reaction](#emoine_r-v1-Reaction) | repeated | reactions are sorted by created_at asc (oldest first) |
 
 
 

@@ -54,6 +54,7 @@ message GetEventReactionsRequest {
 }
 
 message GetEventReactionsResponse {
+  // reactions are sorted by created_at asc (oldest first)
   repeated Reaction reactions = 1;
 }
 
