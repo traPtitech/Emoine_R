@@ -8,21 +8,23 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
-	"github.com/traPtitech/Emoine_R/model"
-	"github.com/traPtitech/Emoine_R/model/dbschema"
 	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
 	"github.com/traPtitech/Emoine_R/pkg/youtube"
+	"github.com/traPtitech/Emoine_R/repository"
+	"github.com/traPtitech/Emoine_R/repository/dbmodel"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type AdminAPIHandler struct {
+	r      *repository.Repository
 	logger *slog.Logger
 }
 
-func NewAdminAPIHandler(logger *slog.Logger) emoine_rv1connect.AdminAPIServiceHandler {
+func NewAdminAPIHandler(r *repository.Repository, logger *slog.Logger) emoine_rv1connect.AdminAPIServiceHandler {
 	return &AdminAPIHandler{
+		r:      r,
 		logger: logger,
 	}
 }
@@ -53,7 +55,7 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		description.Valid = true
 	}
 
-	e := dbschema.Event{
+	e := dbmodel.Event{
 		ID:          uuid.New(),
 		VideoID:     req.Msg.VideoId,
 		Title:       video.Snippet.Title,
@@ -62,8 +64,8 @@ func (h *AdminAPIHandler) CreateEvent(ctx context.Context, req *connect.Request[
 		StartedAt:   startedAt,
 		EndedAt:     endedAt,
 	}
-	if err := e.Insert(ctx, model.DB); err != nil {
-		h.logger.Error("Insert", "err", err)
+	if err := h.r.InsertEvent(ctx, &e); err != nil {
+		h.logger.Error("InsertEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの作成に失敗しました"))
 	}
@@ -83,9 +85,9 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
-	e, err := dbschema.EventByID(ctx, model.DB, eid)
+	e, err := h.r.SelectEvent(ctx, eid)
 	if err != nil {
-		h.logger.Error("EventByID", "err", err)
+		h.logger.Error("SelectEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
@@ -95,8 +97,8 @@ func (h *AdminAPIHandler) UpdateEvent(ctx context.Context, req *connect.Request[
 		e.Description.Valid = true
 	}
 
-	if err := e.Update(ctx, model.DB); err != nil {
-		h.logger.Error("Update", "err", err)
+	if err := h.r.UpdateEvent(ctx, e); err != nil {
+		h.logger.Error("UpdateEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの更新に失敗しました"))
 	}

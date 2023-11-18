@@ -8,19 +8,21 @@ import (
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
-	"github.com/traPtitech/Emoine_R/model"
-	"github.com/traPtitech/Emoine_R/model/dbschema"
 	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
+	"github.com/traPtitech/Emoine_R/repository"
+	"github.com/traPtitech/Emoine_R/repository/dbmodel"
 )
 
 type GeneralAPIHandler struct {
+	r      *repository.Repository
 	logger *slog.Logger
 }
 
-func NewGeneralAPIHandler(logger *slog.Logger) emoine_rv1connect.GeneralAPIServiceHandler {
+func NewGeneralAPIHandler(r *repository.Repository, logger *slog.Logger) emoine_rv1connect.GeneralAPIServiceHandler {
 	return &GeneralAPIHandler{
+		r:      r,
 		logger: logger,
 	}
 }
@@ -34,22 +36,17 @@ func (h *GeneralAPIHandler) GetEvents(ctx context.Context, req *connect.Request[
 		offset := int32(0)
 		req.Msg.Offset = &offset
 	}
-	e, err := dbschema.Events(ctx, model.DB, int(*req.Msg.Limit), int(*req.Msg.Offset))
-	if err != nil {
-		h.logger.Error("Events", "err", err)
 
-		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
-	}
-	cnt, err := dbschema.EventCount(ctx, model.DB)
+	m, cnt, err := h.r.SelectEvents(ctx, int(*req.Msg.Limit), int(*req.Msg.Offset))
 	if err != nil {
-		h.logger.Error("EventCount", "err", err)
+		h.logger.Error("SelectEvents", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}
 
 	res := connect.NewResponse(&emoine_rv1.GetEventsResponse{
 		Total: int32(cnt),
-		Events: lo.Map(e, func(v dbschema.Event, _ int) *emoine_rv1.Event {
+		Events: lo.Map(m, func(v dbmodel.Event, _ int) *emoine_rv1.Event {
 			return pbconv.FromDBEvent(v)
 		}),
 	})
@@ -65,9 +62,9 @@ func (h *GeneralAPIHandler) GetEvent(ctx context.Context, req *connect.Request[e
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIdのパースに失敗しました"))
 	}
 
-	e, err := dbschema.EventByID(ctx, model.DB, eid)
+	e, err := h.r.SelectEvent(ctx, eid)
 	if err != nil {
-		h.logger.Error("EventByID", "err", err)
+		h.logger.Error("SelectEvent", "err", err)
 
 		return nil, connect.NewError(connect.CodeInternal, errors.New("イベントの取得に失敗しました"))
 	}

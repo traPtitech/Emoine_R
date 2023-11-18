@@ -1,22 +1,20 @@
-package model
+package repository
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/mysqldialect"
 )
 
-var DB *sql.DB
+type Repository struct {
+	DB *bun.DB
+}
 
-func init() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Cannot collect .env: %s", err)
-	}
-
+func SetupRepository() (*Repository, error) {
 	cfg := mysql.Config{
 		User:   getEnvOrDefault("DB_USER", "root"),
 		Passwd: getEnvOrDefault("DB_PASSWORD", ""),
@@ -31,17 +29,14 @@ func init() {
 		ParseTime:            true,
 	}
 
-	_db, err := sql.Open("mysql", cfg.FormatDSN())
+	sqldb, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
-		log.Fatalf("Cannot Connect to Database: %s", err)
+		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
-	if err := _db.Ping(); err != nil {
-		_db.Close()
-		log.Fatalf("Cannot Ping Database: %s", err)
-	}
+	db := bun.NewDB(sqldb, mysqldialect.New())
 
-	DB = _db
+	return &Repository{DB: db}, nil
 }
 
 func getEnvOrDefault(key string, defaultValue string) string {
