@@ -8,9 +8,7 @@ import (
 	"github.com/uptrace/bun/migrate"
 )
 
-var Migrations = migrate.NewMigrations(
-	migrate.WithMigrationsDirectory("migrations"),
-)
+var Migrations = migrate.NewMigrations()
 
 func Migrate(ctx context.Context, db *bun.DB) error {
 	m := migrate.NewMigrator(db, Migrations)
