@@ -1,11 +1,13 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"os"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/traPtitech/Emoine_R/repository/migrations"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/mysqldialect"
 )
@@ -35,6 +37,9 @@ func SetupRepository() (*Repository, error) {
 	}
 
 	db := bun.NewDB(sqldb, mysqldialect.New())
+	if err := migrations.Migrate(context.Background(), db); err != nil {
+		return nil, fmt.Errorf("failed to migrate database: %w", err)
+	}
 
 	return &Repository{DB: db}, nil
 }
