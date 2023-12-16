@@ -98,7 +98,11 @@ func (h *GeneralAPIHandler) GetEventComments(ctx context.Context, req *connect.R
 
 	res := connect.NewResponse(&emoine_rv1.GetEventCommentsResponse{
 		Comments: lo.Map(comments, func(c dbmodel.Comment, _ int) *emoine_rv1.Comment {
-			return pbconv.FromDBComment(c)
+			comment := pbconv.FromDBComment(c)
+			if comment.IsAnonymous {
+				comment.Username = ""
+			}
+			return comment
 		}),
 	})
 
