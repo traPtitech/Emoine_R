@@ -378,7 +378,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| comments | [Comment](#emoine_r-v1-Comment) | repeated |  |
+| comments | [Comment](#emoine_r-v1-Comment) | repeated | comments are sorted by created_at asc (oldest first) |
 
 
 
