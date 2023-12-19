@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.21.0
 
 require (
-	connectrpc.com/connect v1.12.0
+	connectrpc.com/connect v1.13.0
 	github.com/bufbuild/buf v1.28.1
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/google/uuid v1.3.0
