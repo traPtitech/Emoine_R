@@ -19,7 +19,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// AdminAPIServiceName is the fully-qualified name of the AdminAPIService service.
@@ -54,6 +54,17 @@ const (
 	AdminAPIServiceRevokeTokenProcedure = "/emoine_r.v1.AdminAPIService/RevokeToken"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	adminAPIServiceServiceDescriptor             = v1.File_emoine_r_v1_admin_api_proto.Services().ByName("AdminAPIService")
+	adminAPIServiceCreateEventMethodDescriptor   = adminAPIServiceServiceDescriptor.Methods().ByName("CreateEvent")
+	adminAPIServiceUpdateEventMethodDescriptor   = adminAPIServiceServiceDescriptor.Methods().ByName("UpdateEvent")
+	adminAPIServiceDeleteEventMethodDescriptor   = adminAPIServiceServiceDescriptor.Methods().ByName("DeleteEvent")
+	adminAPIServiceGetTokensMethodDescriptor     = adminAPIServiceServiceDescriptor.Methods().ByName("GetTokens")
+	adminAPIServiceGenerateTokenMethodDescriptor = adminAPIServiceServiceDescriptor.Methods().ByName("GenerateToken")
+	adminAPIServiceRevokeTokenMethodDescriptor   = adminAPIServiceServiceDescriptor.Methods().ByName("RevokeToken")
+)
+
 // AdminAPIServiceClient is a client for the emoine_r.v1.AdminAPIService service.
 type AdminAPIServiceClient interface {
 	// イベントを作成します
@@ -83,32 +94,38 @@ func NewAdminAPIServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 		createEvent: connect.NewClient[v1.CreateEventRequest, v1.CreateEventResponse](
 			httpClient,
 			baseURL+AdminAPIServiceCreateEventProcedure,
-			opts...,
+			connect.WithSchema(adminAPIServiceCreateEventMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		updateEvent: connect.NewClient[v1.UpdateEventRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceUpdateEventProcedure,
-			opts...,
+			connect.WithSchema(adminAPIServiceUpdateEventMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		deleteEvent: connect.NewClient[v1.DeleteEventRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceDeleteEventProcedure,
-			opts...,
+			connect.WithSchema(adminAPIServiceDeleteEventMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getTokens: connect.NewClient[v1.GetTokensRequest, v1.GetTokensResponse](
 			httpClient,
 			baseURL+AdminAPIServiceGetTokensProcedure,
-			opts...,
+			connect.WithSchema(adminAPIServiceGetTokensMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		generateToken: connect.NewClient[v1.GenerateTokenRequest, v1.GenerateTokenResponse](
 			httpClient,
 			baseURL+AdminAPIServiceGenerateTokenProcedure,
-			opts...,
+			connect.WithSchema(adminAPIServiceGenerateTokenMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		revokeToken: connect.NewClient[v1.RevokeTokenRequest, emptypb.Empty](
 			httpClient,
 			baseURL+AdminAPIServiceRevokeTokenProcedure,
-			opts...,
+			connect.WithSchema(adminAPIServiceRevokeTokenMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -178,32 +195,38 @@ func NewAdminAPIServiceHandler(svc AdminAPIServiceHandler, opts ...connect.Handl
 	adminAPIServiceCreateEventHandler := connect.NewUnaryHandler(
 		AdminAPIServiceCreateEventProcedure,
 		svc.CreateEvent,
-		opts...,
+		connect.WithSchema(adminAPIServiceCreateEventMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	adminAPIServiceUpdateEventHandler := connect.NewUnaryHandler(
 		AdminAPIServiceUpdateEventProcedure,
 		svc.UpdateEvent,
-		opts...,
+		connect.WithSchema(adminAPIServiceUpdateEventMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	adminAPIServiceDeleteEventHandler := connect.NewUnaryHandler(
 		AdminAPIServiceDeleteEventProcedure,
 		svc.DeleteEvent,
-		opts...,
+		connect.WithSchema(adminAPIServiceDeleteEventMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	adminAPIServiceGetTokensHandler := connect.NewUnaryHandler(
 		AdminAPIServiceGetTokensProcedure,
 		svc.GetTokens,
-		opts...,
+		connect.WithSchema(adminAPIServiceGetTokensMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	adminAPIServiceGenerateTokenHandler := connect.NewUnaryHandler(
 		AdminAPIServiceGenerateTokenProcedure,
 		svc.GenerateToken,
-		opts...,
+		connect.WithSchema(adminAPIServiceGenerateTokenMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	adminAPIServiceRevokeTokenHandler := connect.NewUnaryHandler(
 		AdminAPIServiceRevokeTokenProcedure,
 		svc.RevokeToken,
-		opts...,
+		connect.WithSchema(adminAPIServiceRevokeTokenMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/emoine_r.v1.AdminAPIService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {

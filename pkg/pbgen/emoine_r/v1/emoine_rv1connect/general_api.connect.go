@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// GeneralAPIServiceName is the fully-qualified name of the GeneralAPIService service.
@@ -56,6 +56,18 @@ const (
 	GeneralAPIServiceSendReactionProcedure = "/emoine_r.v1.GeneralAPIService/SendReaction"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	generalAPIServiceServiceDescriptor                    = v1.File_emoine_r_v1_general_api_proto.Services().ByName("GeneralAPIService")
+	generalAPIServiceGetEventsMethodDescriptor            = generalAPIServiceServiceDescriptor.Methods().ByName("GetEvents")
+	generalAPIServiceGetEventMethodDescriptor             = generalAPIServiceServiceDescriptor.Methods().ByName("GetEvent")
+	generalAPIServiceGetEventCommentsMethodDescriptor     = generalAPIServiceServiceDescriptor.Methods().ByName("GetEventComments")
+	generalAPIServiceGetEventReactionsMethodDescriptor    = generalAPIServiceServiceDescriptor.Methods().ByName("GetEventReactions")
+	generalAPIServiceConnectToEventStreamMethodDescriptor = generalAPIServiceServiceDescriptor.Methods().ByName("ConnectToEventStream")
+	generalAPIServiceSendCommentMethodDescriptor          = generalAPIServiceServiceDescriptor.Methods().ByName("SendComment")
+	generalAPIServiceSendReactionMethodDescriptor         = generalAPIServiceServiceDescriptor.Methods().ByName("SendReaction")
+)
+
 // GeneralAPIServiceClient is a client for the emoine_r.v1.GeneralAPIService service.
 type GeneralAPIServiceClient interface {
 	// イベント一覧を取得します
@@ -87,37 +99,44 @@ func NewGeneralAPIServiceClient(httpClient connect.HTTPClient, baseURL string, o
 		getEvents: connect.NewClient[v1.GetEventsRequest, v1.GetEventsResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceGetEventsProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceGetEventsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getEvent: connect.NewClient[v1.GetEventRequest, v1.GetEventResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceGetEventProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceGetEventMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getEventComments: connect.NewClient[v1.GetEventCommentsRequest, v1.GetEventCommentsResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceGetEventCommentsProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceGetEventCommentsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getEventReactions: connect.NewClient[v1.GetEventReactionsRequest, v1.GetEventReactionsResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceGetEventReactionsProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceGetEventReactionsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		connectToEventStream: connect.NewClient[v1.ConnectToEventStreamRequest, v1.ConnectToEventStreamResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceConnectToEventStreamProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceConnectToEventStreamMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		sendComment: connect.NewClient[v1.SendCommentRequest, v1.SendCommentResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceSendCommentProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceSendCommentMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		sendReaction: connect.NewClient[v1.SendReactionRequest, v1.SendReactionResponse](
 			httpClient,
 			baseURL+GeneralAPIServiceSendReactionProcedure,
-			opts...,
+			connect.WithSchema(generalAPIServiceSendReactionMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -195,37 +214,44 @@ func NewGeneralAPIServiceHandler(svc GeneralAPIServiceHandler, opts ...connect.H
 	generalAPIServiceGetEventsHandler := connect.NewUnaryHandler(
 		GeneralAPIServiceGetEventsProcedure,
 		svc.GetEvents,
-		opts...,
+		connect.WithSchema(generalAPIServiceGetEventsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	generalAPIServiceGetEventHandler := connect.NewUnaryHandler(
 		GeneralAPIServiceGetEventProcedure,
 		svc.GetEvent,
-		opts...,
+		connect.WithSchema(generalAPIServiceGetEventMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	generalAPIServiceGetEventCommentsHandler := connect.NewUnaryHandler(
 		GeneralAPIServiceGetEventCommentsProcedure,
 		svc.GetEventComments,
-		opts...,
+		connect.WithSchema(generalAPIServiceGetEventCommentsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	generalAPIServiceGetEventReactionsHandler := connect.NewUnaryHandler(
 		GeneralAPIServiceGetEventReactionsProcedure,
 		svc.GetEventReactions,
-		opts...,
+		connect.WithSchema(generalAPIServiceGetEventReactionsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	generalAPIServiceConnectToEventStreamHandler := connect.NewServerStreamHandler(
 		GeneralAPIServiceConnectToEventStreamProcedure,
 		svc.ConnectToEventStream,
-		opts...,
+		connect.WithSchema(generalAPIServiceConnectToEventStreamMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	generalAPIServiceSendCommentHandler := connect.NewUnaryHandler(
 		GeneralAPIServiceSendCommentProcedure,
 		svc.SendComment,
-		opts...,
+		connect.WithSchema(generalAPIServiceSendCommentMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	generalAPIServiceSendReactionHandler := connect.NewUnaryHandler(
 		GeneralAPIServiceSendReactionProcedure,
 		svc.SendReaction,
-		opts...,
+		connect.WithSchema(generalAPIServiceSendReactionMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/emoine_r.v1.GeneralAPIService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
