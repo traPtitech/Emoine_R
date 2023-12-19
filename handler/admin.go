@@ -8,6 +8,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/google/uuid"
+	"github.com/samber/lo"
 	"github.com/traPtitech/Emoine_R/pkg/pbconv"
 	emoine_rv1 "github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1"
 	"github.com/traPtitech/Emoine_R/pkg/pbgen/emoine_r/v1/emoine_rv1connect"
@@ -110,8 +111,28 @@ func (h *AdminAPIHandler) DeleteEvent(_ context.Context, _ *connect.Request[emoi
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
 }
 
-func (h *AdminAPIHandler) GetTokens(_ context.Context, _ *connect.Request[emoine_rv1.GetTokensRequest]) (*connect.Response[emoine_rv1.GetTokensResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("未実装です"))
+func (h *AdminAPIHandler) GetTokens(ctx context.Context, req *connect.Request[emoine_rv1.GetTokensRequest]) (*connect.Response[emoine_rv1.GetTokensResponse], error) {
+	eid, err := uuid.Parse(req.Msg.EventId)
+	if err != nil {
+		h.logger.Error("failed to parse event id", "err", err)
+
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("eventIDのパースに失敗しました"))
+	}
+
+	tokens, err := h.r.SelectEventTokens(ctx, eid)
+	if err != nil {
+		h.logger.Error("failed to select event tokens", "err", err)
+
+		return nil, connect.NewError(connect.CodeInternal, errors.New("トークンの取得に失敗しました"))
+	}
+
+	res := connect.NewResponse(&emoine_rv1.GetTokensResponse{
+		Tokens: lo.Map(tokens, func(t dbmodel.Token, _ int) *emoine_rv1.Token {
+			return pbconv.FromDBToken(t)
+		}),
+	})
+
+	return res, nil
 }
 
 func (h *AdminAPIHandler) GenerateToken(_ context.Context, _ *connect.Request[emoine_rv1.GenerateTokenRequest]) (*connect.Response[emoine_rv1.GenerateTokenResponse], error) {
